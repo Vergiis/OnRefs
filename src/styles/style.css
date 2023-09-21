@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: dimgrey;
+}
+#signIn{
+    cursor:pointer;
+    color:#f1f1f2;
+    font-size: large;
+    font-weight: bold;
+
+    padding-left: 2em;
+    padding-right: 2em;
+    border-left: solid 2px #f2f2f2;
+}
+#signIn:hover{
+    color:#c1c1c1
+}
+
+#saveCanvas{
+    color: #212529;
+    font-weight: bold;
+    margin-right: 2em;
+    margin-left: 2em;
+}
+.dropdownBtn{
+    background-color: #00A4A4;
+    color: #212529;
+    font-weight: bold;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    border: 0;
+}
+.dropdown-item:focus {
+    background-color: #8f8f8f;
+    color: white;
+}
