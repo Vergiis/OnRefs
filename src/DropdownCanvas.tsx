@@ -10,7 +10,7 @@ export function DropdownCanvas() {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        uUnsaved*
+        Unsaved*
       </Dropdown.Toggle>
 
       <Dropdown.Menu
