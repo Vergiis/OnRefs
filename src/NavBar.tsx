@@ -1,22 +1,29 @@
-import { DropdownCanvas } from "./DropdownCanvas"
+import { DropdownCanvas } from './DropdownCanvas';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
-export function NavBar(){
-    return(
-        <nav className="navbar navbar-icon-top navbar-expand-lg fixed-top navbar-dark bg-dark">
-            <a className="navbar-brand" href="/">
-                <img src="\img\logo.png" alt="Logo" height="38" />
+export function NavBar() {
+  return (
+    <Navbar
+      expand="lg"
+      className="navbar navbar-icon-top fixed-top navbar-dark bg-dark"
+    >
+      <Navbar.Brand href="/">
+        <img src="\img\logo.png" alt="Logo" height="30" />
+      </Navbar.Brand>
+      <Navbar.Collapse>
+        <Nav className="ms-auto">
+          <DropdownCanvas />
+          <Nav.Item>
+            <a className="btn btn-light navbar-text" id="saveCanvas">
+              Save
             </a>
-            <div className="collapse navbar-collapse">
-                <ul className="navbar-nav ms-auto">
-                    <DropdownCanvas />
-                    <li className="nav-item">
-                        <a className="btn btn-light navbar-text" id="saveCanvas" >Save</a>
-                    </li>
-                    <li className="nav-item">
-                        <a href="#" className="nav-link" id="signIn" >Sign In</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    )
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link id="signIn">Sign In</Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+  );
 }
