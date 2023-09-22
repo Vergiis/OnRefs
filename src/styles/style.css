@@ -81,6 +81,12 @@ body {
   background-color: #008686;
   color: #212529;
 }
+.mobileToggle {
+  margin-right: 0.5em;
+}
+.mobileToggle:focus {
+  display: none;
+}
 
 @media (max-width: 990px) {
   .canvasOptionsButtons {

@@ -15,7 +15,7 @@ export function NavBar() {
         <img src="\img\logo.png" alt="Logo" height="30" />
       </Navbar.Brand>
 
-      <Navbar.Toggle />
+      <Navbar.Toggle className="mobileToggle" />
 
       <Navbar.Collapse>
         <Nav className="ms-auto flex-row rightNav">
