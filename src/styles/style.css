@@ -39,9 +39,14 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   border: 0;
+  width: 10em;
 }
-.dropdown-item:focus {
-  background-color: #8f8f8f;
+.dropdownBtn.show {
+  background-color: #008686;
+}
+.dropdown-item:focus,
+.dropdown-item:hover {
+  background-color: #8fc2c2;
   color: white;
 }
 .brand {

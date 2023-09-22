@@ -24,13 +24,12 @@ export function DropdownCanvas() {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        Unsaved*
+        123456789012*
       </Dropdown.Toggle>
 
       <Dropdown.Menu
         className="scrollable-menu"
         aria-labelledby="dropdownMenuButton"
-        id="canvasesDropdown"
       >
         <Dropdown.Item
           href="/load?canvas="
@@ -38,6 +37,13 @@ export function DropdownCanvas() {
           className="dropdown-item"
         >
           Action
+        </Dropdown.Item>
+        <Dropdown.Item
+          href="/load?canvas="
+          id="canvasItem"
+          className="dropdown-item"
+        >
+          Action 2
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
