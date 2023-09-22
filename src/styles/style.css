@@ -56,7 +56,7 @@ body {
 .dropdown-item:focus,
 .dropdown-item:hover {
   background-color: #00a4a4;
-  color: white;
+  color: #d4d4d4;
 }
 .dropdownBackground {
   background-color: #008686;
