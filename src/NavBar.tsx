@@ -1,6 +1,9 @@
+import { Container } from 'react-bootstrap';
 import { DropdownCanvas } from './DropdownCanvas';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { RiDeleteBin7Fill, RiEdit2Fill } from 'react-icons/ri';
+import { TbReload } from 'react-icons/tb';
 
 export function NavBar() {
   return (
@@ -16,17 +19,33 @@ export function NavBar() {
 
       <Navbar.Collapse>
         <Nav className="ms-auto flex-row rightNav">
-          <Nav.Item className="mobileButton">
+          <Nav.Item
+            className="btn btn-dark canvasOptionsButtons"
+            id="canvasDeleteButton"
+          >
+            <RiDeleteBin7Fill />
+          </Nav.Item>
+          <Nav.Item
+            className="btn btn-dark canvasOptionsButtons"
+            id="canvasEditButton"
+          >
+            <RiEdit2Fill />
+          </Nav.Item>
+          <Nav.Item
+            className="btn btn-dark canvasOptionsButtons"
+            id="canvasReloadButton"
+          >
+            <TbReload />
+          </Nav.Item>
+          <div className="mobileButton">
             <DropdownCanvas />
+          </div>
+          <Nav.Item className="btn btn-light mobileButton" id="saveCanvas">
+            Save
           </Nav.Item>
-          <Nav.Item className="mobileButton">
-            <a className="btn btn-light navbar-text" id="saveCanvas">
-              Save
-            </a>
-          </Nav.Item>
-          <Nav.Item className="mobileButton">
-            <Nav.Link id="signIn">Sign In</Nav.Link>
-          </Nav.Item>
+          <Nav.Link className="mobileButton" id="signIn">
+            Sign In
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

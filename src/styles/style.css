@@ -27,11 +27,16 @@ body {
 
 #saveCanvas {
   color: #212529;
+  background-color: #f2f2f2;
   font-weight: bold;
   margin-right: 2em;
-  margin-left: 1.5em;
+  margin-left: 2em;
+  width: 6em;
 }
-.dropdownBtn {
+#saveCanvas:hover {
+  background-color: #d4d4d4;
+}
+#canvasDropdownBtn {
   background-color: #00a4a4;
   color: #212529;
   font-weight: bold;
@@ -41,8 +46,12 @@ body {
   border: 0;
   width: 10em;
 }
-.dropdownBtn.show {
+#canvasDropdownBtn.show {
   background-color: #008686;
+}
+.dropdown-item {
+  font-weight: bold;
+  font-size: smaller;
 }
 .dropdown-item:focus,
 .dropdown-item:hover {
@@ -56,16 +65,34 @@ body {
 .brand {
   margin-left: 0.5em;
 }
+.canvasOptionsButtons {
+  background-color: #00a4a4;
+  color: #212529;
+  font-weight: bold;
+  margin-right: 0.3em;
+  width: 2.6em;
+}
+#canvasDeleteButton:hover,
+#canvasDeleteButton:active,
+#canvasEditButton:hover,
+#canvasEditButton:active,
+#canvasReloadButton:hover,
+#canvasReloadButton:active {
+  background-color: #008686;
+  color: #212529;
+}
 
 @media (max-width: 990px) {
+  .canvasOptionsButtons {
+    margin-right: 0.2em;
+    margin-left: 0.2em;
+  }
   .rightNav {
     display: block;
     text-align: center;
   }
   #signIn {
     border: 0;
-    margin: 0;
-    padding: 0;
   }
   #saveCanvas {
     margin: 0;
