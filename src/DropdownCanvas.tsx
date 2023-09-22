@@ -28,7 +28,7 @@ export function DropdownCanvas() {
       </Dropdown.Toggle>
 
       <Dropdown.Menu
-        className="scrollable-menu"
+        className="scrollable-menu dropdownBackground"
         aria-labelledby="dropdownMenuButton"
       >
         <Dropdown.Item

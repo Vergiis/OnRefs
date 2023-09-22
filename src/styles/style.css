@@ -46,8 +46,12 @@ body {
 }
 .dropdown-item:focus,
 .dropdown-item:hover {
-  background-color: #8fc2c2;
+  background-color: #00a4a4;
   color: white;
+}
+.dropdownBackground {
+  background-color: #008686;
+  border: 0;
 }
 .brand {
   margin-left: 0.5em;
