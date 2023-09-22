@@ -409,6 +409,8 @@ const Canvas = (props: any) => {
       className="mainCanvas"
       itemID="mainCanvas"
       ref={canvasRef}
+      width={window.innerWidth}
+      height={window.innerHeight}
       {...props}
     />
   );
