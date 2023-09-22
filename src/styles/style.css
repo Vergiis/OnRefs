@@ -44,3 +44,24 @@ body {
   background-color: #8f8f8f;
   color: white;
 }
+.brand {
+  margin-left: 0.5em;
+}
+
+@media (max-width: 990px) {
+  .rightNav {
+    display: block;
+    text-align: center;
+  }
+  #signIn {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  #saveCanvas {
+    margin: 0;
+  }
+  .mobileButton {
+    margin: 1em;
+  }
+}

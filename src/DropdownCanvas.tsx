@@ -1,8 +1,22 @@
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useState } from 'react';
 
 export function DropdownCanvas() {
+  const [show, setShow] = useState(false);
+  const showDropdown = () => {
+    setShow(!show);
+  };
+  const hideDropdown = () => {
+    setShow(false);
+  };
+
   return (
-    <Dropdown className="list-inline-item">
+    <Dropdown
+      className="list-inline-item"
+      show={show}
+      onMouseEnter={showDropdown}
+      onMouseLeave={hideDropdown}
+    >
       <Dropdown.Toggle
         variant="info"
         id="canvasDropdownBtn"
