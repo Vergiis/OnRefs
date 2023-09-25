@@ -59,7 +59,7 @@ export function TermsOfService() {
         prior notice. By using this Website, you are agreeing to be bound by the
         current version of these Terms and Conditions of Use.
         <h2>8. Your Privacy</h2>
-        Please read our Privacy Policy.
+        Please read our <a href="/privacy-policy">Privacy Policy</a>.
         <h2>9. Governing Law</h2>
         Any claim related to OnRefs's Website shall be governed by the laws of
         pl without regards to its conflict of law provisions.

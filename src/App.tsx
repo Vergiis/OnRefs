@@ -8,12 +8,14 @@ import './styles/style.css';
 import './styles/canvasStyle.css';
 import './styles/modals.css';
 import './styles/textSite.css';
+import { PrivacyPolicy } from './PrivacyPolicy';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/terms-of-service" element={<TermsOfService />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

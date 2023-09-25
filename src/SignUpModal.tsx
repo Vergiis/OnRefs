@@ -44,8 +44,8 @@ export function SignUpModal({ show, handleClose }: any) {
         <Form.Text id="signUpAgreeText">
           * By creating a OnRefs account, you agree to our{' '}
           <a href="/terms-of-service">Terms of Service</a> and{' '}
-          <a href="/">Privacy Policy</a>. We'll occasionally send you account
-          related emails.
+          <a href="/privacy-policy">Privacy Policy</a>. We'll occasionally send
+          you account related emails.
         </Form.Text>
       </Modal.Body>
       <Modal.Footer className="modalCore">
