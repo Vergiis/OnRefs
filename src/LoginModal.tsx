@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { BsGoogle } from 'react-icons/bs';
 
-export function LoginModal({ show, handleClose }: any) {
+export function LoginModal({ show, handleClose, showSignUp }: any) {
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header className="modalHeader" closeButton>
@@ -50,7 +50,10 @@ export function LoginModal({ show, handleClose }: any) {
           className="modalButtons"
           id="signUpButton"
           variant="secondary"
-          onClick={handleClose}
+          onClick={() => {
+            handleClose();
+            showSignUp();
+          }}
         >
           Sign Up
         </Button>

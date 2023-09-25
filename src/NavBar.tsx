@@ -4,13 +4,19 @@ import Navbar from 'react-bootstrap/Navbar';
 import { RiDeleteBin7Fill, RiEdit2Fill } from 'react-icons/ri';
 import { TbReload } from 'react-icons/tb';
 import { LoginModal } from './LoginModal';
+import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
 
 export function NavBar() {
   const [signInShow, setSignInShow] = useState(false);
 
-  const handleSignInShowClose = () => setSignInShow(false);
-  const handleSignInShowShow = () => setSignInShow(true);
+  const handleSignInClose = () => setSignInShow(false);
+  const handleSignInShow = () => setSignInShow(true);
+
+  const [signUpShow, setSignUpShow] = useState(false);
+
+  const handleSignUpClose = () => setSignUpShow(false);
+  const handleSignUpShow = () => setSignUpShow(true);
 
   return (
     <Navbar
@@ -52,14 +58,20 @@ export function NavBar() {
           <Nav.Link
             className="mobileButton"
             id="signIn"
-            onClick={handleSignInShowShow}
+            onClick={handleSignInShow}
           >
             Sign In
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
 
-      <LoginModal show={signInShow} handleClose={handleSignInShowClose} />
+      <LoginModal
+        show={signInShow}
+        handleClose={handleSignInClose}
+        showSignUp={handleSignUpShow}
+      />
+
+      <SignUpModal show={signUpShow} handleClose={handleSignUpClose} />
     </Navbar>
   );
 }
