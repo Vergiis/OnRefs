@@ -65,6 +65,9 @@ body {
 .brand {
   margin-left: 0.5em;
 }
+.brand img {
+  height: 5.5vh;
+}
 .canvasOptionsButtons {
   background-color: #00a4a4;
   color: #212529;

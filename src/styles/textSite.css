@@ -1,0 +1,13 @@
+.emptyBackground {
+  display: block;
+}
+.textBox {
+  background-color: #212529;
+  margin-top: 12vh;
+  color: #f1f1f2;
+  padding: 1em;
+  padding-bottom: 2em;
+}
+.textBox h2 {
+  padding-top: 1em;
+}
