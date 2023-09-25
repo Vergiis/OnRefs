@@ -47,3 +47,6 @@
 #canvasAddButton:hover {
   color: #00a4a4;
 }
+#canvasAddInput {
+  display: none;
+}
