@@ -280,6 +280,8 @@ const Canvas = (props: any) => {
 
     loadCanvas();
 
+    console.log('test');
+
     //Move
     //####################################################################
     canvas.addEventListener(

@@ -1,0 +1,56 @@
+#rememberLoginCheckbox {
+  float: right;
+}
+#signGoogleButton {
+  float: left;
+  left: 0;
+  position: absolute;
+  margin-left: 1em;
+}
+.modalCore {
+  background-color: #212529;
+  color: #f1f1f2;
+  border-color: #3e444b;
+}
+.modalHeader {
+  background-color: #3e444b;
+  color: #f1f1f2;
+  border: 0;
+}
+.modalButtons {
+  background-color: #212529;
+  border: 0.1em solid #00a4a4;
+}
+.modalError {
+  color: #fc4242;
+  font-size: 0.8em;
+}
+.modalInput {
+  margin-bottom: 0.7em;
+}
+.modalButtons:hover {
+  background-color: #00a4a4;
+}
+.modalCheckbox input:checked {
+  background-color: #00a4a4;
+}
+#signGoogleButton:active,
+#signInButton:active {
+  background-color: #212529;
+  border: 0.1em solid #00a4a4;
+}
+#signUpButton {
+  border: 0.1em solid #5d656e;
+}
+#signUpButton:hover {
+  background-color: #5d656e;
+}
+#signUpButton:active {
+  background-color: #212529;
+  border: 0.1em solid #5d656e;
+}
+#googleIcon {
+  font-size: 1.1em;
+  margin-right: 0.4em;
+  padding-bottom: 0.2em;
+}
