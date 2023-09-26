@@ -7,7 +7,6 @@ let shapes: any[] = [];
 let canvasID: number = -1;
 
 let delta = 0;
-let zoomFull = 0;
 let dragStart: any;
 let dragged: any;
 
@@ -110,7 +109,7 @@ function redraw() {
   //Clear canvas
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   ctx.restore();
 
   //Draw images
@@ -146,57 +145,34 @@ function isMouseInShape(mx: number, my: number, shape: any) {
 
 //Save To LocalStorage
 function SaveToLocal() {
-  if (canvasID < 0) {
-    localStorage.setItem(
-      'cav' + String(canvasID),
-      JSON.stringify({
-        canvasData: shapes,
-        canvasPositionData: [
-          {
-            xPosition: ctx.getTransform().e,
-            yPosition: ctx.getTransform().f,
-            zoom: zoomFull,
-          },
-        ],
-      })
-    );
-  } else if (canvasID > 0) {
-    localStorage.setItem(
-      'cav' + String(canvasID),
-      JSON.stringify({
-        canvasData: shapes,
-        canvasPositionData: [
-          {
-            xPosition: ctx.getTransform().e,
-            yPosition: ctx.getTransform().f,
-            zoom: zoomFull,
-          },
-        ],
-      })
-    );
+  localStorage.setItem(
+    'cav' + String(canvasID),
+    JSON.stringify({
+      canvasData: shapes,
+      canvasPositionData: [
+        {
+          d: ctx.getTransform().d,
+          e: ctx.getTransform().e,
+          f: ctx.getTransform().f,
+        },
+      ],
+    })
+  );
 
-    /*let str = $('#canvasItem'+String(canvasID)).text();
+  /*let str = $('#canvasItem'+String(canvasID)).text();
 		if(str.substr(0,1)!="*")
 			$('#canvasItem'+String(canvasID)).text("*"+str);
 
 		str=$('#canvasDropdownBtn').text();
 		if(str.substr(str.length-1,1)!="*")
 			$('#canvasDropdownBtn').text(str+"*");*/
-  }
 }
 
 //Load From LocalStorage
 function LoadFromLocal(content: any) {
-  shapes = [];
   if (content != null) {
-    let position = content.canvasPositionData[0];
-
-    ctx.translate(position.xPosition, position.yPosition);
-    let factor = Math.pow(scaleFactor, position.zoom);
-    ctx.scale(factor, factor);
-    redraw();
-
-    zoomFull = position.zoom;
+    let tmp = content.canvasPositionData[0];
+    ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
 
     content.canvasData.forEach((el) => {
       var img = new Image();
@@ -206,16 +182,6 @@ function LoadFromLocal(content: any) {
       };
     });
   } else {
-    if (canvasID < 0) {
-      let found = false;
-      for (let key in localStorage.key) {
-        if (key == 'cav' + canvasID) {
-          found = true;
-          break;
-        }
-      }
-      if (!found) LoadDrop('http://localhost:8080/img/manual.jpg', 0, 0);
-    }
     localStorage.setItem(
       'cav' + String(canvasID),
       JSON.stringify({
@@ -224,7 +190,6 @@ function LoadFromLocal(content: any) {
       })
     );
   }
-  redraw();
   //CanvasesDropdown();
 }
 
@@ -236,7 +201,6 @@ function zoom(clicks: number) {
   let factor = Math.pow(scaleFactor, clicks);
   ctx.scale(factor, factor);
   ctx.translate(-pt.x, -pt.y);
-  zoomFull += clicks;
   redraw();
   SaveToLocal();
 }
@@ -277,6 +241,101 @@ function LoadDrop(url: string, x: number, y: number) {
   };
 }
 
+function handleDrop(evt: any) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  var imageUrl = evt.dataTransfer.getData('text/html');
+
+  var rex = /src="?([^"\s]+)"?\s*/;
+  var url: any = rex.exec(imageUrl);
+  if (url[1] != null) {
+    lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
+    lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
+    var pt = ctx.transformedPoint(lastX, lastY);
+    LoadDrop(url[1], pt.x, pt.y);
+  }
+}
+
+function handleMouseDown(evt: any) {
+  if (evt.button == 1) {
+    document.body.style.userSelect =
+      document.body.style.webkitUserSelect =
+      document.body.style.userSelect =
+        'none';
+    lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
+    lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
+    dragStart = ctx.transformedPoint(lastX, lastY);
+    dragged = false;
+  } else if (evt.button == 0) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+    imgStartX = pt.x;
+    imgStartY = pt.y;
+    for (let i = shapes.length - 1; i >= 0; i--) {
+      if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+        let tmp = shapes[i];
+        shapes.splice(i, 1);
+        shapes.push(tmp);
+        selectedShapeIndex = shapes.length - 1;
+        ctx.strokeStyle = '#f00';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(
+          shapes[selectedShapeIndex].x,
+          shapes[selectedShapeIndex].y,
+          shapes[selectedShapeIndex].width,
+          shapes[selectedShapeIndex].height
+        );
+        isDraggingImg = true;
+        break;
+      }
+    }
+  }
+}
+
+function handleMouseMove(evt: any) {
+  lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
+  lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
+  dragged = true;
+  if (dragStart) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+    ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
+    redraw();
+    SaveToLocal();
+  }
+  if (isDraggingImg) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+
+    let dx = pt.x - imgStartX;
+    let dy = pt.y - imgStartY;
+    let selectedShape = shapes[selectedShapeIndex];
+    selectedShape.x += dx;
+    selectedShape.y += dy;
+    redraw();
+    ctx.strokeStyle = '#f00';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(
+      shapes[selectedShapeIndex].x,
+      shapes[selectedShapeIndex].y,
+      shapes[selectedShapeIndex].width,
+      shapes[selectedShapeIndex].height
+    );
+    imgStartX = pt.x;
+    imgStartY = pt.y;
+    SaveToLocal();
+  }
+}
+
+function handleMouseUp(evt: any) {
+  dragStart = null;
+  if (!dragged) zoom(evt.shiftKey ? -1 : 1);
+  if (isDraggingImg) isDraggingImg = false;
+}
+
+function handleScroll(evt: any) {
+  delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
+  console.log(delta);
+  if (delta) zoom(delta);
+}
+
 const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
 
@@ -286,6 +345,9 @@ const Canvas = (props: any) => {
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
+
+    let tmp = ctx.getTransform();
+    ctx.setTransform(tmp.a, tmp.b, tmp.c, tmp.d, tmp.e, tmp.f);
 
     redraw();
   };
@@ -305,150 +367,6 @@ const Canvas = (props: any) => {
     lastY = canvas.height / 2;
 
     loadCanvas();
-
-    //Drop Image
-    //####################################################################
-    canvas.addEventListener(
-      'drop',
-      function (evt: any) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        var imageUrl = evt.dataTransfer.getData('text/html');
-
-        var rex = /src="?([^"\s]+)"?\s*/;
-        var url: any = rex.exec(imageUrl);
-        if (url[1] != null) {
-          lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
-          lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
-          var pt = ctx.transformedPoint(lastX, lastY);
-          LoadDrop(url[1], pt.x, pt.y);
-        }
-      },
-      false
-    );
-
-    //Move
-    //####################################################################
-    canvas.addEventListener(
-      'mousedown',
-      function (evt: any) {
-        if (evt.button == 1) {
-          document.body.style.userSelect =
-            document.body.style.webkitUserSelect =
-            document.body.style.userSelect =
-              'none';
-          lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
-          lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
-          dragStart = ctx.transformedPoint(lastX, lastY);
-          dragged = false;
-        } else if (evt.button == 0) {
-          let pt = ctx.transformedPoint(lastX, lastY);
-          imgStartX = pt.x;
-          imgStartY = pt.y;
-          for (let i = shapes.length - 1; i >= 0; i--) {
-            if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-              let tmp = shapes[i];
-              shapes.splice(i, 1);
-              shapes.push(tmp);
-              selectedShapeIndex = shapes.length - 1;
-              redraw();
-              ctx.strokeStyle = '#f00';
-              ctx.lineWidth = 2;
-              ctx.strokeRect(
-                shapes[selectedShapeIndex].x,
-                shapes[selectedShapeIndex].y,
-                shapes[selectedShapeIndex].width,
-                shapes[selectedShapeIndex].height
-              );
-              isDraggingImg = true;
-              break;
-            }
-          }
-        }
-      },
-      false
-    );
-    canvas.addEventListener(
-      'mousemove',
-      function (evt: any) {
-        lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
-        lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
-        dragged = true;
-        if (dragStart) {
-          let pt = ctx.transformedPoint(lastX, lastY);
-          ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
-          redraw();
-          SaveToLocal();
-        }
-        if (isDraggingImg) {
-          let pt = ctx.transformedPoint(lastX, lastY);
-
-          let dx = pt.x - imgStartX;
-          let dy = pt.y - imgStartY;
-          let selectedShape = shapes[selectedShapeIndex];
-          selectedShape.x += dx;
-          selectedShape.y += dy;
-          redraw();
-          ctx.strokeStyle = '#f00';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(
-            shapes[selectedShapeIndex].x,
-            shapes[selectedShapeIndex].y,
-            shapes[selectedShapeIndex].width,
-            shapes[selectedShapeIndex].height
-          );
-          imgStartX = pt.x;
-          imgStartY = pt.y;
-          SaveToLocal();
-        }
-      },
-      false
-    );
-    canvas.addEventListener(
-      'mouseup',
-      function (evt: any) {
-        dragStart = null;
-        if (!dragged) zoom(evt.shiftKey ? -1 : 1);
-        if (isDraggingImg) isDraggingImg = false;
-        redraw();
-      },
-      false
-    );
-
-    //Zoom
-    //###################################################
-    let handleScroll = function (evt: any) {
-      delta = evt.wheelDelta
-        ? evt.wheelDelta / 40
-        : evt.detail
-        ? -evt.detail
-        : 0;
-      if (delta) zoom(delta);
-      return evt.preventDefault() && false;
-    };
-    canvas.addEventListener('DOMMouseScroll', handleScroll, false);
-    canvas.addEventListener('wheel', handleScroll, false);
-
-    //Drop Image
-    //####################################################
-    canvas.addEventListener(
-      'drop',
-      function (evt: any) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        let imageUrl = evt.dataTransfer.getData('text/html');
-
-        let rex = /src="?([^"\s]+)"?\s*/;
-        let url: any = rex.exec(imageUrl);
-        if (url[1] != null) {
-          lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
-          lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
-          let pt = ctx.transformedPoint(lastX, lastY);
-          LoadDrop(url[1], pt.x, pt.y);
-        }
-      },
-      false
-    );
   }, []);
 
   return (
@@ -459,6 +377,11 @@ const Canvas = (props: any) => {
         e.preventDefault();
         e.stopPropagation();
       }}
+      onDrop={handleDrop}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onScroll={handleScroll}
       ref={canvasRef}
       width={window.innerWidth}
       height={window.innerHeight}
