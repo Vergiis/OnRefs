@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 let canvas: any;
 let ctx: any;
 
 let shapes: any[] = [];
-let canvasID: number = 0;
+let canvasID: number = -1;
 
 let delta = 0;
 let zoomFull = 0;
@@ -185,6 +185,49 @@ function SaveToLocal() {
   }
 }
 
+//Load From LocalStorage
+function LoadFromLocal(content: any) {
+  shapes = [];
+  if (content != null) {
+    let position = content.canvasPositionData[0];
+
+    ctx.translate(position.xPosition, position.yPosition);
+    let factor = Math.pow(scaleFactor, position.zoom);
+    ctx.scale(factor, factor);
+    redraw();
+
+    zoomFull = position.zoom;
+
+    content.canvasData.forEach((el) => {
+      var img = new Image();
+      img.src = el.url;
+      img.onload = function () {
+        AddImage(el.x, el.y, el.width, el.height, img, el.url);
+      };
+    });
+  } else {
+    if (canvasID < 0) {
+      let found = false;
+      for (let key in localStorage.key) {
+        if (key == 'cav' + canvasID) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) LoadDrop('http://localhost:8080/img/manual.jpg', 0, 0);
+    }
+    localStorage.setItem(
+      'cav' + String(canvasID),
+      JSON.stringify({
+        canvasData: shapes,
+        canvasPositionData: [{ xPosition: 0, yPosition: 0, zoom: 0 }],
+      })
+    );
+  }
+  redraw();
+  //CanvasesDropdown();
+}
+
 //Zoom
 let scaleFactor = 1.1;
 function zoom(clicks: number) {
@@ -219,19 +262,9 @@ function AddImage(
 }
 
 function loadCanvas() {
-  let img = new Image();
-  img.src =
-    'https://www.pracowityogrodnik.pl/wp-content/uploads/2015/04/frezowanie-pni.jpg';
-  img.onload = function () {
-    AddImage(
-      0,
-      0,
-      200,
-      200,
-      img,
-      'https://www.pracowityogrodnik.pl/wp-content/uploads/2015/04/frezowanie-pni.jpg'
-    );
-  };
+  let data: any = localStorage.getItem('cav' + String(canvasID));
+  let content = JSON.parse(data);
+  LoadFromLocal(content);
 }
 
 //Drop images
@@ -247,11 +280,6 @@ function LoadDrop(url: string, x: number, y: number) {
 const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
 
-  window.onloadstart = () => {
-    canvas = canvasRef.current;
-    ctx = canvas.getContext('2d');
-  };
-
   window.onresize = () => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
@@ -259,12 +287,10 @@ const Canvas = (props: any) => {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
-    trackTransforms();
-
     redraw();
   };
 
-  window.onload = () => {
+  useEffect(() => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
 
@@ -280,7 +306,26 @@ const Canvas = (props: any) => {
 
     loadCanvas();
 
-    console.log('test');
+    //Drop Image
+    //####################################################################
+    canvas.addEventListener(
+      'drop',
+      function (evt: any) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        var imageUrl = evt.dataTransfer.getData('text/html');
+
+        var rex = /src="?([^"\s]+)"?\s*/;
+        var url: any = rex.exec(imageUrl);
+        if (url[1] != null) {
+          lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
+          lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
+          var pt = ctx.transformedPoint(lastX, lastY);
+          LoadDrop(url[1], pt.x, pt.y);
+        }
+      },
+      false
+    );
 
     //Move
     //####################################################################
@@ -404,12 +449,16 @@ const Canvas = (props: any) => {
       },
       false
     );
-  };
+  }, []);
 
   return (
     <canvas
       className="mainCanvas"
       itemID="mainCanvas"
+      onDragOver={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       ref={canvasRef}
       width={window.innerWidth}
       height={window.innerHeight}
