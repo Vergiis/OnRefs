@@ -5,6 +5,7 @@ let ctx: any;
 
 let shapes: any[] = [];
 let canvasID: number = -1;
+let canvasName: string = 'Unnamed';
 
 let delta = 0;
 let dragStart: any;
@@ -148,6 +149,7 @@ function SaveToLocal() {
   localStorage.setItem(
     'cav' + String(canvasID),
     JSON.stringify({
+      canvasName: canvasName,
       canvasData: shapes,
       canvasPositionData: [
         {
@@ -241,6 +243,14 @@ function LoadDrop(url: string, x: number, y: number) {
   };
 }
 
+function LoadCanvasDropdown() {
+  for (let key in localStorage) {
+    if (key.substring(0, 3) == 'cav') {
+      let id = key.substring(3, key.length);
+    }
+  }
+}
+
 function handleDrop(evt: any) {
   evt.stopPropagation();
   evt.preventDefault();
@@ -331,8 +341,7 @@ function handleMouseUp(evt: any) {
 }
 
 function handleScroll(evt: any) {
-  delta = evt.wheelDelta ? evt.wheelDelta / 40 : evt.detail ? -evt.detail : 0;
-  console.log(delta);
+  delta = -evt.deltaY ? -evt.deltaY / 40 : evt.detail ? -evt.detail : 0;
   if (delta) zoom(delta);
 }
 
@@ -367,6 +376,7 @@ const Canvas = (props: any) => {
     lastY = canvas.height / 2;
 
     loadCanvas();
+    LoadCanvasDropdown();
   }, []);
 
   return (
@@ -381,7 +391,7 @@ const Canvas = (props: any) => {
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onScroll={handleScroll}
+      onWheel={handleScroll}
       ref={canvasRef}
       width={window.innerWidth}
       height={window.innerHeight}

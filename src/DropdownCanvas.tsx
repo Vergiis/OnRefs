@@ -38,13 +38,6 @@ export function DropdownCanvas() {
         >
           Action
         </Dropdown.Item>
-        <Dropdown.Item
-          href="/load?canvas="
-          id="canvasItem"
-          className="dropdown-item"
-        >
-          Action 2
-        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
