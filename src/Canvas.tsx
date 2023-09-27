@@ -6,6 +6,7 @@ let ctx: any;
 let shapes: any[] = [];
 let canvasID: number = -1;
 let canvasName: string = 'Unnamed';
+let canvasChangeFlag: boolean = false;
 
 let delta = 0;
 let dragStart: any;
@@ -149,6 +150,8 @@ function SaveToLocal() {
   localStorage.setItem(
     'cav' + String(canvasID),
     JSON.stringify({
+      canvasID: canvasID,
+      canvasChangeFlag: canvasChangeFlag,
       canvasName: canvasName,
       canvasData: shapes,
       canvasPositionData: [
@@ -160,14 +163,6 @@ function SaveToLocal() {
       ],
     })
   );
-
-  /*let str = $('#canvasItem'+String(canvasID)).text();
-		if(str.substr(0,1)!="*")
-			$('#canvasItem'+String(canvasID)).text("*"+str);
-
-		str=$('#canvasDropdownBtn').text();
-		if(str.substr(str.length-1,1)!="*")
-			$('#canvasDropdownBtn').text(str+"*");*/
 }
 
 //Load From LocalStorage
@@ -187,6 +182,9 @@ function LoadFromLocal(content: any) {
     localStorage.setItem(
       'cav' + String(canvasID),
       JSON.stringify({
+        canvasChangeFlag: canvasChangeFlag,
+        canvasName: canvasName,
+        canvasID: canvasID,
         canvasData: shapes,
         canvasPositionData: [{ xPosition: 0, yPosition: 0, zoom: 0 }],
       })
@@ -338,6 +336,7 @@ function handleMouseUp(evt: any) {
   dragStart = null;
   if (!dragged) zoom(evt.shiftKey ? -1 : 1);
   if (isDraggingImg) isDraggingImg = false;
+  redraw();
 }
 
 function handleScroll(evt: any) {
