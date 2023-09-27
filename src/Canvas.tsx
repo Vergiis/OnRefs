@@ -146,51 +146,23 @@ function isMouseInShape(mx: number, my: number, shape: any) {
 }
 
 //Save To LocalStorage
-function SaveToLocal() {
+function SaveToLocal(firstUse = false) {
   localStorage.setItem(
     'cav' + String(canvasID),
     JSON.stringify({
       canvasID: canvasID,
       canvasChangeFlag: canvasChangeFlag,
-      canvasName: canvasName,
+      canvasName: canvasName + ' (local)',
       canvasData: shapes,
       canvasPositionData: [
         {
-          d: ctx.getTransform().d,
-          e: ctx.getTransform().e,
-          f: ctx.getTransform().f,
+          d: firstUse ? 1 : ctx.getTransform().d,
+          e: firstUse ? 0 : ctx.getTransform().e,
+          f: firstUse ? 0 : ctx.getTransform().f,
         },
       ],
     })
   );
-}
-
-//Load From LocalStorage
-function LoadFromLocal(content: any) {
-  if (content != null) {
-    let tmp = content.canvasPositionData[0];
-    ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
-
-    content.canvasData.forEach((el) => {
-      var img = new Image();
-      img.src = el.url;
-      img.onload = function () {
-        AddImage(el.x, el.y, el.width, el.height, img, el.url);
-      };
-    });
-  } else {
-    localStorage.setItem(
-      'cav' + String(canvasID),
-      JSON.stringify({
-        canvasChangeFlag: canvasChangeFlag,
-        canvasName: canvasName,
-        canvasID: canvasID,
-        canvasData: shapes,
-        canvasPositionData: [{ xPosition: 0, yPosition: 0, zoom: 0 }],
-      })
-    );
-  }
-  //CanvasesDropdown();
 }
 
 //Zoom
@@ -201,6 +173,7 @@ function zoom(clicks: number) {
   let factor = Math.pow(scaleFactor, clicks);
   ctx.scale(factor, factor);
   ctx.translate(-pt.x, -pt.y);
+
   redraw();
   SaveToLocal();
 }
@@ -228,7 +201,26 @@ function AddImage(
 function loadCanvas() {
   let data: any = localStorage.getItem('cav' + String(canvasID));
   let content = JSON.parse(data);
-  LoadFromLocal(content);
+
+  if (content != null) {
+    content.canvasData.forEach((el) => {
+      var img = new Image();
+      img.src = el.url;
+      img.onload = function () {
+        AddImage(el.x, el.y, el.width, el.height, img, el.url);
+      };
+    });
+    return content.canvasPositionData[0];
+  } else {
+    SaveToLocal(true);
+    return [
+      {
+        d: 1,
+        e: 0,
+        f: 0,
+      },
+    ][0];
+  }
 }
 
 //Drop images
@@ -239,14 +231,6 @@ function LoadDrop(url: string, x: number, y: number) {
     AddImage(x, y, img.width, img.height, img, url);
     SaveToLocal();
   };
-}
-
-function LoadCanvasDropdown() {
-  for (let key in localStorage) {
-    if (key.substring(0, 3) == 'cav') {
-      let id = key.substring(3, key.length);
-    }
-  }
 }
 
 function handleDrop(evt: any) {
@@ -347,15 +331,14 @@ function handleScroll(evt: any) {
 const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
 
+  let lastPosition = loadCanvas();
+
   window.onresize = () => {
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-
-    let tmp = ctx.getTransform();
-    ctx.setTransform(tmp.a, tmp.b, tmp.c, tmp.d, tmp.e, tmp.f);
 
     redraw();
   };
@@ -374,8 +357,14 @@ const Canvas = (props: any) => {
     lastX = canvas.width / 2;
     lastY = canvas.height / 2;
 
-    loadCanvas();
-    LoadCanvasDropdown();
+    ctx.setTransform(
+      lastPosition.d,
+      0,
+      0,
+      lastPosition.d,
+      lastPosition.e,
+      lastPosition.f
+    );
   }, []);
 
   return (
