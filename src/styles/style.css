@@ -16,25 +16,26 @@ body {
   cursor: pointer;
   color: #f1f1f2;
   font-weight: bold;
-
   padding-left: 2em;
   padding-right: 2em;
   border-left: solid 2px #f2f2f2;
 }
 #signIn:hover {
-  color: #c1c1c1;
+  color: #00a4a4;
 }
 
 #saveCanvas {
-  color: #212529;
-  background-color: #f2f2f2;
+  color: #f1f1f2;
   font-weight: bold;
   margin-right: 2em;
   margin-left: 2em;
-  width: 6em;
+}
+#saveCanvas svg {
+  margin-bottom: 0.2em;
+  margin-right: 0.2em;
 }
 #saveCanvas:hover {
-  background-color: #d4d4d4;
+  color: #00a4a4;
 }
 #canvasDropdownBtn {
   background-color: #00a4a4;
@@ -75,9 +76,7 @@ body {
 #canvasDeleteButton:hover,
 #canvasDeleteButton:active,
 #canvasEditButton:hover,
-#canvasEditButton:active,
-#canvasReloadButton:hover,
-#canvasReloadButton:active {
+#canvasEditButton:active {
   background-color: #008686;
   color: #212529;
 }

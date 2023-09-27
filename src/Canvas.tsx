@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 let canvas: any;
 let ctx: any;
 
 let shapes: any[] = [];
-let canvasID: number = -1;
+let canvasID: string = '-1';
 let canvasName: string = 'Unnamed';
 let canvasChangeFlag: boolean = false;
 
@@ -147,12 +148,13 @@ function isMouseInShape(mx: number, my: number, shape: any) {
 
 //Save To LocalStorage
 function SaveToLocal(firstUse = false) {
+  if (firstUse) canvasID = uuidv4();
   localStorage.setItem(
     'cav' + String(canvasID),
     JSON.stringify({
       canvasID: canvasID,
       canvasChangeFlag: canvasChangeFlag,
-      canvasName: canvasName + ' (local)',
+      canvasName: canvasName,
       canvasData: shapes,
       canvasPositionData: [
         {
@@ -199,8 +201,14 @@ function AddImage(
 }
 
 function loadCanvas() {
-  let data: any = localStorage.getItem('cav' + String(canvasID));
-  let content = JSON.parse(data);
+  let content = null;
+  for (let key in localStorage) {
+    if (key.substring(0, 3)) {
+      let data: any = localStorage.getItem(key);
+      content = JSON.parse(data);
+      break;
+    }
+  }
 
   if (content != null) {
     content.canvasData.forEach((el) => {
@@ -210,6 +218,9 @@ function loadCanvas() {
         AddImage(el.x, el.y, el.width, el.height, img, el.url);
       };
     });
+    canvasID = content.canvasID;
+    canvasName = content.canvasName;
+    canvasChangeFlag = content.canvasChangeFlag;
     return content.canvasPositionData[0];
   } else {
     SaveToLocal(true);
@@ -339,6 +350,9 @@ const Canvas = (props: any) => {
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
+
+    let tmp = ctx.getTransform();
+    ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
 
     redraw();
   };

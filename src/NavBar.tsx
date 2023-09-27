@@ -43,18 +43,17 @@ export function NavBar() {
           >
             <RiEdit2Fill />
           </Nav.Item>
-          <Nav.Item
-            className="btn btn-dark canvasOptionsButtons"
-            id="canvasReloadButton"
-          >
-            <TbReload />
-          </Nav.Item>
           <div className="mobileButton">
             <DropdownCanvas />
           </div>
-          <Nav.Item className="btn btn-light mobileButton" id="saveCanvas">
-            Save
-          </Nav.Item>
+          <Nav.Link
+            className="mobileButton"
+            id="saveCanvas"
+            onClick={handleSignInShow}
+          >
+            <TbReload />
+            Saved Locally
+          </Nav.Link>
           <Nav.Link
             className="mobileButton"
             id="signIn"
