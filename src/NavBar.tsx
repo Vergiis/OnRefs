@@ -7,6 +7,7 @@ import { BiSolidAddToQueue } from 'react-icons/bi';
 import { LoginModal } from './LoginModal';
 import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
+import { AddCanvasModal } from './AddCanvasModal';
 
 export function NavBar() {
   const [signInShow, setSignInShow] = useState(false);
@@ -18,6 +19,11 @@ export function NavBar() {
 
   const handleSignUpClose = () => setSignUpShow(false);
   const handleSignUpShow = () => setSignUpShow(true);
+
+  const [addCanvasShow, setAddCanvasShow] = useState(false);
+
+  const handleAddCanvasClose = () => setAddCanvasShow(false);
+  const handleAddCanvasShow = () => setAddCanvasShow(true);
 
   return (
     <Navbar
@@ -47,6 +53,7 @@ export function NavBar() {
           <Nav.Item
             className="btn btn-dark canvasOptionsButtons"
             id="canvasPlusButton"
+            onClick={handleAddCanvasShow}
           >
             <BiSolidAddToQueue />
           </Nav.Item>
@@ -78,6 +85,8 @@ export function NavBar() {
       />
 
       <SignUpModal show={signUpShow} handleClose={handleSignUpClose} />
+
+      <AddCanvasModal show={addCanvasShow} handleClose={handleAddCanvasClose} />
     </Navbar>
   );
 }

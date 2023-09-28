@@ -57,3 +57,31 @@
 #signUpAgreeText {
   color: #f1f1f2;
 }
+
+#canvasNewButton {
+  padding: 0;
+  font-size: 2.5em;
+  display: flex;
+  color: #f2f2f2;
+  cursor: pointer;
+  margin-left: 0.1em;
+}
+#canvasNewButton:hover {
+  color: #00a4a4;
+}
+#canvasNew {
+  background-color: #212529;
+  position: absolute;
+  margin-top: 11em;
+  margin-left: 5em;
+}
+.canvasNew {
+  display: flex;
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-top: 0.5em;
+}
+#canvasNewInput {
+  width: 9em;
+  height: 2.5em;
+}
