@@ -2,6 +2,7 @@ import { NavBar } from './NavBar';
 import { CanvasAdd } from './CanvasAdd';
 import { Container } from 'react-bootstrap';
 import Canvas from './Canvas';
+import { CookiesProvider } from 'react-cookie';
 
 export function Home() {
   return (
@@ -10,7 +11,9 @@ export function Home() {
         <NavBar />
         <CanvasAdd />
       </Container>
-      <Canvas />
+      <CookiesProvider>
+        <Canvas />
+      </CookiesProvider>
     </>
   );
 }

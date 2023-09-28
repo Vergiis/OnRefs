@@ -76,7 +76,9 @@ body {
 #canvasDeleteButton:hover,
 #canvasDeleteButton:active,
 #canvasEditButton:hover,
-#canvasEditButton:active {
+#canvasEditButton:active,
+#canvasPlusButton:hover,
+#canvasPlusButton:active {
   background-color: #008686;
   color: #212529;
 }

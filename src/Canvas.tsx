@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useCookies } from 'react-cookie';
 
 let canvas: any;
 let ctx: any;
@@ -148,7 +149,6 @@ function isMouseInShape(mx: number, my: number, shape: any) {
 
 //Save To LocalStorage
 function SaveToLocal(firstUse = false) {
-  if (firstUse) canvasID = uuidv4();
   localStorage.setItem(
     'cav' + String(canvasID),
     JSON.stringify({
@@ -201,13 +201,21 @@ function AddImage(
 }
 
 function loadCanvas() {
+  const [cookies, setCookie] = useCookies(['canvasID']);
+
   let content = null;
+
   for (let key in localStorage) {
     if (key.substring(0, 3)) {
       let data: any = localStorage.getItem(key);
       content = JSON.parse(data);
       break;
     }
+  }
+
+  if (cookies.canvasID) {
+    let data: any = localStorage.getItem('cav' + cookies.canvasID);
+    if (data != null) content = JSON.parse(data);
   }
 
   if (content != null) {
@@ -218,11 +226,15 @@ function loadCanvas() {
         AddImage(el.x, el.y, el.width, el.height, img, el.url);
       };
     });
+    console.log(content.canvasID);
+    setCookie('canvasID', content.canvasID);
     canvasID = content.canvasID;
     canvasName = content.canvasName;
     canvasChangeFlag = content.canvasChangeFlag;
     return content.canvasPositionData[0];
   } else {
+    canvasID = uuidv4();
+    setCookie('canvasID', canvasID);
     SaveToLocal(true);
     return [
       {

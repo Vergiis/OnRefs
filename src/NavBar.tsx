@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { RiDeleteBin7Fill, RiEdit2Fill } from 'react-icons/ri';
 import { TbReload } from 'react-icons/tb';
+import { BiSolidAddToQueue } from 'react-icons/bi';
 import { LoginModal } from './LoginModal';
 import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
@@ -42,6 +43,12 @@ export function NavBar() {
             id="canvasEditButton"
           >
             <RiEdit2Fill />
+          </Nav.Item>
+          <Nav.Item
+            className="btn btn-dark canvasOptionsButtons"
+            id="canvasPlusButton"
+          >
+            <BiSolidAddToQueue />
           </Nav.Item>
           <div className="mobileButton">
             <DropdownCanvas />
