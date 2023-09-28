@@ -8,19 +8,13 @@ import { BsTriangleFill } from 'react-icons/bs';
 export function AddCanvasModal({ show, handleClose }: any) {
   useEffect(() => {
     if (show) {
-      $('#canvasAddInput').animate(
+      $('#canvasNew').animate(
         {
-          width: 'toggle',
+          height: 'toggle',
         },
         210
       );
-    } else {
-      $('#canvasAddInput').animate(
-        {
-          width: 'toggle',
-        },
-        210
-      );
+      handleClose();
     }
   });
   return (

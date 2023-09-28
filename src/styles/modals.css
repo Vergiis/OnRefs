@@ -72,8 +72,11 @@
 #canvasNew {
   background-color: #212529;
   position: absolute;
-  margin-top: 11em;
-  margin-left: 5em;
+  margin-top: 7em;
+  margin-right: 30em;
+  float: right;
+  right: 0;
+  border-radius: 5px;
 }
 .canvasNew {
   display: flex;
@@ -88,5 +91,5 @@
 #canvasNewClose {
   font-size: 1em;
   margin-top: 0.6em;
-  margin-left: 0.5em;
+  margin-left: 1em;
 }
