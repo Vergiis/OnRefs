@@ -1,5 +1,6 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export function DropdownCanvas() {
   const [dropdownList, setDropdownList] = useState<any[]>([]);
@@ -30,6 +31,7 @@ export function DropdownCanvas() {
     }
   }, []);
 
+  let navigate = useNavigate();
   return (
     <Dropdown
       className="list-inline-item"
@@ -53,7 +55,9 @@ export function DropdownCanvas() {
       >
         {dropdownList.map((el) => (
           <Dropdown.Item
-            href={'/load?canvas=' + el.id}
+            onClick={() => {
+              navigate('/load?canvas=' + el.id);
+            }}
             id="canvasItem"
             className="dropdown-item"
             key={el.id}

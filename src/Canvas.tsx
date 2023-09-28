@@ -226,7 +226,6 @@ function loadCanvas() {
         AddImage(el.x, el.y, el.width, el.height, img, el.url);
       };
     });
-    console.log(content.canvasID);
     setCookie('canvasID', content.canvasID);
     canvasID = content.canvasID;
     canvasName = content.canvasName;
@@ -378,7 +377,7 @@ const Canvas = (props: any) => {
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
-    let [offsetX, offsetY] = reOffset();
+    reOffset();
 
     lastX = canvas.width / 2;
     lastY = canvas.height / 2;
