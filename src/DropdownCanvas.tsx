@@ -33,6 +33,14 @@ export function DropdownCanvas() {
   }, []);
 
   const [cookies] = useCookies(['canvasID']);
+  let buttonName = 'Unnamed';
+
+  dropdownList.map((el) => {
+    if (el.id == cookies.canvasID) {
+      buttonName = el.name;
+      return null;
+    }
+  });
 
   let navigate = useNavigate();
   return (
@@ -49,10 +57,7 @@ export function DropdownCanvas() {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        {dropdownList.map((el) => {
-          if (el.id == cookies.canvasID) return el.name;
-          return null;
-        })}
+        {buttonName}
       </Dropdown.Toggle>
 
       <Dropdown.Menu

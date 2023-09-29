@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 
-export function AddCanvasModal({ show, handleClose }: any) {
+export function AddCanvasModal({ show, handleClose, isArrowIcon }: any) {
   useEffect(() => {
     if (show) {
       $('.canvasNew').animate(
@@ -18,6 +18,7 @@ export function AddCanvasModal({ show, handleClose }: any) {
       );
       $('.canvasNew').css('display', 'flex');
       handleClose();
+      isArrowIcon = !isArrowIcon;
     }
   });
 
@@ -26,7 +27,7 @@ export function AddCanvasModal({ show, handleClose }: any) {
   const addCanvas = () => {
     let id = uuidv4();
     let name = inputRef.current.value;
-    if (name == null) name = 'Unnamed';
+    if (name == null || name.trim() == '') return;
 
     localStorage.setItem(
       'cav' + String(id),

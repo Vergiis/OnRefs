@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { RiDeleteBin7Fill, RiEdit2Fill } from 'react-icons/ri';
 import { TbReload } from 'react-icons/tb';
 import { BiSolidAddToQueue } from 'react-icons/bi';
+import { VscTriangleRight } from 'react-icons/vsc';
 import { LoginModal } from './LoginModal';
 import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
@@ -24,6 +25,8 @@ export function NavBar() {
 
   const handleAddCanvasClose = () => setAddCanvasShow(false);
   const handleAddCanvasShow = () => setAddCanvasShow(true);
+
+  let isArrowIcon = false;
 
   return (
     <Navbar
@@ -54,6 +57,7 @@ export function NavBar() {
           <AddCanvasModal
             show={addCanvasShow}
             handleClose={handleAddCanvasClose}
+            isArrowIcon={isArrowIcon}
           />
 
           <Nav.Item
@@ -61,7 +65,7 @@ export function NavBar() {
             id="canvasPlusButton"
             onClick={handleAddCanvasShow}
           >
-            <BiSolidAddToQueue />
+            {isArrowIcon ? <BiSolidAddToQueue /> : <VscTriangleRight />}
           </Nav.Item>
 
           <div className="mobileButton">
