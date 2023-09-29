@@ -7,11 +7,11 @@ import { CookiesProvider } from 'react-cookie';
 export function Home() {
   return (
     <>
-      <Container>
-        <NavBar />
-        <CanvasAdd />
-      </Container>
       <CookiesProvider>
+        <Container>
+          <NavBar />
+          <CanvasAdd />
+        </Container>
         <Canvas />
       </CookiesProvider>
     </>

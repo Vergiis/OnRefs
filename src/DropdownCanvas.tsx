@@ -1,6 +1,7 @@
 import Dropdown from 'react-bootstrap/Dropdown';
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 export function DropdownCanvas() {
   const [dropdownList, setDropdownList] = useState<any[]>([]);
@@ -31,6 +32,8 @@ export function DropdownCanvas() {
     }
   }, []);
 
+  const [cookies] = useCookies(['canvasID']);
+
   let navigate = useNavigate();
   return (
     <Dropdown
@@ -46,7 +49,10 @@ export function DropdownCanvas() {
         aria-haspopup="true"
         aria-expanded="false"
       >
-        {dropdownList.map((el) => el.name, 0)}
+        {dropdownList.map((el) => {
+          if (el.id == cookies.canvasID) return el.name;
+          return null;
+        })}
       </Dropdown.Toggle>
 
       <Dropdown.Menu

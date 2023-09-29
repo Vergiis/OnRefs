@@ -201,6 +201,8 @@ function AddImage(
 }
 
 function loadCanvas() {
+  shapes = [];
+
   const [cookies, setCookie] = useCookies(['canvasID']);
 
   let content = null;
@@ -354,6 +356,8 @@ const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
 
   let lastPosition = loadCanvas();
+
+  console.log(canvasID);
 
   window.onresize = () => {
     canvas = canvasRef.current;

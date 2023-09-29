@@ -50,6 +50,12 @@ export function NavBar() {
           >
             <RiEdit2Fill />
           </Nav.Item>
+
+          <AddCanvasModal
+            show={addCanvasShow}
+            handleClose={handleAddCanvasClose}
+          />
+
           <Nav.Item
             className="btn btn-dark canvasOptionsButtons"
             id="canvasPlusButton"
@@ -57,9 +63,11 @@ export function NavBar() {
           >
             <BiSolidAddToQueue />
           </Nav.Item>
+
           <div className="mobileButton">
             <DropdownCanvas />
           </div>
+
           <Nav.Link
             className="mobileButton"
             id="saveCanvas"
@@ -85,8 +93,6 @@ export function NavBar() {
       />
 
       <SignUpModal show={signUpShow} handleClose={handleSignUpClose} />
-
-      <AddCanvasModal show={addCanvasShow} handleClose={handleAddCanvasClose} />
     </Navbar>
   );
 }
