@@ -10,8 +10,14 @@ import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
 import { AddCanvasModal } from './AddCanvasModal';
 import { EditCanvasModal } from './EditCanvasModal';
+import { DeleteCanvasModal } from './DeleteCanvasModal';
 
 export function NavBar() {
+  const [deleteCanvasShow, setDeleteCanvasShow] = useState(false);
+
+  const handleDeleteCanvasClose = () => setDeleteCanvasShow(false);
+  const handleDeleteCanvasShow = () => setDeleteCanvasShow(true);
+
   const [signInShow, setSignInShow] = useState(false);
 
   const handleSignInClose = () => setSignInShow(false);
@@ -60,6 +66,7 @@ export function NavBar() {
           <Nav.Item
             className="btn btn-dark canvasOptionsButtons"
             id="canvasDeleteButton"
+            onClick={handleDeleteCanvasShow}
           >
             <RiDeleteBin7Fill />
           </Nav.Item>
@@ -111,6 +118,11 @@ export function NavBar() {
           </Nav.Link>
         </Nav>
       </Navbar.Collapse>
+
+      <DeleteCanvasModal
+        show={deleteCanvasShow}
+        handleClose={handleDeleteCanvasClose}
+      />
 
       <LoginModal
         show={signInShow}
