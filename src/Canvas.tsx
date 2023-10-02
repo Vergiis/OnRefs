@@ -203,8 +203,7 @@ function AddImage(
 function loadCanvas() {
   shapes = [];
 
-  const [cookies, setCookie] = useCookies(['canvasID']);
-
+  const [cookies] = useCookies(['canvasID']);
   let content = null;
 
   for (let key in localStorage) {
@@ -228,14 +227,12 @@ function loadCanvas() {
         AddImage(el.x, el.y, el.width, el.height, img, el.url);
       };
     });
-    setCookie('canvasID', content.canvasID);
     canvasID = content.canvasID;
     canvasName = content.canvasName;
     canvasChangeFlag = content.canvasChangeFlag;
     return content.canvasPositionData[0];
   } else {
     canvasID = uuidv4();
-    setCookie('canvasID', canvasID);
     SaveToLocal(true);
     return [
       {
@@ -354,10 +351,11 @@ function handleScroll(evt: any) {
 
 const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
+  const [cookies, setCookie] = useCookies(['canvasID']);
 
   let lastPosition = loadCanvas();
 
-  console.log(canvasID);
+  setCookie('canvasID', canvasID);
 
   window.onresize = () => {
     canvas = canvasRef.current;
