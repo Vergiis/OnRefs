@@ -9,6 +9,7 @@ import { LoginModal } from './LoginModal';
 import { SignUpModal } from './SignUpModal';
 import { useState } from 'react';
 import { AddCanvasModal } from './AddCanvasModal';
+import { EditCanvasModal } from './EditCanvasModal';
 
 export function NavBar() {
   const [signInShow, setSignInShow] = useState(false);
@@ -22,11 +23,26 @@ export function NavBar() {
   const handleSignUpShow = () => setSignUpShow(true);
 
   const [addCanvasShow, setAddCanvasShow] = useState(false);
+  const [isAddArrowIcon, setIsAddArrowIcon] = useState(false);
 
-  const handleAddCanvasClose = () => setAddCanvasShow(false);
-  const handleAddCanvasShow = () => setAddCanvasShow(true);
+  const handleAddCanvasClose = () => {
+    setAddCanvasShow(false);
+  };
+  const handleAddCanvasShow = () => {
+    setAddCanvasShow(true);
+    setIsAddArrowIcon(!isAddArrowIcon);
+  };
 
-  let isArrowIcon = false;
+  const [editCanvasShow, setEditCanvasShow] = useState(false);
+  const [isEditArrowIcon, setIsEditArrowIcon] = useState(false);
+
+  const handleEditCanvasClose = () => {
+    setEditCanvasShow(false);
+  };
+  const handleEditCanvasShow = () => {
+    setEditCanvasShow(true);
+    setIsEditArrowIcon(!isEditArrowIcon);
+  };
 
   return (
     <Navbar
@@ -47,17 +63,23 @@ export function NavBar() {
           >
             <RiDeleteBin7Fill />
           </Nav.Item>
+
+          <EditCanvasModal
+            show={editCanvasShow}
+            handleClose={handleEditCanvasClose}
+          />
+
           <Nav.Item
             className="btn btn-dark canvasOptionsButtons"
             id="canvasEditButton"
+            onClick={handleEditCanvasShow}
           >
-            <RiEdit2Fill />
+            {isEditArrowIcon ? <VscTriangleRight /> : <RiEdit2Fill />}
           </Nav.Item>
 
           <AddCanvasModal
             show={addCanvasShow}
             handleClose={handleAddCanvasClose}
-            isArrowIcon={isArrowIcon}
           />
 
           <Nav.Item
@@ -65,7 +87,7 @@ export function NavBar() {
             id="canvasPlusButton"
             onClick={handleAddCanvasShow}
           >
-            {isArrowIcon ? <BiSolidAddToQueue /> : <VscTriangleRight />}
+            {isAddArrowIcon ? <VscTriangleRight /> : <BiSolidAddToQueue />}
           </Nav.Item>
 
           <div className="mobileButton">

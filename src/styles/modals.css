@@ -77,16 +77,11 @@
   margin-right: 0.2em;
   width: 12em;
 }
-#canvasNewInput {
-  height: 1.5em;
-  margin-top: 0.31em;
-  margin-left: 0.4em;
-  border-radius: 0.6em;
-  background-color: #f1f1f2;
-  font-weight: bold;
-}
 @media (max-width: 990px) {
   #canvasPlusButton {
+    display: none;
+  }
+  #canvasEditButton{
     display: none;
   }
   .canvasNew {

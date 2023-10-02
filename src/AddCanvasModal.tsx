@@ -7,18 +7,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { v4 as uuidv4 } from 'uuid';
 
-export function AddCanvasModal({ show, handleClose, isArrowIcon }: any) {
+export function AddCanvasModal({ show, handleClose }: any) {
   useEffect(() => {
     if (show) {
-      $('.canvasNew').animate(
+      $('#canvasAdd').animate(
         {
           width: 'toggle',
         },
         210
       );
-      $('.canvasNew').css('display', 'flex');
+      $('#canvasAdd').css('display', 'flex');
       handleClose();
-      isArrowIcon = !isArrowIcon;
     }
   });
 
@@ -50,11 +49,11 @@ export function AddCanvasModal({ show, handleClose, isArrowIcon }: any) {
   };
 
   return (
-    <Nav.Item className="canvasNew">
+    <Nav.Item className="canvasNew" id="canvasAdd">
       <Form.Control
         id="canvasNewInput"
         type="text"
-        placeholder="Name"
+        placeholder="Add New"
         name="canvasName"
         maxLength={12}
         minLength={3}
