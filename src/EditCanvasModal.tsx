@@ -1,8 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import $ from 'jquery';
 import { Form, Nav } from 'react-bootstrap';
 import { AiFillPlusCircle } from 'react-icons/ai';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export function EditCanvasModal({ show, handleClose }: any) {
   useEffect(() => {
@@ -16,12 +18,46 @@ export function EditCanvasModal({ show, handleClose }: any) {
       $('#canvasEdit').css('display', 'flex');
       handleClose();
     }
-  });
+  }, [show]);
 
+  const [cookies] = useCookies(['canvasID']);
+  const [inputValue, setInputValue] = useState('');
+  useEffect(() => {
+    let canvasID = cookies.canvasID;
+
+    for (let key in localStorage) {
+      if (key == 'cav' + canvasID) {
+        let JSONdata = localStorage.getItem(key);
+        if (JSONdata != null) {
+          let data = JSON.parse(JSONdata);
+
+          setInputValue(data.canvasName);
+        }
+      }
+    }
+  }, []);
+
+  let navigate = useNavigate();
   const inputRef = useRef(null);
   const editCanvas = () => {
     let name = inputRef.current.value;
     if (name == null || name.trim() == '') return;
+
+    let canvasID = cookies.canvasID;
+
+    for (let key in localStorage) {
+      if (key == 'cav' + canvasID) {
+        let JSONdata = localStorage.getItem(key);
+        if (JSONdata != null) {
+          let data = JSON.parse(JSONdata);
+          data.canvasName = name;
+
+          localStorage.setItem('cav' + String(canvasID), JSON.stringify(data));
+
+          navigate('/reload');
+        }
+      }
+    }
   };
 
   return (
@@ -34,7 +70,7 @@ export function EditCanvasModal({ show, handleClose }: any) {
         maxLength={12}
         minLength={3}
         ref={inputRef}
-        value="123"
+        defaultValue={inputValue}
       />
       <AiFillPlusCircle className="canvasNewButton" onClick={editCanvas} />
     </Nav.Item>

@@ -19,7 +19,7 @@ export function AddCanvasModal({ show, handleClose }: any) {
       $('#canvasAdd').css('display', 'flex');
       handleClose();
     }
-  });
+  },[show]);
 
   let navigate = useNavigate();
   const inputRef = useRef(null);
