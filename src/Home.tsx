@@ -4,8 +4,17 @@ import { Container } from 'react-bootstrap';
 import Canvas from './Canvas';
 import { CookiesProvider } from 'react-cookie';
 import { ContextMenu } from './ContextMenu';
+import { useState } from 'react';
 
 export function Home() {
+  const [contextShow, setContextShow] = useState(false);
+  const showContext = () => {
+    setContextShow(true);
+  };
+  const hideContext = () => {
+    setContextShow(false);
+  };
+
   return (
     <>
       <CookiesProvider>
@@ -13,8 +22,12 @@ export function Home() {
           <NavBar />
           <CanvasAdd />
         </Container>
-        <Canvas />
-        <ContextMenu />
+        <Canvas showContext={contextShow} />
+        <ContextMenu
+          show={contextShow}
+          showDropdown={showContext}
+          hideDropdown={hideContext}
+        />
       </CookiesProvider>
     </>
   );

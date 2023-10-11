@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useCookies } from 'react-cookie';
+import $ from 'jquery';
 
 let canvas: any;
 let ctx: any;
@@ -349,25 +350,25 @@ function handleScroll(evt: any) {
   if (delta) zoom(delta);
 }
 
-function handleContextMenu(evt: any) {
-  console.log('test');
-  var pt = ctx.transformedPoint(lastX, lastY);
-  for (var i = shapes.length - 1; i >= 0; i--) {
-    if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-      var top = evt.pageY;
-      var left = evt.pageX;
-      $('#context-menu')
-        .css({
+const Canvas = (showContext: any, props: any) => {
+  function handleContextMenu(evt: any) {
+    evt.preventDefault();
+    console.log(showContext);
+    var pt = ctx.transformedPoint(lastX, lastY);
+    for (var i = shapes.length - 1; i >= 0; i--) {
+      if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+        var top = evt.pageY;
+        var left = evt.pageX;
+        showContext = true;
+        $('#context-menu').css({
           display: 'block',
           top: top,
           left: left,
-        })
-        .addClass('show');
+        });
+      }
     }
   }
-}
 
-const Canvas = (props: any) => {
   const canvasRef = useRef<any>();
   const [cookies, setCookie] = useCookies(['canvasID']);
 
