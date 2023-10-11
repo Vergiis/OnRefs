@@ -1,7 +1,27 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export function DeleteCanvasModal({ show, handleClose }: any) {
+  let navigate = useNavigate();
+  const [cookies] = useCookies(['canvasID']);
+  const deleteCanvas = () => {
+    let canvasID = cookies.canvasID;
+    localStorage.removeItem('cav' + canvasID);
+
+    for (let key in localStorage) {
+      if (key.substring(0, 3) == 'cav') {
+        let JSONdata = localStorage.getItem(key);
+        if (JSONdata != null) {
+          let data = JSON.parse(JSONdata);
+          navigate('/load?canvas=' + data.canvasID);
+          break;
+        }
+      }
+    }
+  };
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Body className="modalCore">
@@ -16,7 +36,7 @@ export function DeleteCanvasModal({ show, handleClose }: any) {
           className="modalButtons"
           id="deleteCanvasButton"
           variant="primary"
-          onClick={handleClose}
+          onClick={deleteCanvas}
         >
           Delete
         </Button>

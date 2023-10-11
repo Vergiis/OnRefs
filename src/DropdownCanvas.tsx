@@ -4,6 +4,8 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 export function DropdownCanvas() {
+  const [buttonName, setButtonName] = useState('Unnamed');
+
   const [dropdownList, setDropdownList] = useState<any[]>([]);
   const updateDropdownList = (name: string, id: number) => {
     setDropdownList((dropdownList) => [
@@ -20,6 +22,8 @@ export function DropdownCanvas() {
     setShow(false);
   };
 
+  const [cookies] = useCookies(['canvasID']);
+
   useEffect(() => {
     for (let key in localStorage) {
       if (key.substring(0, 3) == 'cav') {
@@ -27,20 +31,14 @@ export function DropdownCanvas() {
         if (JSONdata != null) {
           let data = JSON.parse(JSONdata);
           updateDropdownList(data.canvasName, data.canvasID);
+
+          if (data.canvasID == cookies.canvasID) {
+            setButtonName(data.canvasName);
+          }
         }
       }
     }
   }, []);
-
-  const [cookies] = useCookies(['canvasID']);
-  let buttonName = 'Unnamed';
-
-  dropdownList.map((el) => {
-    if (el.id == cookies.canvasID) {
-      buttonName = el.name;
-      return null;
-    }
-  });
 
   let navigate = useNavigate();
   return (

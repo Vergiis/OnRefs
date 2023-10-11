@@ -37,7 +37,7 @@ export function LoginModal({ show, handleClose, showSignUp }: any) {
         </div>
       </Modal.Body>
       <Modal.Footer className="modalCore">
-        <Button
+        {/* <Button
           className="modalButtons"
           id="signGoogleButton"
           variant="secondary"
@@ -56,7 +56,7 @@ export function LoginModal({ show, handleClose, showSignUp }: any) {
           }}
         >
           Sign Up
-        </Button>
+        </Button> */}
         <Button
           className="modalButtons"
           id="signInButton"
