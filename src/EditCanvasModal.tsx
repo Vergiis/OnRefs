@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import $ from 'jquery';
 import { Form, Nav } from 'react-bootstrap';
-import { AiFillPlusCircle } from 'react-icons/ai';
+import { GiConfirmed } from 'react-icons/gi';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,7 +72,7 @@ export function EditCanvasModal({ show, handleClose }: any) {
         ref={inputRef}
         defaultValue={inputValue}
       />
-      <AiFillPlusCircle className="canvasNewButton" onClick={editCanvas} />
+      <GiConfirmed className="canvasNewButton" onClick={editCanvas} />
     </Nav.Item>
   );
 }
