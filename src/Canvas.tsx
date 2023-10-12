@@ -369,10 +369,16 @@ function handleContextMenu(evt: any, showDropdown: any) {
 }
 
 function deleteImage() {
+  shapes.push({
+    x: 0,
+    y: 0,
+    width: 100,
+    height: 100,
+    image: "t",
+    url: "t",
+  });
   console.log(shapes[0]);
-
-  console.log(shapes.splice(0, 1));
-  console.log(shapes[0]);
+  SaveToLocal();
 }
 
 function resizeImage() {
