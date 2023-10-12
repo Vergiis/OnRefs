@@ -352,23 +352,27 @@ function handleScroll(evt: any) {
 
 function handleContextMenu(evt: any, showDropdown: any) {
   evt.preventDefault();
-  var pt = ctx.transformedPoint(lastX, lastY);
-  for (var i = shapes.length - 1; i >= 0; i--) {
+  let pt = ctx.transformedPoint(lastX, lastY);
+  for (let i = shapes.length - 1; i >= 0; i--) {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-      var top = evt.pageY;
-      var left = evt.pageX;
-      showDropdown();
+      selectedShapeIndex = i;
+      let top = evt.pageY;
+      let left = evt.pageX;
       $('#context-menu').css({
         display: 'block',
         top: top - 5,
         left: left - 5,
       });
+      showDropdown();
     }
   }
 }
 
 function deleteImage() {
-  console.log('del');
+  let tmp = shapes;
+  console.log(tmp);
+
+  console.log(tmp.splice(0, 2));
 }
 
 function resizeImage() {
