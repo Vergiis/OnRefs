@@ -50,3 +50,7 @@
 #canvasAddInput {
   display: none;
 }
+#context-menu {
+  position: absolute;
+  z-index: 999;
+}

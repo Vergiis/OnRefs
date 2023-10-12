@@ -350,25 +350,24 @@ function handleScroll(evt: any) {
   if (delta) zoom(delta);
 }
 
-const Canvas = (showContext: any, props: any) => {
-  function handleContextMenu(evt: any) {
-    evt.preventDefault();
-    console.log(showContext);
-    var pt = ctx.transformedPoint(lastX, lastY);
-    for (var i = shapes.length - 1; i >= 0; i--) {
-      if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-        var top = evt.pageY;
-        var left = evt.pageX;
-        showContext = true;
-        $('#context-menu').css({
-          display: 'block',
-          top: top,
-          left: left,
-        });
-      }
+function handleContextMenu(evt: any, showDropdown: any) {
+  evt.preventDefault();
+  var pt = ctx.transformedPoint(lastX, lastY);
+  for (var i = shapes.length - 1; i >= 0; i--) {
+    if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+      var top = evt.pageY;
+      var left = evt.pageX;
+      showDropdown();
+      $('#context-menu').css({
+        display: 'block',
+        top: top - 5,
+        left: left - 5,
+      });
     }
   }
+}
 
+const Canvas = ({ showDropdown }: any, props: any) => {
   const canvasRef = useRef<any>();
   const [cookies, setCookie] = useCookies(['canvasID']);
 
@@ -426,7 +425,9 @@ const Canvas = (showContext: any, props: any) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onWheel={handleScroll}
-      onContextMenu={handleContextMenu}
+      onContextMenu={(e: any) => {
+        handleContextMenu(e, showDropdown);
+      }}
       ref={canvasRef}
       width={window.innerWidth}
       height={window.innerHeight}

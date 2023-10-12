@@ -9,7 +9,7 @@ export function ContextMenu({ show, showDropdown, hideDropdown }: any) {
       onMouseEnter={showDropdown}
       onMouseLeave={hideDropdown}
     >
-      <Dropdown.Menu className="scrollable-menu" aria-labelledby="contextMenu">
+      <Dropdown.Menu>
         <Dropdown.Item
           id="context-resize"
           className="dropdown-item context-item"
@@ -20,7 +20,7 @@ export function ContextMenu({ show, showDropdown, hideDropdown }: any) {
           id="context-delete"
           className="dropdown-item context-item"
         >
-          Resize
+          Delete
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

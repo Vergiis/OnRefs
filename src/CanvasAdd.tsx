@@ -27,7 +27,7 @@ export function CanvasAdd() {
   };
 
   return (
-    <Form.Group className="canvasAddInput" controlId="controlCanvasAdd">
+    <Form.Group className="canvasAddInput">
       <Form.Label id="canvasAddButton" onClick={handleCanvasAddShow}>
         <AiOutlinePlusSquare />
       </Form.Label>

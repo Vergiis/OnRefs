@@ -22,7 +22,7 @@ export function Home() {
           <NavBar />
           <CanvasAdd />
         </Container>
-        <Canvas showContext={contextShow} />
+        <Canvas showDropdown={showContext} />
         <ContextMenu
           show={contextShow}
           showDropdown={showContext}
