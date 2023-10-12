@@ -1,6 +1,12 @@
 import { Dropdown } from 'react-bootstrap';
 
-export function ContextMenu({ show, showDropdown, hideDropdown }: any) {
+export function ContextMenu({
+  show,
+  showDropdown,
+  hideDropdown,
+  contextDelete,
+  contextResize
+}: any) {
   return (
     <Dropdown
       className="list-inline-item"
@@ -13,12 +19,14 @@ export function ContextMenu({ show, showDropdown, hideDropdown }: any) {
         <Dropdown.Item
           id="context-resize"
           className="dropdown-item context-item"
+          onClick={contextResize}
         >
           Resize
         </Dropdown.Item>
         <Dropdown.Item
           id="context-delete"
           className="dropdown-item context-item"
+          onClick={contextDelete}
         >
           Delete
         </Dropdown.Item>

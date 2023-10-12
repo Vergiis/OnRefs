@@ -367,7 +367,36 @@ function handleContextMenu(evt: any, showDropdown: any) {
   }
 }
 
-const Canvas = ({ showDropdown }: any, props: any) => {
+function deleteImage() {
+  console.log('del');
+}
+
+function resizeImage() {
+  console.log('resize');
+}
+
+const Canvas = (
+  {
+    showDropdown,
+    hideDropdown,
+    contextDelete,
+    endContextDelete,
+    contextResize,
+    endContextResize,
+  }: any,
+  props: any
+) => {
+  useEffect(() => {
+    if (contextDelete) {
+      deleteImage();
+      endContextDelete();
+    } else if (contextResize) {
+      resizeImage();
+      endContextResize();
+    }
+    hideDropdown();
+  }, [contextDelete, contextResize]);
+
   const canvasRef = useRef<any>();
   const [cookies, setCookie] = useCookies(['canvasID']);
 

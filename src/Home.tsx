@@ -15,6 +15,22 @@ export function Home() {
     setContextShow(false);
   };
 
+  const [contextDelete, setContextDelete] = useState(false);
+  const contextDeleteClick = () => {
+    setContextDelete(true);
+  };
+  const endContextDelete = () => {
+    setContextDelete(false);
+  };
+
+  const [contextResize, setContextResize] = useState(false);
+  const contextResizeClick = () => {
+    setContextResize(true);
+  };
+  const endContextResize = () => {
+    setContextResize(false);
+  };
+
   return (
     <>
       <CookiesProvider>
@@ -22,11 +38,20 @@ export function Home() {
           <NavBar />
           <CanvasAdd />
         </Container>
-        <Canvas showDropdown={showContext} />
+        <Canvas
+          showDropdown={showContext}
+          hideDropdown={hideContext}
+          contextDelete={contextDelete}
+          endContextDelete={endContextDelete}
+          contextResize={contextResize}
+          endContextResize={endContextResize}
+        />
         <ContextMenu
           show={contextShow}
           showDropdown={showContext}
           hideDropdown={hideContext}
+          contextDelete={contextDeleteClick}
+          contextResize={contextResizeClick}
         />
       </CookiesProvider>
     </>
