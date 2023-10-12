@@ -369,10 +369,10 @@ function handleContextMenu(evt: any, showDropdown: any) {
 }
 
 function deleteImage() {
-  let tmp = shapes;
-  console.log(tmp);
+  console.log(shapes[0]);
 
-  console.log(tmp.splice(0, 2));
+  console.log(shapes.splice(0, 1));
+  console.log(shapes[0]);
 }
 
 function resizeImage() {
