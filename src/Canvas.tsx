@@ -201,14 +201,13 @@ function AddImage(
   redraw();
 }
 
-function loadCanvas() {
+function loadCanvas(cookies: any) {
   shapes = [];
 
-  const [cookies] = useCookies(['canvasID']);
   let content = null;
 
   for (let key in localStorage) {
-    if (key.substring(0, 3)) {
+    if (key.substring(0, 3) == 'cav') {
       let data: any = localStorage.getItem(key);
       content = JSON.parse(data);
       break;
@@ -231,10 +230,11 @@ function loadCanvas() {
     canvasID = content.canvasID;
     canvasName = content.canvasName;
     canvasChangeFlag = content.canvasChangeFlag;
+
     return content.canvasPositionData[0];
   } else {
-    canvasID = uuidv4();
     SaveToLocal(true);
+
     return [
       {
         d: 1,
@@ -374,8 +374,8 @@ function deleteImage() {
     y: 0,
     width: 100,
     height: 100,
-    image: "t",
-    url: "t",
+    image: 't',
+    url: 't',
   });
   console.log(shapes[0]);
   SaveToLocal();
@@ -408,11 +408,6 @@ const Canvas = (
   }, [contextDelete, contextResize]);
 
   const canvasRef = useRef<any>();
-  const [cookies, setCookie] = useCookies(['canvasID']);
-
-  let lastPosition = loadCanvas();
-
-  setCookie('canvasID', canvasID);
 
   window.onresize = () => {
     canvas = canvasRef.current;
@@ -426,6 +421,15 @@ const Canvas = (
 
     redraw();
   };
+
+  const [cookies, setCookie] = useCookies(['canvasID']);
+
+  setCookie('canvasID', uuidv4());
+  canvasID = cookies.canvasID;
+
+  let lastPosition = loadCanvas(cookies);
+
+  setCookie('canvasID', canvasID);
 
   useEffect(() => {
     canvas = canvasRef.current;
