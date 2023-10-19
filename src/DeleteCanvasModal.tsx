@@ -20,6 +20,7 @@ export function DeleteCanvasModal({ show, handleClose }: any) {
         }
       }
     }
+    navigate('/reload');
   };
 
   return (

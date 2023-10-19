@@ -201,7 +201,7 @@ function AddImage(
   redraw();
 }
 
-function loadCanvas(cookies: any) {
+function loadCanvas(cookies: string) {
   shapes = [];
 
   let content = null;
@@ -214,8 +214,8 @@ function loadCanvas(cookies: any) {
     }
   }
 
-  if (cookies.canvasID) {
-    let data: any = localStorage.getItem('cav' + cookies.canvasID);
+  if (cookies) {
+    let data: any = localStorage.getItem('cav' + cookies);
     if (data != null) content = JSON.parse(data);
   }
 
@@ -366,19 +366,25 @@ function handleContextMenu(evt: any, showDropdown: any) {
       showDropdown();
     }
   }
+  sessionStorage.setItem(
+    'ShapesTMP',
+    JSON.stringify({
+      shapes: shapes,
+      canvasID: canvasID,
+    })
+  );
 }
 
 function deleteImage() {
-  shapes.push({
-    x: 0,
-    y: 0,
-    width: 100,
-    height: 100,
-    image: 't',
-    url: 't',
-  });
-  console.log(shapes[0]);
+  let data: any = sessionStorage.getItem('ShapesTMP');
+  let content = JSON.parse(data);
+
+  shapes = content.shapes;
+  shapes.splice(selectedShapeIndex, 1);
+
   SaveToLocal();
+  loadCanvas(content.canvasID);
+  redraw();
 }
 
 function resizeImage() {
@@ -424,14 +430,11 @@ const Canvas = (
 
   const [cookies, setCookie] = useCookies(['canvasID']);
 
-  setCookie('canvasID', uuidv4());
-  canvasID = cookies.canvasID;
-
-  let lastPosition = loadCanvas(cookies);
-
-  setCookie('canvasID', canvasID);
-
   useEffect(() => {
+    canvasID = uuidv4();
+    let lastPosition = loadCanvas(cookies.canvasID);
+    setCookie('canvasID', canvasID);
+
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
 
