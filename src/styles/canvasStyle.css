@@ -52,5 +52,6 @@
 }
 #context-menu {
   position: absolute;
+  display: fixed;
   z-index: 999;
 }

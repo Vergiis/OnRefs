@@ -352,6 +352,7 @@ function handleScroll(evt: any) {
 
 function handleContextMenu(evt: any, showDropdown: any) {
   evt.preventDefault();
+
   let pt = ctx.transformedPoint(lastX, lastY);
   for (let i = shapes.length - 1; i >= 0; i--) {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
@@ -359,7 +360,6 @@ function handleContextMenu(evt: any, showDropdown: any) {
       let top = evt.pageY;
       let left = evt.pageX;
       $('#context-menu').css({
-        display: 'block',
         top: top - 5,
         left: left - 5,
       });
@@ -425,11 +425,31 @@ const Canvas = (
     let tmp = ctx.getTransform();
     ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
 
+    lastX = canvas.width / 2;
+    lastY = canvas.height / 2;
+
     redraw();
   };
 
-  const [cookies, setCookie] = useCookies(['canvasID']);
+  useEffect(() => {
+    canvas = canvasRef.current;
+    ctx = canvas.getContext('2d');
 
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    reOffset();
+
+    lastX = canvas.width / 2;
+    lastY = canvas.height / 2;
+
+    let tmp = ctx.getTransform();
+    ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
+
+    redraw();
+  }, [showDropdown]);
+
+  const [cookies, setCookie] = useCookies(['canvasID']);
   useEffect(() => {
     canvasID = uuidv4();
     let lastPosition = loadCanvas(cookies.canvasID);
