@@ -117,7 +117,6 @@ function redraw() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   ctx.restore();
 
-  console.log('rd');
   //Draw images
   for (let i = 0; i < shapes.length; i++) {
     ctx.drawImage(
@@ -461,6 +460,7 @@ const Canvas = (
     let tmp = ctx.getTransform();
     ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
 
+    console.log('test');
     redraw();
   }, [showDropdown]);
 
