@@ -117,6 +117,7 @@ function redraw() {
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   ctx.restore();
 
+  console.log('rd');
   //Draw images
   for (let i = 0; i < shapes.length; i++) {
     ctx.drawImage(
@@ -291,7 +292,7 @@ function handleMouseDown(evt: any) {
         shapes.push(tmp);
         selectedShapeIndex = shapes.length - 1;
         ctx.strokeStyle = '#f00';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.strokeRect(
           shapes[selectedShapeIndex].x,
           shapes[selectedShapeIndex].y,
@@ -373,6 +374,9 @@ function handleContextMenu(evt: any, showDropdown: any) {
       canvasID: canvasID,
     })
   );
+
+  lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
+  lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
 }
 
 function deleteImage() {
@@ -388,7 +392,21 @@ function deleteImage() {
 }
 
 function resizeImage() {
-  console.log('resize');
+  //Draw Frame
+  let pt = ctx.transformedPoint(lastX, lastY);
+  for (let i = shapes.length - 1; i >= 0; i--) {
+    if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+      ctx.strokeStyle = '#f00';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(
+        shapes[i].x,
+        shapes[i].y,
+        shapes[i].width,
+        shapes[i].height
+      );
+      break;
+    }
+  }
 }
 
 const Canvas = (
@@ -439,9 +457,6 @@ const Canvas = (
     canvas.width = window.innerWidth;
 
     reOffset();
-
-    lastX = canvas.width / 2;
-    lastY = canvas.height / 2;
 
     let tmp = ctx.getTransform();
     ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
