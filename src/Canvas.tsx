@@ -290,6 +290,7 @@ function handleMouseDown(evt: any) {
         shapes.splice(i, 1);
         shapes.push(tmp);
         selectedShapeIndex = shapes.length - 1;
+        redraw();
         ctx.strokeStyle = '#f00';
         ctx.lineWidth = 3;
         ctx.strokeRect(
@@ -371,11 +372,9 @@ function handleContextMenu(evt: any, showDropdown: any) {
     JSON.stringify({
       shapes: shapes,
       canvasID: canvasID,
+      context: true,
     })
   );
-
-  lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
-  lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
 }
 
 function deleteImage() {
@@ -449,19 +448,32 @@ const Canvas = (
   };
 
   useEffect(() => {
-    canvas = canvasRef.current;
-    ctx = canvas.getContext('2d');
+    let data: any = sessionStorage.getItem('ShapesTMP');
+    let content = JSON.parse(data);
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    if (content.context) {
+      canvas = canvasRef.current;
+      ctx = canvas.getContext('2d');
 
-    reOffset();
+      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
 
-    let tmp = ctx.getTransform();
-    ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
+      reOffset();
 
-    console.log('test');
-    redraw();
+      let tmp = ctx.getTransform();
+      ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
+
+      redraw();
+
+      sessionStorage.setItem(
+        'ShapesTMP',
+        JSON.stringify({
+          shapes: content.shapes,
+          canvasID: content.canvasID,
+          context: false,
+        })
+      );
+    }
   }, [showDropdown]);
 
   const [cookies, setCookie] = useCookies(['canvasID']);
