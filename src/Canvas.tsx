@@ -304,6 +304,7 @@ function handleMouseDown(evt: any) {
       }
     }
   }
+  SaveToLocal();
 }
 
 function handleMouseMove(evt: any) {
