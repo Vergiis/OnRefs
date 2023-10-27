@@ -452,28 +452,30 @@ const Canvas = (
     let data: any = sessionStorage.getItem('ShapesTMP');
     let content = JSON.parse(data);
 
-    if (content.context) {
-      canvas = canvasRef.current;
-      ctx = canvas.getContext('2d');
+    if (content != null) {
+      if (content.context) {
+        canvas = canvasRef.current;
+        ctx = canvas.getContext('2d');
 
-      canvas.height = window.innerHeight;
-      canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
 
-      reOffset();
+        reOffset();
 
-      let tmp = ctx.getTransform();
-      ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
+        let tmp = ctx.getTransform();
+        ctx.setTransform(tmp.d, 0, 0, tmp.d, tmp.e, tmp.f);
 
-      redraw();
+        redraw();
 
-      sessionStorage.setItem(
-        'ShapesTMP',
-        JSON.stringify({
-          shapes: content.shapes,
-          canvasID: content.canvasID,
-          context: false,
-        })
-      );
+        sessionStorage.setItem(
+          'ShapesTMP',
+          JSON.stringify({
+            shapes: content.shapes,
+            canvasID: content.canvasID,
+            context: false,
+          })
+        );
+      }
     }
   }, [showDropdown]);
 
