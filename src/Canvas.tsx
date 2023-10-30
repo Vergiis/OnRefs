@@ -25,7 +25,12 @@ let lastX: number;
 let lastY: number;
 
 let isResizing = false;
-const arcRadius = 50;
+let isDreaggingResize: any = null;
+let resizeStartX: number;
+let resizeStartY: number;
+let frameArcRadius = 50;
+let frameLineWidth = 10;
+const frameColor = '#F00';
 
 function trackTransforms() {
   let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -158,10 +163,43 @@ function isPointInside(
   let rLeft = x;
   let rRight = x + width;
   let rTop = y;
-  let rBott = y + height;
-  if (mx > rLeft && mx < rRight && my > rTop && my < rBott) {
+  let rBot = y + height;
+  if (
+    width >= 0 &&
+    height >= 0 &&
+    mx > rLeft &&
+    mx < rRight &&
+    my > rTop &&
+    my < rBot
+  )
     return true;
-  }
+  else if (
+    width < 0 &&
+    height >= 0 &&
+    mx < rLeft &&
+    mx > rRight &&
+    my > rTop &&
+    my < rBot
+  )
+    return true;
+  else if (
+    width >= 0 &&
+    height < 0 &&
+    mx > rLeft &&
+    mx < rRight &&
+    my < rTop &&
+    my > rBot
+  )
+    return true;
+  else if (
+    width < 0 &&
+    height < 0 &&
+    mx < rLeft &&
+    mx > rRight &&
+    my < rTop &&
+    my > rBot
+  )
+    return true;
   return false;
 }
 
@@ -177,15 +215,14 @@ function isMouseInShape(mx: number, my: number, shape: any) {
 function isMouseInResizeShape(mx: number, my: number, shapeIndex: number) {
   if (shapeIndex >= 0) {
     let shape = shapes[shapeIndex];
-
     if (
       isPointInside(
         mx,
         my,
-        shape.x - arcRadius,
-        shape.y - arcRadius,
-        arcRadius * 2,
-        arcRadius * 2
+        shape.x - frameArcRadius,
+        shape.y - frameArcRadius,
+        frameArcRadius * 2,
+        frameArcRadius * 2
       )
     )
       return 'TL';
@@ -193,10 +230,10 @@ function isMouseInResizeShape(mx: number, my: number, shapeIndex: number) {
       isPointInside(
         mx,
         my,
-        shape.x + shape.width - arcRadius,
-        shape.y - arcRadius,
-        arcRadius * 2,
-        arcRadius * 2
+        shape.x + shape.width - frameArcRadius,
+        shape.y - frameArcRadius,
+        frameArcRadius * 2,
+        frameArcRadius * 2
       )
     )
       return 'TR';
@@ -204,10 +241,10 @@ function isMouseInResizeShape(mx: number, my: number, shapeIndex: number) {
       isPointInside(
         mx,
         my,
-        shape.x - arcRadius,
-        shape.y + shape.height - arcRadius,
-        arcRadius * 2,
-        arcRadius * 2
+        shape.x - frameArcRadius,
+        shape.y + shape.height - frameArcRadius,
+        frameArcRadius * 2,
+        frameArcRadius * 2
       )
     )
       return 'BL';
@@ -215,10 +252,10 @@ function isMouseInResizeShape(mx: number, my: number, shapeIndex: number) {
       isPointInside(
         mx,
         my,
-        shape.x + shape.width - arcRadius,
-        shape.y + shape.height - arcRadius,
-        arcRadius * 2,
-        arcRadius * 2
+        shape.x + shape.width - frameArcRadius,
+        shape.y + shape.height - frameArcRadius,
+        frameArcRadius * 2,
+        frameArcRadius * 2
       )
     )
       return 'BR';
@@ -257,6 +294,7 @@ function zoom(clicks: number) {
 
   redraw();
   SaveToLocal();
+  if (isDreaggingResize) drawResizeFrame(selectedShapeIndex);
 }
 
 //Add image to draw list
@@ -326,6 +364,70 @@ function loadCanvas(cookies: string) {
   }
 }
 
+function recalculateFrameSize(shapeIndex: number) {
+  frameLineWidth =
+    (Math.abs(shapes[shapeIndex].width) + Math.abs(shapes[shapeIndex].height)) *
+    0.01;
+  frameArcRadius = frameLineWidth * 2;
+}
+
+function drawResizeFrame(shapeIndex: number) {
+  ctx.strokeStyle = frameColor;
+  ctx.lineWidth = frameLineWidth;
+  ctx.strokeRect(
+    shapes[shapeIndex].x,
+    shapes[shapeIndex].y,
+    shapes[shapeIndex].width,
+    shapes[shapeIndex].height
+  );
+
+  ctx.fillStyle = frameColor;
+
+  ctx.beginPath();
+  ctx.arc(
+    shapes[shapeIndex].x,
+    shapes[shapeIndex].y,
+    frameArcRadius,
+    0,
+    2 * Math.PI
+  );
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(
+    shapes[shapeIndex].x,
+    shapes[shapeIndex].y + shapes[shapeIndex].height,
+    frameArcRadius,
+    0,
+    2 * Math.PI
+  );
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(
+    shapes[shapeIndex].x + shapes[shapeIndex].width,
+    shapes[shapeIndex].y,
+    frameArcRadius,
+    0,
+    2 * Math.PI
+  );
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(
+    shapes[shapeIndex].x + shapes[shapeIndex].width,
+    shapes[shapeIndex].y + shapes[shapeIndex].height,
+    frameArcRadius,
+    0,
+    2 * Math.PI
+  );
+  ctx.closePath();
+  ctx.fill();
+}
+
 //Drop images
 function LoadDrop(url: string, x: number, y: number) {
   var img = new Image();
@@ -367,21 +469,23 @@ function handleMouseDown(evt: any) {
     let pt = ctx.transformedPoint(lastX, lastY);
     imgStartX = pt.x;
     imgStartY = pt.y;
-    let pos = isMouseInResizeShape(pt.x, pt.y, shapes[selectedShapeIndex]);
-    console.log(pos);
-    if (isResizing && pos != null) {
-      console.log('res');
+    let resizePos = isMouseInResizeShape(pt.x, pt.y, selectedShapeIndex);
+    if (isResizing && resizePos != null) {
+      resizeStartX = pt.x;
+      resizeStartY = pt.y;
+      isDreaggingResize = resizePos;
     } else {
       for (let i = shapes.length - 1; i >= 0; i--) {
         if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+          recalculateFrameSize(i);
           let tmp = shapes[i];
           tmp.position = shapes[shapes.length - 1].position + 1;
           shapes.splice(i, 1);
           shapes.push(tmp);
           selectedShapeIndex = shapes.length - 1;
           redraw();
-          ctx.strokeStyle = '#f00';
-          ctx.lineWidth = 3;
+          ctx.strokeStyle = frameColor;
+          ctx.lineWidth = frameLineWidth;
           ctx.strokeRect(
             shapes[selectedShapeIndex].x,
             shapes[selectedShapeIndex].y,
@@ -406,7 +510,6 @@ function handleMouseMove(evt: any) {
     let pt = ctx.transformedPoint(lastX, lastY);
     ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
     redraw();
-    SaveToLocal();
   }
   if (isDraggingImg) {
     let pt = ctx.transformedPoint(lastX, lastY);
@@ -417,8 +520,8 @@ function handleMouseMove(evt: any) {
     selectedShape.x += dx;
     selectedShape.y += dy;
     redraw();
-    ctx.strokeStyle = '#f00';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = frameColor;
+    ctx.lineWidth = frameLineWidth;
     ctx.strokeRect(
       shapes[selectedShapeIndex].x,
       shapes[selectedShapeIndex].y,
@@ -427,7 +530,37 @@ function handleMouseMove(evt: any) {
     );
     imgStartX = pt.x;
     imgStartY = pt.y;
-    SaveToLocal();
+  }
+  if (isDreaggingResize != null) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+    let selectedShape = shapes[selectedShapeIndex];
+    let dx = pt.x - resizeStartX;
+    let dy = pt.y - resizeStartY;
+
+    if (isDreaggingResize == 'BR') {
+      selectedShape.width += dx;
+      selectedShape.height += dy;
+    } else if (isDreaggingResize == 'TR') {
+      selectedShape.width += dx;
+      selectedShape.height -= dy;
+      selectedShape.y += dy;
+    } else if (isDreaggingResize == 'TL') {
+      selectedShape.width -= dx;
+      selectedShape.height -= dy;
+      selectedShape.x += dx;
+      selectedShape.y += dy;
+    } else if (isDreaggingResize == 'BL') {
+      selectedShape.width -= dx;
+      selectedShape.height += dy;
+      selectedShape.x += dx;
+    }
+
+    recalculateFrameSize(selectedShapeIndex);
+
+    resizeStartX = pt.x;
+    resizeStartY = pt.y;
+    redraw();
+    drawResizeFrame(selectedShapeIndex);
   }
   if (isResizing) {
     let pt = ctx.transformedPoint(lastX, lastY);
@@ -443,6 +576,8 @@ function handleMouseUp(evt: any) {
   dragStart = null;
   if (!dragged) zoom(evt.shiftKey ? -1 : 1);
   if (isDraggingImg) isDraggingImg = false;
+  if (evt.button == 0) isDreaggingResize = null;
+  SaveToLocal();
   redraw();
 }
 
@@ -496,54 +631,10 @@ function resizeImage() {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
       selectedShapeIndex = i;
       isResizing = true;
-      ctx.strokeStyle = '#f00';
-      ctx.lineWidth = 10;
-      ctx.strokeRect(
-        shapes[i].x,
-        shapes[i].y,
-        shapes[i].width,
-        shapes[i].height
-      );
 
-      ctx.fillStyle = '#f00';
+      recalculateFrameSize(i);
 
-      ctx.beginPath();
-      ctx.arc(shapes[i].x, shapes[i].y, arcRadius, 0, 2 * Math.PI);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(
-        shapes[i].x,
-        shapes[i].y + shapes[i].height,
-        arcRadius,
-        0,
-        2 * Math.PI
-      );
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(
-        shapes[i].x + shapes[i].width,
-        shapes[i].y,
-        arcRadius,
-        0,
-        2 * Math.PI
-      );
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(
-        shapes[i].x + shapes[i].width,
-        shapes[i].y + shapes[i].height,
-        arcRadius,
-        0,
-        2 * Math.PI
-      );
-      ctx.closePath();
-      ctx.fill();
+      drawResizeFrame(i);
 
       break;
     }
