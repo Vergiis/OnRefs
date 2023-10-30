@@ -162,7 +162,7 @@ function SaveToLocal(firstUse = false) {
     JSON.stringify({
       canvasID: canvasID,
       canvasChangeFlag: canvasChangeFlag,
-      canvasName: "Unnamed",
+      canvasName: canvasName,
       canvasData: shapes,
       canvasPositionData: [
         {
@@ -249,6 +249,7 @@ function loadCanvas(cookies: string) {
     canvasChangeFlag = content.canvasChangeFlag;
     return content.canvasPositionData[0];
   } else {
+    canvasName = 'Unnamed';
     SaveToLocal(true);
 
     return [
