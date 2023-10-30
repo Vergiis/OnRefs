@@ -7,6 +7,11 @@ import { ContextMenu } from './ContextMenu';
 import { useState } from 'react';
 
 export function Home() {
+  const [seed, setSeed] = useState(1);
+  const reset = () => {
+    setSeed(Math.random());
+  };
+
   const [contextShow, setContextShow] = useState(false);
   const showContext = () => {
     setContextShow(true);
@@ -35,7 +40,7 @@ export function Home() {
     <>
       <CookiesProvider>
         <Container>
-          <NavBar />
+          <NavBar key={seed} />
           <CanvasAdd />
         </Container>
         <Canvas
@@ -45,6 +50,7 @@ export function Home() {
           endContextDelete={endContextDelete}
           contextResize={contextResize}
           endContextResize={endContextResize}
+          resetNavBar={reset}
         />
         <ContextMenu
           show={contextShow}

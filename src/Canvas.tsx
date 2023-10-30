@@ -433,6 +433,7 @@ const Canvas = (
     endContextDelete,
     contextResize,
     endContextResize,
+    resetNavBar,
   }: any,
   props: any
 ) => {
@@ -523,6 +524,7 @@ const Canvas = (
       lastPosition.e,
       lastPosition.f
     );
+    resetNavBar();
   }, []);
 
   return (
