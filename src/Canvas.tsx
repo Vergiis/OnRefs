@@ -367,24 +367,30 @@ function handleMouseDown(evt: any) {
     let pt = ctx.transformedPoint(lastX, lastY);
     imgStartX = pt.x;
     imgStartY = pt.y;
-    for (let i = shapes.length - 1; i >= 0; i--) {
-      if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-        let tmp = shapes[i];
-        tmp.position = shapes[shapes.length - 1].position + 1;
-        shapes.splice(i, 1);
-        shapes.push(tmp);
-        selectedShapeIndex = shapes.length - 1;
-        redraw();
-        ctx.strokeStyle = '#f00';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(
-          shapes[selectedShapeIndex].x,
-          shapes[selectedShapeIndex].y,
-          shapes[selectedShapeIndex].width,
-          shapes[selectedShapeIndex].height
-        );
-        isDraggingImg = true;
-        break;
+    let pos = isMouseInResizeShape(pt.x, pt.y, shapes[selectedShapeIndex]);
+    console.log(pos);
+    if (isResizing && pos != null) {
+      console.log('res');
+    } else {
+      for (let i = shapes.length - 1; i >= 0; i--) {
+        if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+          let tmp = shapes[i];
+          tmp.position = shapes[shapes.length - 1].position + 1;
+          shapes.splice(i, 1);
+          shapes.push(tmp);
+          selectedShapeIndex = shapes.length - 1;
+          redraw();
+          ctx.strokeStyle = '#f00';
+          ctx.lineWidth = 3;
+          ctx.strokeRect(
+            shapes[selectedShapeIndex].x,
+            shapes[selectedShapeIndex].y,
+            shapes[selectedShapeIndex].width,
+            shapes[selectedShapeIndex].height
+          );
+          isDraggingImg = true;
+          break;
+        }
       }
     }
   }
@@ -395,7 +401,7 @@ function handleMouseMove(evt: any) {
   lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
   lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
   dragged = true;
-  $('.mainCanvas').css('cursor', 'pointer');
+  $('.mainCanvas').css('cursor', 'default');
   if (dragStart) {
     let pt = ctx.transformedPoint(lastX, lastY);
     ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
@@ -488,6 +494,7 @@ function resizeImage() {
   let pt = ctx.transformedPoint(lastX, lastY);
   for (let i = shapes.length - 1; i >= 0; i--) {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+      selectedShapeIndex = i;
       isResizing = true;
       ctx.strokeStyle = '#f00';
       ctx.lineWidth = 10;
