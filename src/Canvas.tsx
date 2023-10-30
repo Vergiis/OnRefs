@@ -109,6 +109,11 @@ function trackTransforms() {
   };
 }
 
+function sortShape(a: any, b: any) {
+  if (a.position > b.position) return 1;
+  else if (a.position < b.position) return -1;
+  return 0;
+}
 //Draw
 function redraw() {
   //Clear canvas
@@ -116,6 +121,8 @@ function redraw() {
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   ctx.restore();
+
+  shapes.sort(sortShape);
 
   //Draw images
   for (let i = 0; i < shapes.length; i++) {
@@ -155,7 +162,7 @@ function SaveToLocal(firstUse = false) {
     JSON.stringify({
       canvasID: canvasID,
       canvasChangeFlag: canvasChangeFlag,
-      canvasName: canvasName,
+      canvasName: "Unnamed",
       canvasData: shapes,
       canvasPositionData: [
         {
@@ -220,17 +227,26 @@ function loadCanvas(cookies: string) {
   }
 
   if (content != null) {
-    content.canvasData.forEach((el) => {
-      var img = new Image();
+    for (let i = 0; i < content.canvasData.length; i++) {
+      let el = content.canvasData[i];
+      let img = new Image();
       img.src = el.url;
       img.onload = function () {
-        AddImage(el.x, el.y, el.width, el.height, img, el.url);
+        shapes.push({
+          x: el.x,
+          y: el.y,
+          width: el.width,
+          height: el.height,
+          image: img,
+          url: el.url,
+          position: i,
+        });
+        redraw();
       };
-    });
+    }
     canvasID = content.canvasID;
     canvasName = content.canvasName;
     canvasChangeFlag = content.canvasChangeFlag;
-
     return content.canvasPositionData[0];
   } else {
     SaveToLocal(true);

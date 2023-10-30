@@ -10,17 +10,20 @@ export function DeleteCanvasModal({ show, handleClose }: any) {
     let canvasID = cookies.canvasID;
     localStorage.removeItem('cav' + canvasID);
 
+    let reload = true;
+
     for (let key in localStorage) {
       if (key.substring(0, 3) == 'cav') {
         let JSONdata = localStorage.getItem(key);
         if (JSONdata != null) {
           let data = JSON.parse(JSONdata);
+          reload = false;
           navigate('/load?canvas=' + data.canvasID);
           break;
         }
       }
     }
-    navigate('/reload');
+    if (reload) navigate('/reload');
   };
 
   return (
