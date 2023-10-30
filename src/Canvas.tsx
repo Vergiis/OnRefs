@@ -541,7 +541,7 @@ function handleMouseMove(evt: any) {
       selectedShape.width += dx;
       selectedShape.height += dy;
     } else if (isDreaggingResize == 'TR') {
-      selectedShape.width += dx;
+      selectedShape.c += dx;
       selectedShape.height -= dy;
       selectedShape.y += dy;
     } else if (isDreaggingResize == 'TL') {
@@ -565,10 +565,38 @@ function handleMouseMove(evt: any) {
   if (isResizing) {
     let pt = ctx.transformedPoint(lastX, lastY);
     let position = isMouseInResizeShape(pt.x, pt.y, selectedShapeIndex);
-    if (position == 'TL') $('.mainCanvas').css('cursor', 'nw-resize');
-    else if (position == 'TR') $('.mainCanvas').css('cursor', 'sw-resize');
-    else if (position == 'BL') $('.mainCanvas').css('cursor', 'sw-resize');
-    else if (position == 'BR') $('.mainCanvas').css('cursor', 'nw-resize');
+    if (position == 'TL')
+      $('.mainCanvas').css(
+        'cursor',
+        shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0
+          ? 'sw-resize'
+          : 'nw-resize'
+      );
+    else if (position == 'TR')
+      $('.mainCanvas').css(
+        'cursor',
+        shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0
+          ? 'nw-resize'
+          : 'sw-resize'
+      );
+    else if (position == 'BL')
+      $('.mainCanvas').css(
+        'cursor',
+        shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0
+          ? 'nw-resize'
+          : 'sw-resize'
+      );
+    else if (position == 'BR')
+      $('.mainCanvas').css(
+        'cursor',
+        shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0
+          ? 'sw-resize'
+          : 'nw-resize'
+      );
   }
 }
 
