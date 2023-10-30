@@ -24,6 +24,9 @@ let imgStartY: number;
 let lastX: number;
 let lastY: number;
 
+let isResizing = false;
+const arcRadius = 50;
+
 function trackTransforms() {
   let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
@@ -116,6 +119,8 @@ function sortShape(a: any, b: any) {
 }
 //Draw
 function redraw() {
+  isResizing = false;
+
   //Clear canvas
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -142,17 +147,83 @@ function reOffset() {
   return [BB.left, BB.top];
 }
 
-function isMouseInShape(mx: number, my: number, shape: any) {
-  if (shape.image) {
-    let rLeft = shape.x;
-    let rRight = shape.x + shape.width;
-    let rTop = shape.y;
-    let rBott = shape.y + shape.height;
-    if (mx > rLeft && mx < rRight && my > rTop && my < rBott) {
-      return true;
-    }
+function isPointInside(
+  mx: number,
+  my: number,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) {
+  let rLeft = x;
+  let rRight = x + width;
+  let rTop = y;
+  let rBott = y + height;
+  if (mx > rLeft && mx < rRight && my > rTop && my < rBott) {
+    return true;
   }
   return false;
+}
+
+function isMouseInShape(mx: number, my: number, shape: any) {
+  if (
+    shape.image &&
+    isPointInside(mx, my, shape.x, shape.y, shape.width, shape.height)
+  )
+    return true;
+  return false;
+}
+
+function isMouseInResizeShape(mx: number, my: number, shapeIndex: number) {
+  if (shapeIndex >= 0) {
+    let shape = shapes[shapeIndex];
+
+    if (
+      isPointInside(
+        mx,
+        my,
+        shape.x - arcRadius,
+        shape.y - arcRadius,
+        arcRadius * 2,
+        arcRadius * 2
+      )
+    )
+      return 'TL';
+    else if (
+      isPointInside(
+        mx,
+        my,
+        shape.x + shape.width - arcRadius,
+        shape.y - arcRadius,
+        arcRadius * 2,
+        arcRadius * 2
+      )
+    )
+      return 'TR';
+    else if (
+      isPointInside(
+        mx,
+        my,
+        shape.x - arcRadius,
+        shape.y + shape.height - arcRadius,
+        arcRadius * 2,
+        arcRadius * 2
+      )
+    )
+      return 'BL';
+    else if (
+      isPointInside(
+        mx,
+        my,
+        shape.x + shape.width - arcRadius,
+        shape.y + shape.height - arcRadius,
+        arcRadius * 2,
+        arcRadius * 2
+      )
+    )
+      return 'BR';
+  }
+  return null;
 }
 
 //Save To LocalStorage
@@ -195,7 +266,8 @@ function AddImage(
   width: number,
   height: number,
   image: any,
-  url: string
+  url: string,
+  i: number
 ) {
   shapes.push({
     x: x,
@@ -204,6 +276,7 @@ function AddImage(
     height: height,
     image: image,
     url: url,
+    position: i,
   });
   redraw();
 }
@@ -232,16 +305,7 @@ function loadCanvas(cookies: string) {
       let img = new Image();
       img.src = el.url;
       img.onload = function () {
-        shapes.push({
-          x: el.x,
-          y: el.y,
-          width: el.width,
-          height: el.height,
-          image: img,
-          url: el.url,
-          position: i,
-        });
-        redraw();
+        AddImage(el.x, el.y, el.width, el.height, img, el.url, i);
       };
     }
     canvasID = content.canvasID;
@@ -267,7 +331,9 @@ function LoadDrop(url: string, x: number, y: number) {
   var img = new Image();
   img.src = url;
   img.onload = function () {
-    AddImage(x, y, img.width, img.height, img, url);
+    let position = 0;
+    if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
+    AddImage(x, y, img.width, img.height, img, url, position);
     SaveToLocal();
   };
 }
@@ -304,6 +370,7 @@ function handleMouseDown(evt: any) {
     for (let i = shapes.length - 1; i >= 0; i--) {
       if (isMouseInShape(pt.x, pt.y, shapes[i])) {
         let tmp = shapes[i];
+        tmp.position = shapes[shapes.length - 1].position + 1;
         shapes.splice(i, 1);
         shapes.push(tmp);
         selectedShapeIndex = shapes.length - 1;
@@ -328,6 +395,7 @@ function handleMouseMove(evt: any) {
   lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
   lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
   dragged = true;
+  $('.mainCanvas').css('cursor', 'pointer');
   if (dragStart) {
     let pt = ctx.transformedPoint(lastX, lastY);
     ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
@@ -354,6 +422,14 @@ function handleMouseMove(evt: any) {
     imgStartX = pt.x;
     imgStartY = pt.y;
     SaveToLocal();
+  }
+  if (isResizing) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+    let position = isMouseInResizeShape(pt.x, pt.y, selectedShapeIndex);
+    if (position == 'TL') $('.mainCanvas').css('cursor', 'nw-resize');
+    else if (position == 'TR') $('.mainCanvas').css('cursor', 'sw-resize');
+    else if (position == 'BL') $('.mainCanvas').css('cursor', 'sw-resize');
+    else if (position == 'BR') $('.mainCanvas').css('cursor', 'nw-resize');
   }
 }
 
@@ -412,6 +488,7 @@ function resizeImage() {
   let pt = ctx.transformedPoint(lastX, lastY);
   for (let i = shapes.length - 1; i >= 0; i--) {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+      isResizing = true;
       ctx.strokeStyle = '#f00';
       ctx.lineWidth = 10;
       ctx.strokeRect(
@@ -420,6 +497,47 @@ function resizeImage() {
         shapes[i].width,
         shapes[i].height
       );
+
+      ctx.fillStyle = '#f00';
+
+      ctx.beginPath();
+      ctx.arc(shapes[i].x, shapes[i].y, arcRadius, 0, 2 * Math.PI);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(
+        shapes[i].x,
+        shapes[i].y + shapes[i].height,
+        arcRadius,
+        0,
+        2 * Math.PI
+      );
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(
+        shapes[i].x + shapes[i].width,
+        shapes[i].y,
+        arcRadius,
+        0,
+        2 * Math.PI
+      );
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(
+        shapes[i].x + shapes[i].width,
+        shapes[i].y + shapes[i].height,
+        arcRadius,
+        0,
+        2 * Math.PI
+      );
+      ctx.closePath();
+      ctx.fill();
+
       break;
     }
   }
