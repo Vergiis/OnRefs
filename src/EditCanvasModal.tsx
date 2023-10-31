@@ -62,6 +62,7 @@ export function EditCanvasModal({ show, handleClose }: any) {
 
   return (
     <Nav.Item className="canvasNew" id="canvasEdit">
+      <GiConfirmed className="canvasNewButton" onClick={editCanvas} />
       <Form.Control
         id="canvasEditInput"
         type="text"
@@ -72,7 +73,6 @@ export function EditCanvasModal({ show, handleClose }: any) {
         ref={inputRef}
         defaultValue={inputValue}
       />
-      <GiConfirmed className="canvasNewButton" onClick={editCanvas} />
     </Nav.Item>
   );
 }

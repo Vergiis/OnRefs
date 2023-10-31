@@ -443,15 +443,21 @@ function LoadDrop(url: string, x: number, y: number) {
 function handleDrop(evt: any) {
   evt.stopPropagation();
   evt.preventDefault();
-  var imageUrl = evt.dataTransfer.getData('text/html');
+  let imageUrl = evt.dataTransfer.getData('text/html');
+  let url = '';
+  let rex = ['.jpg', '.jpeg', '.png', '.ebp', '.avif', '.gif', '.svg'];
+  rex.forEach((el) => {
+    let idxEnd = imageUrl.indexOf(el);
+    let idxStart = imageUrl.indexOf('http');
+    if (idxStart > 0 && idxEnd > 0)
+      url = imageUrl.substring(idxStart, idxEnd + el.length);
+  });
 
-  var rex = /src="?([^"\s]+)"?\s*/;
-  var url: any = rex.exec(imageUrl);
-  if (url[1] != null) {
+  if (url != null) {
     lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
     lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
-    var pt = ctx.transformedPoint(lastX, lastY);
-    LoadDrop(url[1], pt.x, pt.y);
+    let pt = ctx.transformedPoint(lastX, lastY);
+    LoadDrop(url, pt.x, pt.y);
   }
 }
 
@@ -541,8 +547,8 @@ function handleMouseMove(evt: any) {
       selectedShape.width += dx;
       selectedShape.height += dy;
     } else if (isDreaggingResize == 'TR') {
-      selectedShape.c += dx;
       selectedShape.height -= dy;
+      selectedShape.width += dx;
       selectedShape.y += dy;
     } else if (isDreaggingResize == 'TL') {
       selectedShape.width -= dx;
@@ -568,34 +574,42 @@ function handleMouseMove(evt: any) {
     if (position == 'TL')
       $('.mainCanvas').css(
         'cursor',
-        shapes[selectedShapeIndex].width < 0 ||
-          shapes[selectedShapeIndex].height < 0
-          ? 'sw-resize'
-          : 'nw-resize'
+        (shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0) ==
+          (shapes[selectedShapeIndex].width < 0 &&
+            shapes[selectedShapeIndex].height < 0)
+          ? 'nw-resize'
+          : 'sw-resize'
       );
     else if (position == 'TR')
       $('.mainCanvas').css(
         'cursor',
-        shapes[selectedShapeIndex].width < 0 ||
-          shapes[selectedShapeIndex].height < 0
-          ? 'nw-resize'
-          : 'sw-resize'
+        (shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0) ==
+          (shapes[selectedShapeIndex].width < 0 &&
+            shapes[selectedShapeIndex].height < 0)
+          ? 'sw-resize'
+          : 'nw-resize'
       );
     else if (position == 'BL')
       $('.mainCanvas').css(
         'cursor',
-        shapes[selectedShapeIndex].width < 0 ||
-          shapes[selectedShapeIndex].height < 0
-          ? 'nw-resize'
-          : 'sw-resize'
+        (shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0) ==
+          (shapes[selectedShapeIndex].width < 0 &&
+            shapes[selectedShapeIndex].height < 0)
+          ? 'sw-resize'
+          : 'nw-resize'
       );
     else if (position == 'BR')
       $('.mainCanvas').css(
         'cursor',
-        shapes[selectedShapeIndex].width < 0 ||
-          shapes[selectedShapeIndex].height < 0
-          ? 'sw-resize'
-          : 'nw-resize'
+        (shapes[selectedShapeIndex].width < 0 ||
+          shapes[selectedShapeIndex].height < 0) ==
+          (shapes[selectedShapeIndex].width < 0 &&
+            shapes[selectedShapeIndex].height < 0)
+          ? 'nw-resize'
+          : 'sw-resize'
       );
   }
 }

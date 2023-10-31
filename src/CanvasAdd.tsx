@@ -1,5 +1,5 @@
 import Form from 'react-bootstrap/Form';
-import { AiOutlinePlusSquare } from 'react-icons/ai';
+import { AiFillPlusCircle, AiOutlinePlusSquare } from 'react-icons/ai';
 import { useState } from 'react';
 import $ from 'jquery';
 
@@ -9,14 +9,14 @@ export function CanvasAdd() {
   const handleCanvasAddShow = () => {
     if (!canvasAddShow) {
       setCanvasAddShow(true);
-      $('#canvasAddInput').animate(
+      $('#canvasAddImage').animate(
         {
           width: 'toggle',
         },
         210
       );
     } else {
-      $('#canvasAddInput').animate(
+      $('#canvasAddImage').animate(
         {
           width: 'toggle',
         },
@@ -31,7 +31,10 @@ export function CanvasAdd() {
       <Form.Label id="canvasAddButton" onClick={handleCanvasAddShow}>
         <AiOutlinePlusSquare />
       </Form.Label>
-      <Form.Control id="canvasAddInput" type="text" placeholder="Image URL" />
+      <div id="canvasAddImage" className="canvasAddImage">
+        <Form.Control type="text" placeholder="Image URL" />
+        <AiFillPlusCircle className="canvasNewButton" />
+      </div>
     </Form.Group>
   );
 }

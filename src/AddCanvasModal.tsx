@@ -19,7 +19,7 @@ export function AddCanvasModal({ show, handleClose }: any) {
       $('#canvasAdd').css('display', 'flex');
       handleClose();
     }
-  },[show]);
+  }, [show]);
 
   let navigate = useNavigate();
   const inputRef = useRef(null);
@@ -50,6 +50,7 @@ export function AddCanvasModal({ show, handleClose }: any) {
 
   return (
     <Nav.Item className="canvasNew" id="canvasAdd">
+      <AiFillPlusCircle className="canvasNewButton" onClick={addCanvas} />
       <Form.Control
         id="canvasNewInput"
         type="text"
@@ -59,7 +60,6 @@ export function AddCanvasModal({ show, handleClose }: any) {
         minLength={3}
         ref={inputRef}
       />
-      <AiFillPlusCircle className="canvasNewButton" onClick={addCanvas} />
     </Nav.Item>
   );
 }

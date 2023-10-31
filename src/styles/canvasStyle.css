@@ -36,6 +36,12 @@
   height: 2.5em;
   margin: 0.3em;
 }
+.canvasAddImage {
+  background-color: #00a4a4;
+  display: flex;
+  border-radius: 1em;
+  width: 12em;
+}
 #canvasAddButton {
   padding: 0;
   font-size: 2.5em;
@@ -46,9 +52,6 @@
 }
 #canvasAddButton:hover {
   color: #00a4a4;
-}
-#canvasAddInput {
-  display: none;
 }
 #context-menu {
   position: absolute;
