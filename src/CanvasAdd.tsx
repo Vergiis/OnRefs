@@ -1,7 +1,8 @@
 import Form from 'react-bootstrap/Form';
-import { AiFillPlusCircle, AiOutlinePlusSquare } from 'react-icons/ai';
+import { AiFillPlusCircle } from 'react-icons/ai';
 import { useState } from 'react';
 import $ from 'jquery';
+import { BsArrowLeftSquare, BsPlusSquare} from 'react-icons/bs';
 
 export function CanvasAdd() {
   const [canvasAddShow, setCanvasAddShow] = useState(false);
@@ -9,31 +10,36 @@ export function CanvasAdd() {
   const handleCanvasAddShow = () => {
     if (!canvasAddShow) {
       setCanvasAddShow(true);
-      $('#canvasAddImage').animate(
+      $('#imageAddToggle').animate(
         {
           width: 'toggle',
         },
         210
       );
     } else {
-      $('#canvasAddImage').animate(
+      $('#imageAddToggle').animate(
         {
           width: 'toggle',
         },
         210
       );
+
       setCanvasAddShow(false);
     }
   };
 
+  const [isArrowIcon, setIsArrowIcon] = useState(false)
+
   return (
     <Form.Group className="canvasAddInput">
       <Form.Label id="canvasAddButton" onClick={handleCanvasAddShow}>
-        <AiOutlinePlusSquare />
+        {isArrowIcon ? <BsArrowLeftSquare /> : <BsPlusSquare />}
       </Form.Label>
-      <div id="canvasAddImage" className="canvasAddImage">
-        <Form.Control type="text" placeholder="Image URL" />
-        <AiFillPlusCircle className="canvasNewButton" />
+      <div id="imageAddToggle">
+        <div id="canvasAddImage" className="canvasAddImage">
+          <Form.Control type="text" placeholder="Image URL" />
+          <AiFillPlusCircle className="imageAddButton" />
+        </div>
       </div>
     </Form.Group>
   );
