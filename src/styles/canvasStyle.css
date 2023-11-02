@@ -61,12 +61,13 @@
   color: whitesmoke;
   cursor: pointer;
   margin-right: 0.1em;
+  margin-left: 0.15em;
 }
 #canvasAddButton:hover {
   color: #00a4a4;
 }
 #imageAddToggle {
-  display: flex;
+  display: none;
 }
 #context-menu {
   position: absolute;

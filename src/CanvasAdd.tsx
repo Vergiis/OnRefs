@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useState } from 'react';
 import $ from 'jquery';
-import { BsArrowLeftSquare, BsPlusSquare} from 'react-icons/bs';
+import { BsArrowLeftSquare, BsPlusSquare } from 'react-icons/bs';
 
 export function CanvasAdd() {
   const [canvasAddShow, setCanvasAddShow] = useState(false);
@@ -16,6 +16,7 @@ export function CanvasAdd() {
         },
         210
       );
+      setIsArrowIcon(!isArrowIcon);
     } else {
       $('#imageAddToggle').animate(
         {
@@ -23,12 +24,12 @@ export function CanvasAdd() {
         },
         210
       );
-
+      setIsArrowIcon(!isArrowIcon);
       setCanvasAddShow(false);
     }
   };
 
-  const [isArrowIcon, setIsArrowIcon] = useState(false)
+  const [isArrowIcon, setIsArrowIcon] = useState(false);
 
   return (
     <Form.Group className="canvasAddInput">
