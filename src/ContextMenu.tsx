@@ -5,7 +5,7 @@ export function ContextMenu({
   showDropdown,
   hideDropdown,
   contextDelete,
-  contextResize
+  contextResize,
 }: any) {
   return (
     <Dropdown
@@ -16,6 +16,13 @@ export function ContextMenu({
       onMouseLeave={hideDropdown}
     >
       <Dropdown.Menu>
+        <Dropdown.Item
+          id="context-copy"
+          className="dropdown-item context-item"
+          onClick={contextResize}
+        >
+          Copy Image URL
+        </Dropdown.Item>
         <Dropdown.Item
           id="context-resize"
           className="dropdown-item context-item"

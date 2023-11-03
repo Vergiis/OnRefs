@@ -440,18 +440,23 @@ function LoadDrop(url: string, x: number, y: number) {
   };
 }
 
-function handleDrop(evt: any) {
-  evt.stopPropagation();
-  evt.preventDefault();
-  let imageUrl = evt.dataTransfer.getData('text/html');
-  let url = '';
+function checkURL(imageUrl: any) {
+  let url = null;
   let rex = ['.jpg', '.jpeg', '.png', '.ebp', '.avif', '.gif', '.svg'];
+
   rex.forEach((el) => {
     let idxEnd = imageUrl.indexOf(el);
     let idxStart = imageUrl.indexOf('http');
-    if (idxStart > 0 && idxEnd > 0)
+    if (idxStart >= 0 && idxEnd > 0)
       url = imageUrl.substring(idxStart, idxEnd + el.length);
   });
+  return url;
+}
+
+function handleDrop(evt: any) {
+  evt.stopPropagation();
+  evt.preventDefault();
+  let url = checkURL(evt.dataTransfer.getData('text/html'));
 
   if (url != null) {
     lastX = evt.offsetX || evt.pageX - canvas.offsetLeft;
@@ -683,6 +688,17 @@ function resizeImage() {
   }
 }
 
+function modalAddImage(input: string) {
+  let url = checkURL(input);
+
+  if (url != null) {
+    lastX = canvas.width / 2;
+    lastY = canvas.height / 2;
+    let pt = ctx.transformedPoint(lastX, lastY);
+    LoadDrop(url, pt.x, pt.y);
+  }
+}
+
 const Canvas = (
   {
     showDropdown,
@@ -692,9 +708,16 @@ const Canvas = (
     contextResize,
     endContextResize,
     resetNavBar,
+    modalAddImageClick,
+    modalAddImageStatus,
+    modalAddImageEnd,
   }: any,
   props: any
 ) => {
+  useEffect(() => {
+    if (modalAddImageStatus != '') modalAddImage(modalAddImageStatus);
+    modalAddImageEnd();
+  }, [modalAddImageClick]);
   useEffect(() => {
     if (contextDelete) {
       deleteImage();

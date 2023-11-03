@@ -74,3 +74,6 @@
   display: fixed;
   z-index: 999;
 }
+.context-item:hover {
+  color: whitesmoke;
+}

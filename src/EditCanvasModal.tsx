@@ -38,7 +38,7 @@ export function EditCanvasModal({ show, handleClose }: any) {
   }, []);
 
   let navigate = useNavigate();
-  const inputRef = useRef(null);
+  const inputRef:any = useRef(null);
   const editCanvas = () => {
     let name = inputRef.current.value;
     if (name == null || name.trim() == '') return;

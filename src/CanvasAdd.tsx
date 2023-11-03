@@ -1,10 +1,10 @@
 import Form from 'react-bootstrap/Form';
 import { AiFillPlusCircle } from 'react-icons/ai';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import $ from 'jquery';
 import { BsArrowLeftSquare, BsPlusSquare } from 'react-icons/bs';
 
-export function CanvasAdd() {
+export function CanvasAdd({ modalAddImageClick }: any) {
   const [canvasAddShow, setCanvasAddShow] = useState(false);
 
   const handleCanvasAddShow = () => {
@@ -30,6 +30,13 @@ export function CanvasAdd() {
   };
 
   const [isArrowIcon, setIsArrowIcon] = useState(false);
+  const inputRef: any = useRef(null);
+
+  const addImage = () => {
+    handleCanvasAddShow();
+    modalAddImageClick(inputRef.current.value);
+    $('#addImageInput').val('');
+  };
 
   return (
     <Form.Group className="canvasAddInput">
@@ -38,8 +45,21 @@ export function CanvasAdd() {
       </Form.Label>
       <div id="imageAddToggle">
         <div id="canvasAddImage" className="canvasAddImage">
-          <Form.Control type="text" placeholder="Image URL" />
-          <AiFillPlusCircle className="imageAddButton" />
+          <Form.Control
+            type="text"
+            placeholder="Image URL"
+            id="addImageInput"
+            ref={inputRef}
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') addImage();
+            }}
+          />
+          <AiFillPlusCircle
+            className="imageAddButton"
+            onClick={() => {
+              addImage();
+            }}
+          />
         </div>
       </div>
     </Form.Group>

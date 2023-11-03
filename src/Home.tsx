@@ -36,12 +36,19 @@ export function Home() {
     setContextResize(false);
   };
 
+  const [modalAddImage, SetModalAddImage] = useState("");
+  const modalAddImageClick = (val: any) => {
+    SetModalAddImage(val);
+  };
+  const modalAddImageEnd = () => {
+    SetModalAddImage("");
+  };
   return (
     <>
       <CookiesProvider>
         <Container>
           <NavBar key={seed} />
-          <CanvasAdd />
+          <CanvasAdd modalAddImageClick={modalAddImageClick} />
         </Container>
         <Canvas
           showDropdown={showContext}
@@ -51,6 +58,9 @@ export function Home() {
           contextResize={contextResize}
           endContextResize={endContextResize}
           resetNavBar={reset}
+          modalAddImageClick={modalAddImageClick}
+          modalAddImageStatus={modalAddImage}
+          modalAddImageEnd={modalAddImageEnd}
         />
         <ContextMenu
           show={contextShow}
