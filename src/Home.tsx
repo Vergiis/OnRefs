@@ -36,12 +36,12 @@ export function Home() {
     setContextResize(false);
   };
 
-  const [modalAddImage, SetModalAddImage] = useState("");
+  const [modalAddImage, SetModalAddImage] = useState('');
   const modalAddImageClick = (val: any) => {
     SetModalAddImage(val);
   };
   const modalAddImageEnd = () => {
-    SetModalAddImage("");
+    SetModalAddImage('');
   };
   return (
     <>

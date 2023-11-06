@@ -54,6 +54,17 @@
 .imageAddButton:hover {
   color: whitesmoke;
 }
+#imageAddError {
+  background-color: rgb(204, 5, 5);
+  color: whitesmoke;
+  text-align: center;
+  font-size: smaller;
+  width: 11em;
+  position: absolute;
+  margin-top: -1.4em;
+  margin-left: 0.4em;
+  display: none;
+}
 #canvasAddButton {
   padding: 0;
   font-size: 2.2em;

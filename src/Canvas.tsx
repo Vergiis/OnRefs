@@ -696,6 +696,24 @@ function modalAddImage(input: string) {
     lastY = canvas.height / 2;
     let pt = ctx.transformedPoint(lastX, lastY);
     LoadDrop(url, pt.x, pt.y);
+
+    $('#addImageInput')
+      .css('border', '2px solid rgb(5, 204, 32)')
+      .delay(1100)
+      .queue(() => {
+        $('#addImageInput').css('border', '0');
+        $('#addImageInput').dequeue();
+      });
+    $('#addImageInput').val('');
+  } else {
+    $('#imageAddError').slideToggle('fast').delay(800).slideToggle('fast');
+    $('#addImageInput')
+      .css('border', '2px solid rgb(204, 5, 5)')
+      .delay(1100)
+      .queue(() => {
+        $('#addImageInput').css('border', '0');
+        $('#addImageInput').dequeue();
+      });
   }
 }
 

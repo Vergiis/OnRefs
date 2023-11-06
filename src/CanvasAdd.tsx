@@ -14,7 +14,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
         {
           width: 'toggle',
         },
-        210
+        200
       );
       setIsArrowIcon(!isArrowIcon);
     } else {
@@ -22,7 +22,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
         {
           width: 'toggle',
         },
-        210
+        200
       );
       setIsArrowIcon(!isArrowIcon);
       setCanvasAddShow(false);
@@ -33,9 +33,10 @@ export function CanvasAdd({ modalAddImageClick }: any) {
   const inputRef: any = useRef(null);
 
   const addImage = () => {
-    handleCanvasAddShow();
     modalAddImageClick(inputRef.current.value);
-    $('#addImageInput').val('');
+    setTimeout(() => {
+      handleCanvasAddShow();
+    }, 300);
   };
 
   return (
@@ -44,6 +45,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
         {isArrowIcon ? <BsArrowLeftSquare /> : <BsPlusSquare />}
       </Form.Label>
       <div id="imageAddToggle">
+        <Form.Label id="imageAddError">Wrong URL</Form.Label>
         <div id="canvasAddImage" className="canvasAddImage">
           <Form.Control
             type="text"
