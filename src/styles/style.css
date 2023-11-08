@@ -89,6 +89,19 @@ body {
   display: none;
 }
 
+.pageNotifications {
+  position: absolute;
+  background-color: rgb(5, 204, 32);
+  bottom: 0;
+  right: 0;
+  width: 15em;
+  text-align: center;
+  font-weight: bold;
+  color: whitesmoke;
+  margin-right: 0.5em;
+  display: none;
+}
+
 @media (max-width: 990px) {
   .canvasOptionsButtons {
     margin-right: 0.2em;

@@ -5,6 +5,7 @@ import Canvas from './Canvas';
 import { CookiesProvider } from 'react-cookie';
 import { ContextMenu } from './ContextMenu';
 import { useState } from 'react';
+import { PageNotifications } from './PageNotifications';
 
 export function Home() {
   const [seed, setSeed] = useState(1);
@@ -36,6 +37,14 @@ export function Home() {
     setContextResize(false);
   };
 
+  const [contextCopyURL, setContextCopyURL] = useState(false);
+  const contextCopyURLClick = () => {
+    setContextCopyURL(true);
+  };
+  const endContextCopyURL = () => {
+    setContextCopyURL(false);
+  };
+
   const [modalAddImage, SetModalAddImage] = useState('');
   const modalAddImageClick = (val: any) => {
     SetModalAddImage(val);
@@ -49,6 +58,7 @@ export function Home() {
         <Container>
           <NavBar key={seed} />
           <CanvasAdd modalAddImageClick={modalAddImageClick} />
+          <PageNotifications />
         </Container>
         <Canvas
           showDropdown={showContext}
@@ -56,7 +66,9 @@ export function Home() {
           contextDelete={contextDelete}
           endContextDelete={endContextDelete}
           contextResize={contextResize}
+          contextCopyURL={contextCopyURL}
           endContextResize={endContextResize}
+          endContextCopyURL={endContextCopyURL}
           resetNavBar={reset}
           modalAddImageClick={modalAddImageClick}
           modalAddImageStatus={modalAddImage}
@@ -68,6 +80,7 @@ export function Home() {
           hideDropdown={hideContext}
           contextDelete={contextDeleteClick}
           contextResize={contextResizeClick}
+          contextCopyURL={contextCopyURLClick}
         />
       </CookiesProvider>
     </>

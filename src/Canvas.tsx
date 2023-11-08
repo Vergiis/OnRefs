@@ -688,6 +688,12 @@ function resizeImage() {
   }
 }
 
+function copyImageURL() {
+  navigator.clipboard.writeText(shapes[selectedShapeIndex].url);
+  $('#pageNotifications').slideToggle('fast').delay(800).slideToggle('fast');
+  $('#pageNotifications').text('Copied To Clipboard');
+}
+
 function modalAddImage(input: string) {
   let url = checkURL(input);
 
@@ -724,7 +730,9 @@ const Canvas = (
     contextDelete,
     endContextDelete,
     contextResize,
+    contextCopyURL,
     endContextResize,
+    endContextCopyURL,
     resetNavBar,
     modalAddImageClick,
     modalAddImageStatus,
@@ -743,9 +751,12 @@ const Canvas = (
     } else if (contextResize) {
       resizeImage();
       endContextResize();
+    } else if (contextCopyURL) {
+      copyImageURL();
+      endContextCopyURL();
     }
     hideDropdown();
-  }, [contextDelete, contextResize]);
+  }, [contextDelete, contextResize, contextCopyURL]);
 
   const canvasRef = useRef<any>();
 
