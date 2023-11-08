@@ -2,7 +2,7 @@ import Form from 'react-bootstrap/Form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useRef, useState } from 'react';
 import $ from 'jquery';
-import { BsArrowLeftSquare, BsPlusSquare } from 'react-icons/bs';
+import { BiImageAdd, BiLeftArrow } from 'react-icons/bi';
 
 export function CanvasAdd({ modalAddImageClick }: any) {
   const [canvasAddShow, setCanvasAddShow] = useState(false);
@@ -42,7 +42,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
   return (
     <Form.Group className="canvasAddInput">
       <Form.Label id="canvasAddButton" onClick={handleCanvasAddShow}>
-        {isArrowIcon ? <BsArrowLeftSquare /> : <BsPlusSquare />}
+        {isArrowIcon ? <BiLeftArrow /> : <BiImageAdd />}
       </Form.Label>
       <div id="imageAddToggle">
         <Form.Label id="imageAddError">Invalid URL</Form.Label>

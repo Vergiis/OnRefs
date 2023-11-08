@@ -305,7 +305,8 @@ function AddImage(
   height: number,
   image: any,
   url: string,
-  i: number
+  i: number,
+  type: string
 ) {
   shapes.push({
     x: x,
@@ -315,6 +316,7 @@ function AddImage(
     image: image,
     url: url,
     position: i,
+    type: type,
   });
   redraw();
 }
@@ -343,7 +345,7 @@ function loadCanvas(cookies: string) {
       let img = new Image();
       img.src = el.url;
       img.onload = function () {
-        AddImage(el.x, el.y, el.width, el.height, img, el.url, i);
+        AddImage(el.x, el.y, el.width, el.height, img, el.url, i, el.type);
       };
     }
     canvasID = content.canvasID;
@@ -435,7 +437,7 @@ function LoadDrop(url: string, x: number, y: number) {
   img.onload = function () {
     let position = 0;
     if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
-    AddImage(x, y, img.width, img.height, img, url, position);
+    AddImage(x, y, img.width, img.height, img, url, position, 'Image');
     SaveToLocal();
   };
 }

@@ -6,6 +6,7 @@ import { CookiesProvider } from 'react-cookie';
 import { ContextMenu } from './ContextMenu';
 import { useState } from 'react';
 import { PageNotifications } from './PageNotifications';
+import { TextAdd } from './TextAdd';
 
 export function Home() {
   const [seed, setSeed] = useState(1);
@@ -58,6 +59,7 @@ export function Home() {
         <Container>
           <NavBar key={seed} />
           <CanvasAdd modalAddImageClick={modalAddImageClick} />
+          <TextAdd />
           <PageNotifications />
         </Container>
         <Canvas
