@@ -45,7 +45,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
         {isArrowIcon ? <BsArrowLeftSquare /> : <BsPlusSquare />}
       </Form.Label>
       <div id="imageAddToggle">
-        <Form.Label id="imageAddError">Wrong URL</Form.Label>
+        <Form.Label id="imageAddError">Invalid URL</Form.Label>
         <div id="canvasAddImage" className="canvasAddImage">
           <Form.Control
             type="text"

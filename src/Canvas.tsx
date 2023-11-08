@@ -463,6 +463,10 @@ function handleDrop(evt: any) {
     lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
     let pt = ctx.transformedPoint(lastX, lastY);
     LoadDrop(url, pt.x, pt.y);
+  } else {
+    $('#pageNotifications').text('Invalid URL');
+    $('#pageNotifications').css('background-color', 'rgb(204, 5, 5)');
+    $('#pageNotifications').slideToggle('fast').delay(800).slideToggle('fast');
   }
 }
 
@@ -690,8 +694,10 @@ function resizeImage() {
 
 function copyImageURL() {
   navigator.clipboard.writeText(shapes[selectedShapeIndex].url);
-  $('#pageNotifications').slideToggle('fast').delay(800).slideToggle('fast');
+
   $('#pageNotifications').text('Copied To Clipboard');
+  $('#pageNotifications').css('background-color', 'rgb(5, 204, 32)');
+  $('#pageNotifications').slideToggle('fast').delay(800).slideToggle('fast');
 }
 
 function modalAddImage(input: string) {
