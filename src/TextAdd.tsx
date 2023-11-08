@@ -3,10 +3,12 @@ import { MdOutlineTextFields } from 'react-icons/md';
 
 export function TextAdd() {
   return (
-    <Form.Group className="addTextInput">
-      <Form.Label id="addTextButton">
-        <MdOutlineTextFields />
-      </Form.Label>
-    </Form.Group>
+    <Form className="addTextInput">
+      <Form.Group>
+        <Form.Label id="addTextButton">
+          <MdOutlineTextFields />
+        </Form.Label>
+      </Form.Group>
+    </Form>
   );
 }
