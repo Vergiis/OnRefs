@@ -35,7 +35,7 @@ export function CanvasAdd({ modalAddImageClick }: any) {
   const addImage = () => {
     modalAddImageClick(inputRef.current.value);
     setTimeout(() => {
-      handleCanvasAddShow();
+      if (inputRef.current.value == '') handleCanvasAddShow();
     }, 300);
   };
 
