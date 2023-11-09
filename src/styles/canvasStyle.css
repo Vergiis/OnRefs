@@ -80,14 +80,14 @@
 #imageAddToggle {
   display: none;
 }
-.addTextInput {
+.addText {
   position: absolute;
   bottom: 2.5em;
   left: 0;
   float: left;
   display: flex;
   height: 2.5em;
-  margin: 0.3em;
+  margin-bottom: 0.3em;
 }
 #addTextButton {
   padding: 0;
@@ -100,6 +100,27 @@
 }
 #addTextButton:hover {
   color: #00a4a4;
+}
+.addOptionWindow {
+  width: 12em;
+  height: 5em;
+  margin-top: -3em;
+  background-color: #212529;
+}
+.addTextInput {
+  float: left;
+  position: relative;
+  height: 30%;
+  width: 80%;
+  margin-left: 9%;
+  margin-top: 5%;
+  background-color: whitesmoke;
+  font-weight: bold;
+}
+#addTextColor{
+  background-color: transparent;
+  border: 0;
+  width: 20%;
 }
 #context-menu {
   position: absolute;
