@@ -13,12 +13,10 @@ export function TextAdd() {
           placeholder="Size"
           className="addTextInput"
         />
-        <Form.Control
-          type="color"
-          placeholder="Size"
-          className="addTextInput"
-          id="addTextColor"
-        />
+        <Form.Group className="addTextInput" id="addTextColorGroup">
+          <Form.Label>Color</Form.Label>
+          <Form.Control type="color" id="addTextColor"/>
+        </Form.Group>
       </Form.Group>
       <Form.Group>
         <Form.Label id="addTextButton">

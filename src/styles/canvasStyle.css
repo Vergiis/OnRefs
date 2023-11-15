@@ -103,24 +103,34 @@
 }
 .addOptionWindow {
   width: 12em;
-  height: 5em;
-  margin-top: -3em;
+  height: 8em;
+  margin-top: -6em;
   background-color: #212529;
 }
 .addTextInput {
   float: left;
   position: relative;
-  height: 30%;
+  height: 1.8em;
   width: 80%;
   margin-left: 9%;
   margin-top: 5%;
   background-color: whitesmoke;
   font-weight: bold;
 }
-#addTextColor{
+#addTextColorGroup {
+  display: flex;
+  position: relative;
   background-color: transparent;
-  border: 0;
-  width: 20%;
+  color: whitesmoke;
+  padding: 0.2em;
+}
+#addTextColor {
+  margin-left: 0.5em;
+  padding: 0.1em;
+  border: 1px solid whitesmoke;
+  background-color: transparent;
+  height: 1.6em;
+  width: 7em;
 }
 #context-menu {
   position: absolute;
