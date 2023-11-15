@@ -53,13 +53,24 @@ export function Home() {
   const modalAddImageEnd = () => {
     SetModalAddImage('');
   };
+
+  const [modalAddText, SetModalAddText] = useState([
+    { value: '', size: 12, color: '#000' },
+  ]);
+  const modalAddTextClick = (val: any) => {
+    SetModalAddText(val);
+  };
+  const modalAddTextEnd = () => {
+    SetModalAddText([{ value: '', size: 12, color: '#000' }]);
+  };
+
   return (
     <>
       <CookiesProvider>
         <Container>
           <NavBar key={seed} />
           <CanvasAdd modalAddImageClick={modalAddImageClick} />
-          <TextAdd />
+          <TextAdd modalAddTextClick={modalAddTextClick} />
           <PageNotifications />
         </Container>
         <Canvas
@@ -75,6 +86,9 @@ export function Home() {
           modalAddImageClick={modalAddImageClick}
           modalAddImageStatus={modalAddImage}
           modalAddImageEnd={modalAddImageEnd}
+          modalAddTextClick={modalAddTextClick}
+          modalAddTextStatus={modalAddText[0]}
+          modalAddTextEnd={modalAddTextEnd}
         />
         <ContextMenu
           show={contextShow}

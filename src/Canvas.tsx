@@ -136,13 +136,18 @@ function redraw() {
 
   //Draw images
   for (let i = 0; i < shapes.length; i++) {
-    ctx.drawImage(
-      shapes[i].image,
-      shapes[i].x,
-      shapes[i].y,
-      shapes[i].width,
-      shapes[i].height
-    );
+    if (shapes[i].type == 'Image') {
+      ctx.drawImage(
+        shapes[i].image,
+        shapes[i].x,
+        shapes[i].y,
+        shapes[i].width,
+        shapes[i].height
+      );
+    } else if (shapes[i].type == 'Text') {
+      ctx.font = shapes[i].text.size + 'px Arial';
+      ctx.fillText(shapes[i].text.value, shapes[i].x, shapes[i].y);
+    }
   }
 }
 
@@ -298,7 +303,7 @@ function zoom(clicks: number) {
 }
 
 //Add image to draw list
-function AddImage(
+function AddToCanvas(
   x: number,
   y: number,
   width: number,
@@ -306,7 +311,8 @@ function AddImage(
   image: any,
   url: string,
   i: number,
-  type: string
+  type: string,
+  text: any
 ) {
   shapes.push({
     x: x,
@@ -317,6 +323,7 @@ function AddImage(
     url: url,
     position: i,
     type: type,
+    text: text,
   });
   redraw();
 }
@@ -345,7 +352,17 @@ function loadCanvas(cookies: string) {
       let img = new Image();
       img.src = el.url;
       img.onload = function () {
-        AddImage(el.x, el.y, el.width, el.height, img, el.url, i, el.type);
+        AddToCanvas(
+          el.x,
+          el.y,
+          el.width,
+          el.height,
+          img,
+          el.url,
+          i,
+          el.type,
+          el.text
+        );
       };
     }
     canvasID = content.canvasID;
@@ -437,7 +454,7 @@ function LoadDrop(url: string, x: number, y: number) {
   img.onload = function () {
     let position = 0;
     if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
-    AddImage(x, y, img.width, img.height, img, url, position, 'Image');
+    AddToCanvas(x, y, img.width, img.height, img, url, position, 'Image', null);
     SaveToLocal();
   };
 }
@@ -731,6 +748,17 @@ function modalAddImage(input: string) {
   }
 }
 
+function modalAddText(input: any) {
+  lastX = canvas.width / 2;
+  lastY = canvas.height / 2;
+  let pt = ctx.transformedPoint(lastX, lastY);
+
+  let position = 0;
+  if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
+
+  AddToCanvas(pt.x, pt.y, 0, 0, null, '', position, 'Text', input);
+}
+
 const Canvas = (
   {
     showDropdown,
@@ -745,13 +773,24 @@ const Canvas = (
     modalAddImageClick,
     modalAddImageStatus,
     modalAddImageEnd,
+    modalAddTextClick,
+    modalAddTextStatus,
+    modalAddTextEnd,
   }: any,
   props: any
 ) => {
   useEffect(() => {
+    if (modalAddTextStatus.value != '') {
+      modalAddText(modalAddTextStatus);
+      modalAddTextEnd();
+    }
+  }, [modalAddTextClick]);
+
+  useEffect(() => {
     if (modalAddImageStatus != '') modalAddImage(modalAddImageStatus);
     modalAddImageEnd();
   }, [modalAddImageClick]);
+
   useEffect(() => {
     if (contextDelete) {
       deleteImage();
