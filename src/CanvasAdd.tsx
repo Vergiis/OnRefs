@@ -41,9 +41,6 @@ export function CanvasAdd({ modalAddImageClick }: any) {
 
   return (
     <Form className="canvasAddInput">
-      <Form.Group id="canvasAddButton" onClick={handleCanvasAddShow}>
-        {isArrowIcon ? <BiLeftArrow /> : <BiImageAdd />}
-      </Form.Group>
       <Form.Group id="imageAddToggle">
         <Form.Label id="imageAddError">Invalid URL</Form.Label>
         <div id="canvasAddImage" className="canvasAddImage">
@@ -63,6 +60,9 @@ export function CanvasAdd({ modalAddImageClick }: any) {
             }}
           />
         </div>
+      </Form.Group>
+      <Form.Group id="canvasAddButton" onClick={handleCanvasAddShow}>
+        {isArrowIcon ? <BiLeftArrow /> : <BiImageAdd />}
       </Form.Group>
     </Form>
   );

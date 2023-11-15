@@ -35,14 +35,20 @@
   display: flex;
   height: 2.5em;
   margin: 0.3em;
+  margin-left: 0;
 }
 .canvasAddImage {
-  background-color: #00a4a4;
+  background-color: #212529;
   display: flex;
-  border-radius: 1em;
+  border-radius: 0em 1em 1em 0;
   width: 12em;
   height: 2em;
   margin-top: 0.1em;
+  padding-left: 0.3em;
+}
+#addImageInput{
+  height: 1.5em;
+  margin-top: 0.25em;
 }
 .imageAddButton {
   float: left;
@@ -50,9 +56,10 @@
   margin-left: 0.1em;
   margin-right: 0.1em;
   cursor: pointer;
+  color: whitesmoke;
 }
 .imageAddButton:hover {
-  color: whitesmoke;
+  color: #00a4a4;
 }
 #imageAddError {
   background-color: rgb(204, 5, 5);

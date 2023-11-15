@@ -1,5 +1,5 @@
 import { Form } from 'react-bootstrap';
-import { BiRightArrow } from 'react-icons/bi';
+import { BiLeftArrow } from 'react-icons/bi';
 import { GiConfirmed } from 'react-icons/gi';
 import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
 
@@ -19,13 +19,13 @@ export function TextAdd() {
           <Form.Control type="color" id="addTextColor" />
         </Form.Group>
         <Form.Group className="addTextInput" id="addTextButtonsGroup">
-          <GiConfirmed className="addTextIcon" />
           <MdAddCircle className="addTextIcon" />
+          <GiConfirmed className="addTextIcon" />
         </Form.Group>
       </Form.Group>
       <Form.Group>
         <Form.Label id="addTextButton">
-          <BiRightArrow />
+          <BiLeftArrow />
           <MdOutlineTextFields />
         </Form.Label>
       </Form.Group>
