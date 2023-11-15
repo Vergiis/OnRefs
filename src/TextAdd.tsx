@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { BiLeftArrow } from 'react-icons/bi';
+import { FaArrowCircleLeft } from 'react-icons/fa';
 import { GiConfirmed } from 'react-icons/gi';
 import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
 
 export function TextAdd() {
+  const [isArrowIcon, setIsArrowIcon] = useState(true);
+
   return (
     <Form className="addText">
       <Form.Group className="addOptionWindow">
@@ -25,8 +28,8 @@ export function TextAdd() {
       </Form.Group>
       <Form.Group>
         <Form.Label id="addTextButton">
-          <BiLeftArrow />
-          <MdOutlineTextFields />
+          { isArrowIcon ? <FaArrowCircleLeft className="arrowButton" />
+          : <MdOutlineTextFields />}
         </Form.Label>
       </Form.Group>
     </Form>

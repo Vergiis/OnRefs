@@ -87,6 +87,14 @@
 #imageAddToggle {
   display: none;
 }
+.arrowButton {
+  margin-top: 0.2em;
+  font-size: 0.7em;
+  color: #212529;
+}
+.arrowButton:hover {
+  color: #00a4a4;
+}
 .addText {
   position: absolute;
   bottom: 2.5em;

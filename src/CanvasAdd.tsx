@@ -2,7 +2,8 @@ import Form from 'react-bootstrap/Form';
 import { AiFillPlusCircle } from 'react-icons/ai';
 import { useRef, useState } from 'react';
 import $ from 'jquery';
-import { BiImageAdd, BiLeftArrow } from 'react-icons/bi';
+import { BiImageAdd } from 'react-icons/bi';
+import { FaArrowCircleLeft } from 'react-icons/fa';
 
 export function CanvasAdd({ modalAddImageClick }: any) {
   const [canvasAddShow, setCanvasAddShow] = useState(false);
@@ -62,7 +63,11 @@ export function CanvasAdd({ modalAddImageClick }: any) {
         </div>
       </Form.Group>
       <Form.Group id="canvasAddButton" onClick={handleCanvasAddShow}>
-        {isArrowIcon ? <BiLeftArrow /> : <BiImageAdd />}
+        {isArrowIcon ? (
+          <FaArrowCircleLeft className="arrowButton" />
+        ) : (
+          <BiImageAdd />
+        )}
       </Form.Group>
     </Form>
   );
