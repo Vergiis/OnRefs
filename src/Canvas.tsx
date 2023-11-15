@@ -145,7 +145,9 @@ function redraw() {
         shapes[i].height
       );
     } else if (shapes[i].type == 'Text') {
-      ctx.font = shapes[i].text.size + 'px Arial';
+      ctx.font = shapes[i].text.size * 5 + 'px Arial';
+      ctx.fillStyle = shapes[i].text.color;
+      ctx.textAlign = 'center';
       ctx.fillText(shapes[i].text.value, shapes[i].x, shapes[i].y);
     }
   }
@@ -349,21 +351,35 @@ function loadCanvas(cookies: string) {
   if (content != null) {
     for (let i = 0; i < content.canvasData.length; i++) {
       let el = content.canvasData[i];
-      let img = new Image();
-      img.src = el.url;
-      img.onload = function () {
+      if (el.type == 'Image') {
+        let img = new Image();
+        img.src = el.url;
+        img.onload = function () {
+          AddToCanvas(
+            el.x,
+            el.y,
+            el.width,
+            el.height,
+            img,
+            el.url,
+            i,
+            el.type,
+            el.text
+          );
+        };
+      } else if (el.type == 'Text') {
         AddToCanvas(
           el.x,
           el.y,
           el.width,
           el.height,
-          img,
+          null,
           el.url,
           i,
           el.type,
           el.text
         );
-      };
+      }
     }
     canvasID = content.canvasID;
     canvasName = content.canvasName;
@@ -856,14 +872,14 @@ const Canvas = (
 
   const [cookies, setCookie] = useCookies(['canvasID']);
   useEffect(() => {
+    trackTransforms();
+
     canvasID = uuidv4();
     let lastPosition = loadCanvas(cookies.canvasID);
     setCookie('canvasID', canvasID);
 
     canvas = canvasRef.current;
     ctx = canvas.getContext('2d');
-
-    trackTransforms();
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
