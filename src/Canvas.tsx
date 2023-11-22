@@ -145,7 +145,7 @@ function redraw() {
         shapes[i].height
       );
     } else if (shapes[i].type == 'Text') {
-      ctx.font = shapes[i].text.size * 5 + 'px Arial';
+      ctx.font = shapes[i].text.size * 10 + 'px Arial';
       ctx.fillStyle = shapes[i].text.color;
       ctx.textAlign = 'center';
       ctx.fillText(shapes[i].text.value, shapes[i].x, shapes[i].y);
@@ -211,10 +211,7 @@ function isPointInside(
 }
 
 function isMouseInShape(mx: number, my: number, shape: any) {
-  if (
-    shape.image &&
-    isPointInside(mx, my, shape.x, shape.y, shape.width, shape.height)
-  )
+  if (isPointInside(mx, my, shape.x, shape.y, shape.width, shape.height))
     return true;
   return false;
 }
@@ -662,9 +659,11 @@ function handleMouseUp(evt: any) {
   dragStart = null;
   if (!dragged) zoom(evt.shiftKey ? -1 : 1);
   if (isDraggingImg) isDraggingImg = false;
-  if (evt.button == 0) isDreaggingResize = null;
+  if (evt.button == 0 && isDreaggingResize != null) {
+    isDreaggingResize = null;
+    isResizing = true;
+  } else redraw();
   SaveToLocal();
-  redraw();
 }
 
 function handleScroll(evt: any) {
@@ -772,7 +771,20 @@ function modalAddText(input: any) {
   let position = 0;
   if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
 
-  AddToCanvas(pt.x, pt.y, 0, 0, null, '', position, 'Text', input);
+  ctx.font = input.size * 10 + 'px Arial';
+  let metrics = ctx.measureText(input.value);
+
+  AddToCanvas(
+    pt.x,
+    pt.y,
+    metrics.width,
+    metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent,
+    null,
+    '',
+    position,
+    'Text',
+    input
+  );
 }
 
 const Canvas = (
@@ -872,14 +884,14 @@ const Canvas = (
 
   const [cookies, setCookie] = useCookies(['canvasID']);
   useEffect(() => {
+    canvas = canvasRef.current;
+    ctx = canvas.getContext('2d');
+
     trackTransforms();
 
     canvasID = uuidv4();
     let lastPosition = loadCanvas(cookies.canvasID);
     setCookie('canvasID', canvasID);
-
-    canvas = canvasRef.current;
-    ctx = canvas.getContext('2d');
 
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
