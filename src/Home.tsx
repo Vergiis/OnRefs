@@ -101,6 +101,7 @@ export function Home() {
         <ContextMenu
           show={contextShow}
           showDropdown={showContext}
+          showTextDropdown={textContextShow}
           hideDropdown={hideContext}
           contextDelete={contextDeleteClick}
           contextResize={contextResizeClick}

@@ -3,6 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 export function ContextMenu({
   show,
   showDropdown,
+  showTextDropdown,
   hideDropdown,
   contextDelete,
   contextResize,
@@ -17,20 +18,28 @@ export function ContextMenu({
       onMouseLeave={hideDropdown}
     >
       <Dropdown.Menu>
-        <Dropdown.Item
-          id="context-copy"
-          className="dropdown-item context-item"
-          onClick={contextCopyURL}
-        >
-          Copy Image URL
-        </Dropdown.Item>
-        <Dropdown.Item
-          id="context-resize"
-          className="dropdown-item context-item"
-          onClick={contextResize}
-        >
-          Resize
-        </Dropdown.Item>
+        {!showTextDropdown ? (
+          <Dropdown.Item
+            id="context-copy"
+            className="dropdown-item context-item"
+            onClick={contextCopyURL}
+          >
+            Copy Image URL
+          </Dropdown.Item>
+        ) : (
+          <></>
+        )}
+        {!showTextDropdown ? (
+          <Dropdown.Item
+            id="context-resize"
+            className="dropdown-item context-item"
+            onClick={contextResize}
+          >
+            Resize
+          </Dropdown.Item>
+        ) : (
+          <></>
+        )}
         <Dropdown.Item
           id="context-delete"
           className="dropdown-item context-item"
