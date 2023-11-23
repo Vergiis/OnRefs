@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
-import { GiConfirmed } from 'react-icons/gi';
 import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
 
 export function TextAdd({ modalAddTextClick }: any) {
@@ -55,12 +54,14 @@ export function TextAdd({ modalAddTextClick }: any) {
           className="addTextInput"
           id="addTextSize"
           ref={sizeRef}
+          onChange={() => textEdit()}
         />
         <Form.Select
           aria-label="Font"
           className="addTextInput text-truncate"
           id="fontInput"
           ref={fontRef}
+          onChange={() => textEdit()}
         >
           <option value="Arial">Arial</option>
           <option value="Verdana">Verdana</option>
@@ -70,11 +71,15 @@ export function TextAdd({ modalAddTextClick }: any) {
         </Form.Select>
         <Form.Group className="addTextInput" id="addTextColorGroup">
           <Form.Label>Color :</Form.Label>
-          <Form.Control type="color" id="addTextColor" ref={colorRef} />
+          <Form.Control
+            type="color"
+            id="addTextColor"
+            ref={colorRef}
+            onChange={() => textEdit()}
+          />
         </Form.Group>
         <Form.Group className="addTextInput" id="addTextButtonsGroup">
-          <MdAddCircle className="addTextIcon" />
-          <GiConfirmed
+          <MdAddCircle
             className="addTextIcon"
             onClick={() => {
               addText();

@@ -156,11 +156,11 @@
   background-color: transparent;
   color: whitesmoke;
   font-size: 1.8em;
-  margin-left: 0.8em;
+  margin-left: 0;
   margin-top: 0;
 }
 .addTextIcon {
-  margin-left: 1em;
+  margin-left: 0.8em;
   cursor: pointer;
 }
 .addTextIcon:hover {

@@ -801,12 +801,13 @@ function openEditCanvasText() {
 
 function editCanvasText(input: any) {
   let pos = -1;
+
   if (shapes[selectedTextIndex] != null)
     if (shapes[selectedTextIndex].id == selectedTextID) pos = selectedTextIndex;
 
   if (pos < 0) {
     for (let i = 0; i < shapes.length; i++) {
-      if (shapes[i].text.id == selectedTextID) {
+      if (shapes[i].type == 'Text' && shapes[i].text.id == selectedTextID) {
         pos = i;
         break;
       }
@@ -814,8 +815,15 @@ function editCanvasText(input: any) {
   }
 
   if (pos >= 0) {
-    input.id = selectedTextID;
+    ctx.font = input.size * 10 + 'px ' + input.font;
+    let metrics = ctx.measureText(input.value);
+    let w = metrics.width;
+    let h = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
+
+    input.id = shapes[pos].text.id;
     shapes[pos].text = input;
+    shapes[pos].width = w;
+    shapes[pos].height = h;
     redraw();
     SaveToLocal();
   }
@@ -854,6 +862,7 @@ const Canvas = (
         selectedTextIndex >= 0
       ) {
         editCanvasText(modalAddTextStatus);
+        modalAddTextEnd();
       }
     }
   }, [modalAddTextClick]);
