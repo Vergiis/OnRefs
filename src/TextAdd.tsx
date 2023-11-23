@@ -2,9 +2,33 @@ import { useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
+import $ from 'jquery';
 
 export function TextAdd({ modalAddTextClick }: any) {
-  const [isArrowIcon, setIsArrowIcon] = useState(true);
+  const [isArrowIcon, setIsArrowIcon] = useState(false);
+  const [textAddShow, settextAddShow] = useState(false);
+
+  const handleTextAddShow = () => {
+    if (!textAddShow) {
+      settextAddShow(true);
+      $('#textAddToggle').animate(
+        {
+          width: 'toggle',
+        },
+        200
+      );
+      setIsArrowIcon(!isArrowIcon);
+    } else {
+      $('#textAddToggle').animate(
+        {
+          width: 'toggle',
+        },
+        200
+      );
+      setIsArrowIcon(!isArrowIcon);
+      settextAddShow(false);
+    }
+  };
 
   const textRef: any = useRef(null);
   const colorRef: any = useRef(null);
@@ -38,7 +62,7 @@ export function TextAdd({ modalAddTextClick }: any) {
   };
   return (
     <Form className="addText">
-      <Form.Group className="addOptionWindow">
+      <Form.Group className="addOptionWindow" id="textAddToggle">
         <Form.Control
           type="text"
           placeholder="Text"
@@ -88,7 +112,7 @@ export function TextAdd({ modalAddTextClick }: any) {
         </Form.Group>
       </Form.Group>
       <Form.Group>
-        <Form.Label id="addTextButton">
+        <Form.Label id="addTextButton" onClick={handleTextAddShow}>
           {isArrowIcon ? (
             <FaArrowCircleLeft className="arrowButton" />
           ) : (
