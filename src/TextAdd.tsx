@@ -31,6 +31,7 @@ export function TextAdd({ modalAddTextClick }: any) {
           type="text"
           placeholder="Text"
           className="addTextInput"
+          id="addTextValue"
           ref={textRef}
         />
         <Form.Control
@@ -38,6 +39,7 @@ export function TextAdd({ modalAddTextClick }: any) {
           min="0"
           placeholder="Size"
           className="addTextInput"
+          id="addTextSize"
           ref={sizeRef}
         />
         <Form.Select

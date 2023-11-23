@@ -16,6 +16,7 @@ let dragStart: any;
 let dragged: any;
 
 let selectedShapeIndex: number;
+let selectedTextIndex = -1;
 
 let isDraggingImg = false;
 let imgStartX: number;
@@ -672,7 +673,7 @@ function handleScroll(evt: any) {
   if (delta) zoom(delta);
 }
 
-function handleContextMenu(evt: any, showDropdown: any) {
+function handleContextMenu(evt: any, showDropdown: any, showTextDropdown: any) {
   evt.preventDefault();
 
   let pt = ctx.transformedPoint(lastX, lastY);
@@ -685,7 +686,8 @@ function handleContextMenu(evt: any, showDropdown: any) {
         top: top - 5,
         left: left - 5,
       });
-      showDropdown();
+      if (shapes[selectedShapeIndex].type == 'Text') showTextDropdown();
+      else showDropdown();
     }
   }
   sessionStorage.setItem(
@@ -783,9 +785,23 @@ function modalAddText(input: any) {
   SaveToLocal();
 }
 
+function openEditCanvasText() {
+  let textData = shapes[selectedShapeIndex].text;
+  selectedTextIndex = textData.id;
+  $('#addTextValue').val(textData.value);
+  $('#addTextSize').val(textData.size);
+  $('#addTextColor').val(textData.color);
+  $('#fontInput').val(textData.font);
+}
+
+function editCanvasText() {
+  console.log('edit');
+}
+
 const Canvas = (
   {
     showDropdown,
+    showTextDropdown,
     hideDropdown,
     contextDelete,
     endContextDelete,
@@ -793,6 +809,8 @@ const Canvas = (
     contextCopyURL,
     endContextResize,
     endContextCopyURL,
+    contextEditText,
+    endContextEditText,
     resetNavBar,
     modalAddImageClick,
     modalAddImageStatus,
@@ -825,9 +843,12 @@ const Canvas = (
     } else if (contextCopyURL) {
       copyImageURL();
       endContextCopyURL();
+    } else if (contextEditText) {
+      openEditCanvasText();
+      endContextEditText();
     }
     hideDropdown();
-  }, [contextDelete, contextResize, contextCopyURL]);
+  }, [contextDelete, contextResize, contextCopyURL, contextEditText]);
 
   const canvasRef = useRef<any>();
 
@@ -923,7 +944,7 @@ const Canvas = (
       onMouseUp={handleMouseUp}
       onWheel={handleScroll}
       onContextMenu={(e: any) => {
-        handleContextMenu(e, showDropdown);
+        handleContextMenu(e, showDropdown, showTextDropdown);
       }}
       ref={canvasRef}
       width={window.innerWidth}

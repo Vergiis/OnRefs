@@ -8,6 +8,7 @@ export function ContextMenu({
   contextDelete,
   contextResize,
   contextCopyURL,
+  contextEditText,
 }: any) {
   return (
     <Dropdown
@@ -36,6 +37,17 @@ export function ContextMenu({
             onClick={contextResize}
           >
             Resize
+          </Dropdown.Item>
+        ) : (
+          <></>
+        )}
+        {showTextDropdown ? (
+          <Dropdown.Item
+            id="context-edit"
+            className="dropdown-item context-item"
+            onClick={contextEditText}
+          >
+            Edit
           </Dropdown.Item>
         ) : (
           <></>

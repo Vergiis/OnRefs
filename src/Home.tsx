@@ -19,7 +19,7 @@ export function Home() {
   const showContext = () => {
     setContextShow(true);
   };
-  const showContextText = () => {
+  const showTextContext = () => {
     setContextShow(true);
     setTextContextShow(true);
   };
@@ -50,6 +50,14 @@ export function Home() {
   };
   const endContextCopyURL = () => {
     setContextCopyURL(false);
+  };
+
+  const [contextEditText, setContextEditText] = useState(false);
+  const contextEditTextClick = () => {
+    setContextEditText(true);
+  };
+  const endContextEditText = () => {
+    setContextEditText(false);
   };
 
   const [modalAddImage, SetModalAddImage] = useState('');
@@ -83,6 +91,7 @@ export function Home() {
         </Container>
         <Canvas
           showDropdown={showContext}
+          showTextDropdown={showTextContext}
           hideDropdown={hideContext}
           contextDelete={contextDelete}
           endContextDelete={endContextDelete}
@@ -90,6 +99,8 @@ export function Home() {
           contextCopyURL={contextCopyURL}
           endContextResize={endContextResize}
           endContextCopyURL={endContextCopyURL}
+          contextEditText={contextEditText}
+          endContextEditText={endContextEditText}
           resetNavBar={reset}
           modalAddImageClick={modalAddImageClick}
           modalAddImageStatus={modalAddImage}
@@ -106,6 +117,7 @@ export function Home() {
           contextDelete={contextDeleteClick}
           contextResize={contextResizeClick}
           contextCopyURL={contextCopyURLClick}
+          contextEditText={contextEditTextClick}
         />
       </CookiesProvider>
     </>
