@@ -147,7 +147,8 @@ function redraw() {
     } else if (shapes[i].type == 'Text') {
       ctx.font = shapes[i].text.size * 10 + 'px Arial';
       ctx.fillStyle = shapes[i].text.color;
-      ctx.textAlign = 'center';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
       ctx.fillText(shapes[i].text.value, shapes[i].x, shapes[i].y);
     }
   }
@@ -773,18 +774,10 @@ function modalAddText(input: any) {
 
   ctx.font = input.size * 10 + 'px Arial';
   let metrics = ctx.measureText(input.value);
+  let w = metrics.width;
+  let h = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
-  AddToCanvas(
-    pt.x,
-    pt.y,
-    metrics.width,
-    metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent,
-    null,
-    '',
-    position,
-    'Text',
-    input
-  );
+  AddToCanvas(pt.x - w, pt.y - h, w, h, null, '', position, 'Text', input);
 }
 
 const Canvas = (
@@ -910,6 +903,7 @@ const Canvas = (
       lastPosition.f
     );
     resetNavBar();
+    redraw();
   }, []);
 
   return (
