@@ -20,10 +20,23 @@ export function TextAdd({ modalAddTextClick }: any) {
         color: colorRef.current.value,
         font: fontRef.current.value,
         id: -1,
+        action: 'Add',
       },
     ]);
   };
-
+  const textEdit = () => {
+    modalAddTextClick([
+      {
+        value: textRef.current.value,
+        size:
+          sizeRef.current.value == '' ? 12 : parseFloat(sizeRef.current.value),
+        color: colorRef.current.value,
+        font: fontRef.current.value,
+        id: -1,
+        action: 'Edit',
+      },
+    ]);
+  };
   return (
     <Form className="addText">
       <Form.Group className="addOptionWindow">
@@ -33,6 +46,7 @@ export function TextAdd({ modalAddTextClick }: any) {
           className="addTextInput"
           id="addTextValue"
           ref={textRef}
+          onChange={() => textEdit()}
         />
         <Form.Control
           type="number"

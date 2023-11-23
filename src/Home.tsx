@@ -69,14 +69,14 @@ export function Home() {
   };
 
   const [modalAddText, SetModalAddText] = useState([
-    { value: '', size: 12, color: '#000', font: 'Arial', id: -1 },
+    { value: '', size: 12, color: '#000', font: 'Arial', id: -1, action:"Add" },
   ]);
   const modalAddTextClick = (val: any) => {
     SetModalAddText(val);
   };
   const modalAddTextEnd = () => {
     SetModalAddText([
-      { value: '', size: 12, color: '#000', font: 'Arial', id: -1 },
+      { value: '', size: 12, color: '#000', font: 'Arial', id: -1, action: "Add" },
     ]);
   };
 

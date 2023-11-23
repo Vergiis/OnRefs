@@ -17,6 +17,7 @@ let dragged: any;
 
 let selectedShapeIndex: number;
 let selectedTextIndex = -1;
+let selectedTextID = -1;
 
 let isDraggingImg = false;
 let imgStartX: number;
@@ -779,23 +780,45 @@ function modalAddText(input: any) {
   let w = metrics.width;
   let h = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
-  input.id = shapes.length;
+  input.id = uuidv4();
 
   AddToCanvas(pt.x - w, pt.y - h, w, h, null, '', position, 'Text', input);
+
+  selectedTextIndex = shapes.length;
+  selectedTextID = input.id;
   SaveToLocal();
 }
 
 function openEditCanvasText() {
   let textData = shapes[selectedShapeIndex].text;
-  selectedTextIndex = textData.id;
+  selectedTextID = textData.id;
+  selectedTextIndex = selectedShapeIndex;
   $('#addTextValue').val(textData.value);
   $('#addTextSize').val(textData.size);
   $('#addTextColor').val(textData.color);
   $('#fontInput').val(textData.font);
 }
 
-function editCanvasText() {
-  console.log('edit');
+function editCanvasText(input: any) {
+  let pos = -1;
+  if (shapes[selectedTextIndex] != null)
+    if (shapes[selectedTextIndex].id == selectedTextID) pos = selectedTextIndex;
+
+  if (pos < 0) {
+    for (let i = 0; i < shapes.length; i++) {
+      if (shapes[i].text.id == selectedTextID) {
+        pos = i;
+        break;
+      }
+    }
+  }
+
+  if (pos >= 0) {
+    input.id = selectedTextID;
+    shapes[pos].text = input;
+    redraw();
+    SaveToLocal();
+  }
 }
 
 const Canvas = (
@@ -823,8 +846,15 @@ const Canvas = (
 ) => {
   useEffect(() => {
     if (modalAddTextStatus.value != '') {
-      modalAddText(modalAddTextStatus);
-      modalAddTextEnd();
+      if (modalAddTextStatus.action == 'Add') {
+        modalAddText(modalAddTextStatus);
+        modalAddTextEnd();
+      } else if (
+        modalAddTextStatus.action == 'Edit' &&
+        selectedTextIndex >= 0
+      ) {
+        editCanvasText(modalAddTextStatus);
+      }
     }
   }, [modalAddTextClick]);
 
