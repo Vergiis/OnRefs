@@ -116,10 +116,14 @@
 #addTextButton:hover {
   color: #00a4a4;
 }
+#fontInput {
+  padding: 0;
+  padding-left: 0.8em;
+}
 .addOptionWindow {
   width: 12em;
-  height: 11em;
-  margin-top: -9em;
+  height: 14em;
+  margin-top: -12em;
   background-color: #212529;
   border-radius: 0% 10% 10% 0%;
 }

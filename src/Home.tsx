@@ -14,12 +14,18 @@ export function Home() {
     setSeed(Math.random());
   };
 
+  const [textContextShow, setTextContextShow] = useState(false);
   const [contextShow, setContextShow] = useState(false);
   const showContext = () => {
     setContextShow(true);
   };
+  const showContextText = () => {
+    setContextShow(true);
+    setTextContextShow(true);
+  };
   const hideContext = () => {
     setContextShow(false);
+    setTextContextShow(false);
   };
 
   const [contextDelete, setContextDelete] = useState(false);
@@ -55,13 +61,15 @@ export function Home() {
   };
 
   const [modalAddText, SetModalAddText] = useState([
-    { value: '', size: 12, color: '#000' },
+    { value: '', size: 12, color: '#000', font: 'Arial', id: -1 },
   ]);
   const modalAddTextClick = (val: any) => {
     SetModalAddText(val);
   };
   const modalAddTextEnd = () => {
-    SetModalAddText([{ value: '', size: 12, color: '#000' }]);
+    SetModalAddText([
+      { value: '', size: 12, color: '#000', font: 'Arial', id: -1 },
+    ]);
   };
 
   return (

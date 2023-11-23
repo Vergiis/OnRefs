@@ -145,7 +145,7 @@ function redraw() {
         shapes[i].height
       );
     } else if (shapes[i].type == 'Text') {
-      ctx.font = shapes[i].text.size * 10 + 'px Arial';
+      ctx.font = shapes[i].text.size * 10 + 'px ' + shapes[i].text.font;
       ctx.fillStyle = shapes[i].text.color;
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
@@ -772,12 +772,15 @@ function modalAddText(input: any) {
   let position = 0;
   if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
 
-  ctx.font = input.size * 10 + 'px Arial';
+  ctx.font = input.size * 10 + 'px ' + input.font;
   let metrics = ctx.measureText(input.value);
   let w = metrics.width;
   let h = metrics.fontBoundingBoxAscent + metrics.fontBoundingBoxDescent;
 
+  input.id = shapes.length;
+
   AddToCanvas(pt.x - w, pt.y - h, w, h, null, '', position, 'Text', input);
+  SaveToLocal();
 }
 
 const Canvas = (

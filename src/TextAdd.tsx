@@ -10,6 +10,7 @@ export function TextAdd({ modalAddTextClick }: any) {
   const textRef: any = useRef(null);
   const colorRef: any = useRef(null);
   const sizeRef: any = useRef(null);
+  const fontRef: any = useRef(null);
   const addText = () => {
     modalAddTextClick([
       {
@@ -17,6 +18,8 @@ export function TextAdd({ modalAddTextClick }: any) {
         size:
           sizeRef.current.value == '' ? 12 : parseFloat(sizeRef.current.value),
         color: colorRef.current.value,
+        font: fontRef.current.value,
+        id: -1,
       },
     ]);
   };
@@ -37,6 +40,18 @@ export function TextAdd({ modalAddTextClick }: any) {
           className="addTextInput"
           ref={sizeRef}
         />
+        <Form.Select
+          aria-label="Font"
+          className="addTextInput text-truncate"
+          id="fontInput"
+          ref={fontRef}
+        >
+          <option value="Arial">Arial</option>
+          <option value="Verdana">Verdana</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Courier New">Courier New</option>
+        </Form.Select>
         <Form.Group className="addTextInput" id="addTextColorGroup">
           <Form.Label>Color :</Form.Label>
           <Form.Control type="color" id="addTextColor" ref={colorRef} />
