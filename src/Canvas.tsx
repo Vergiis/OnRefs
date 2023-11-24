@@ -855,6 +855,15 @@ const Canvas = (
   props: any
 ) => {
   useEffect(() => {
+    if (!textAddShowStatus) {
+      selectedTextID = -1;
+      $('#addTextValue').val('');
+      $('#addTextSize').val('');
+      $('#addTextColor').val('#000000');
+      $('#fontInput').val('Arial');
+    }
+  }, [textAddShowStatus]);
+  useEffect(() => {
     if (modalAddTextStatus.value != '') {
       if (modalAddTextStatus.action == 'Add') {
         modalAddText(modalAddTextStatus);
