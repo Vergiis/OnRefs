@@ -7,6 +7,7 @@ import { ContextMenu } from './ContextMenu';
 import { useState } from 'react';
 import { PageNotifications } from './PageNotifications';
 import { TextAdd } from './TextAdd';
+import $ from 'jquery';
 
 export function Home() {
   const [seed, setSeed] = useState(1);
@@ -69,15 +70,56 @@ export function Home() {
   };
 
   const [modalAddText, SetModalAddText] = useState([
-    { value: '', size: 12, color: '#000', font: 'Arial', id: -1, action:"Add" },
+    {
+      value: '',
+      size: 12,
+      color: '#000',
+      font: 'Arial',
+      id: -1,
+      action: 'Add',
+    },
   ]);
   const modalAddTextClick = (val: any) => {
     SetModalAddText(val);
   };
   const modalAddTextEnd = () => {
     SetModalAddText([
-      { value: '', size: 12, color: '#000', font: 'Arial', id: -1, action: "Add" },
+      {
+        value: '',
+        size: 12,
+        color: '#000',
+        font: 'Arial',
+        id: -1,
+        action: 'Add',
+      },
     ]);
+  };
+
+  const [textAddShow, setTextAddShow] = useState(false);
+  const [isArrowIcon, setIsArrowIcon] = useState(false);
+
+  const handleTextAddShow = () => {
+    if (!textAddShow) {
+      setTextAddShow(true);
+      $('#textAddToggle')
+        .animate(
+          {
+            width: 'toggle',
+          },
+          200
+        )
+        .css('display', 'grid');
+      setIsArrowIcon(!isArrowIcon);
+    } else {
+      $('#textAddToggle').animate(
+        {
+          width: 'toggle',
+        },
+        200
+      );
+      setIsArrowIcon(!isArrowIcon);
+      setTextAddShow(false);
+    }
   };
 
   return (
@@ -86,7 +128,11 @@ export function Home() {
         <Container>
           <NavBar key={seed} />
           <CanvasAdd modalAddImageClick={modalAddImageClick} />
-          <TextAdd modalAddTextClick={modalAddTextClick} />
+          <TextAdd
+            modalAddTextClick={modalAddTextClick}
+            handleTextAddShow={handleTextAddShow}
+            isArrowIcon={isArrowIcon}
+          />
           <PageNotifications />
         </Container>
         <Canvas
@@ -108,6 +154,8 @@ export function Home() {
           modalAddTextClick={modalAddTextClick}
           modalAddTextStatus={modalAddText[0]}
           modalAddTextEnd={modalAddTextEnd}
+          handleTextAddShow={handleTextAddShow}
+          textAddShowStatus={textAddShow}
         />
         <ContextMenu
           show={contextShow}

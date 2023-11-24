@@ -849,6 +849,8 @@ const Canvas = (
     modalAddTextClick,
     modalAddTextStatus,
     modalAddTextEnd,
+    handleTextAddShow,
+    textAddShowStatus,
   }: any,
   props: any
 ) => {
@@ -883,6 +885,7 @@ const Canvas = (
       copyImageURL();
       endContextCopyURL();
     } else if (contextEditText) {
+      if (!textAddShowStatus) handleTextAddShow();
       openEditCanvasText();
       endContextEditText();
     }

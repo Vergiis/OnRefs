@@ -2,36 +2,12 @@ import { useRef, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaArrowCircleLeft } from 'react-icons/fa';
 import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
-import $ from 'jquery';
 
-export function TextAdd({ modalAddTextClick }: any) {
-  const [isArrowIcon, setIsArrowIcon] = useState(false);
-  const [textAddShow, settextAddShow] = useState(false);
-
-  const handleTextAddShow = () => {
-    if (!textAddShow) {
-      settextAddShow(true);
-      $('#textAddToggle')
-        .animate(
-          {
-            width: 'toggle',
-          },
-          200
-        )
-        .css('display', 'grid');
-      setIsArrowIcon(!isArrowIcon);
-    } else {
-      $('#textAddToggle').animate(
-        {
-          width: 'toggle',
-        },
-        200
-      );
-      setIsArrowIcon(!isArrowIcon);
-      settextAddShow(false);
-    }
-  };
-
+export function TextAdd({
+  modalAddTextClick,
+  handleTextAddShow,
+  isArrowIcon,
+}: any) {
   const textRef: any = useRef(null);
   const colorRef: any = useRef(null);
   const sizeRef: any = useRef(null);
