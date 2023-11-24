@@ -144,6 +144,7 @@
   background-color: transparent;
   color: whitesmoke;
   padding: 0.3em;
+  white-space: nowrap;
 }
 #addTextColor {
   margin-left: 0.8em;

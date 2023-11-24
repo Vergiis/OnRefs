@@ -11,12 +11,14 @@ export function TextAdd({ modalAddTextClick }: any) {
   const handleTextAddShow = () => {
     if (!textAddShow) {
       settextAddShow(true);
-      $('#textAddToggle').animate(
-        {
-          width: 'toggle',
-        },
-        200
-      );
+      $('#textAddToggle')
+        .animate(
+          {
+            width: 'toggle',
+          },
+          200
+        )
+        .css('display', 'grid');
       setIsArrowIcon(!isArrowIcon);
     } else {
       $('#textAddToggle').animate(
