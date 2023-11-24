@@ -856,16 +856,19 @@ const Canvas = (
 ) => {
   useEffect(() => {
     if (!textAddShowStatus) {
-      selectedTextID = -1;
-      $('#addTextValue').val('');
-      $('#addTextSize').val('');
-      $('#addTextColor').val('#000000');
-      $('#fontInput').val('Arial');
+      setTimeout(() => {
+        selectedTextID = -1;
+        $('#addTextValue').val('');
+        $('#addTextSize').val('');
+        $('#addTextColor').val('#000000');
+        $('#fontInput').val('Arial');
+      }, 100);
     }
   }, [textAddShowStatus]);
   useEffect(() => {
+    console.log([selectedTextIndex, modalAddTextStatus.action]);
     if (modalAddTextStatus.value != '') {
-      if (modalAddTextStatus.action == 'Add') {
+      if (modalAddTextStatus.action == 'Add' && selectedTextIndex < 0) {
         modalAddText(modalAddTextStatus);
         modalAddTextEnd();
       } else if (
@@ -873,6 +876,9 @@ const Canvas = (
         selectedTextIndex >= 0
       ) {
         editCanvasText(modalAddTextStatus);
+        modalAddTextEnd();
+      } else if (modalAddTextStatus.action == 'Add' && selectedTextIndex >= 0) {
+        handleTextAddShow();
         modalAddTextEnd();
       }
     }
