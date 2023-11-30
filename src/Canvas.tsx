@@ -218,6 +218,73 @@ function isPointInside(
   return false;
 }
 
+function getShapesInRange(x: number, y: number, w: number, h: number) {
+  let output = [];
+
+  for (let i = 0; i < shapes.length; i++) {
+    for (let t = 0; t <= 1; t += 0.1) {
+      //Top Edge
+      if (
+        isPointInside(
+          shapes[i].x + shapes[i].width * t,
+          shapes[i].y,
+          x,
+          y,
+          w,
+          h
+        )
+      ) {
+        output.push(i);
+        break;
+      }
+      //Bottom Edge
+      if (
+        isPointInside(
+          shapes[i].x + shapes[i].width * t,
+          shapes[i].y + shapes[i].height,
+          x,
+          y,
+          w,
+          h
+        )
+      ) {
+        output.push(i);
+        break;
+      }
+      //Left Edge
+      if (
+        isPointInside(
+          shapes[i].x,
+          shapes[i].y + shapes[i].height * t,
+          x,
+          y,
+          w,
+          h
+        )
+      ) {
+        output.push(i);
+        break;
+      }
+      //Right Edge
+      if (
+        isPointInside(
+          shapes[i].x + shapes[i].width,
+          shapes[i].y + shapes[i].height * t,
+          x,
+          y,
+          w,
+          h
+        )
+      ) {
+        output.push(i);
+        break;
+      }
+    }
+  }
+
+  return output;
+}
+
 function isMouseInShape(mx: number, my: number, shape: any) {
   if (isPointInside(mx, my, shape.x, shape.y, shape.width, shape.height))
     return true;
@@ -404,11 +471,10 @@ function loadCanvas(cookies: string) {
   }
 }
 
-function recalculateFrameSize(shapeIndex: number) {
-  frameLineWidth =
-    (Math.abs(shapes[shapeIndex].width) + Math.abs(shapes[shapeIndex].height)) *
-    0.01;
-  frameArcRadius = frameLineWidth * 2;
+function recalculateFrameSize() {
+  let fs = ctx.transformedPoint(canvas.width, canvas.height);
+  frameLineWidth = (fs.x + fs.y) * 0.005;
+  frameArcRadius = frameLineWidth * 1.5;
 }
 
 function drawResizeFrame(shapeIndex: number) {
@@ -541,7 +607,7 @@ function handleMouseDown(evt: any) {
       selectStartY = pt.y;
       for (let i = shapes.length - 1; i >= 0; i--) {
         if (isMouseInShape(pt.x, pt.y, shapes[i])) {
-          recalculateFrameSize(i);
+          recalculateFrameSize();
           let tmp = shapes[i];
           tmp.position = shapes[shapes.length - 1].position + 1;
           shapes.splice(i, 1);
@@ -558,6 +624,7 @@ function handleMouseDown(evt: any) {
           );
           isDraggingImg = true;
           isSelecting = false;
+          selectedShapes.push(selectedShapeIndex);
           break;
         }
       }
@@ -620,7 +687,7 @@ function handleMouseMove(evt: any) {
       selectedShape.x += dx;
     }
 
-    recalculateFrameSize(selectedShapeIndex);
+    recalculateFrameSize();
 
     resizeStartX = pt.x;
     resizeStartY = pt.y;
@@ -678,8 +745,11 @@ function handleMouseMove(evt: any) {
 
     redraw();
 
-    frameLineWidth = (Math.abs(dx) + Math.abs(dy)) * 0.01;
+    recalculateFrameSize();
     drawSelectFrame(selectStartX, selectStartY, dx, dy);
+
+    selectedShapes = getShapesInRange(selectStartX, selectStartY, dx, dy);
+    console.log(selectedShapes);
   }
 }
 
@@ -747,7 +817,7 @@ function resizeImage() {
       selectedShapeIndex = i;
       isResizing = true;
 
-      recalculateFrameSize(i);
+      recalculateFrameSize();
 
       drawResizeFrame(i);
 
