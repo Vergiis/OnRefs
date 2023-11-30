@@ -11,6 +11,11 @@ let canvasID: string = '-1';
 let canvasName: string = 'Unnamed';
 let canvasChangeFlag: boolean = false;
 
+let selectedShapes: any[] = [];
+let isSelecting: boolean = false;
+let selectStartX: number;
+let selectStartY: number;
+
 let delta = 0;
 let dragStart: any;
 let dragged: any;
@@ -463,6 +468,12 @@ function drawResizeFrame(shapeIndex: number) {
   ctx.fill();
 }
 
+function drawSelectFrame(x: number, y: number, width: number, height: number) {
+  ctx.strokeStyle = frameColor;
+  ctx.lineWidth = frameLineWidth;
+  ctx.strokeRect(x, y, width, height);
+}
+
 //Drop images
 function LoadDrop(url: string, x: number, y: number) {
   var img = new Image();
@@ -525,6 +536,9 @@ function handleMouseDown(evt: any) {
       resizeStartY = pt.y;
       isDreaggingResize = resizePos;
     } else {
+      isSelecting = true;
+      selectStartX = pt.x;
+      selectStartY = pt.y;
       for (let i = shapes.length - 1; i >= 0; i--) {
         if (isMouseInShape(pt.x, pt.y, shapes[i])) {
           recalculateFrameSize(i);
@@ -543,6 +557,7 @@ function handleMouseDown(evt: any) {
             shapes[selectedShapeIndex].height
           );
           isDraggingImg = true;
+          isSelecting = false;
           break;
         }
       }
@@ -656,12 +671,23 @@ function handleMouseMove(evt: any) {
           : 'sw-resize'
       );
   }
+  if (isSelecting) {
+    let pt = ctx.transformedPoint(lastX, lastY);
+    let dx = pt.x - selectStartX;
+    let dy = pt.y - selectStartY;
+
+    redraw();
+
+    frameLineWidth = (Math.abs(dx) + Math.abs(dy)) * 0.01;
+    drawSelectFrame(selectStartX, selectStartY, dx, dy);
+  }
 }
 
 function handleMouseUp(evt: any) {
   dragStart = null;
   if (!dragged) zoom(evt.shiftKey ? -1 : 1);
   if (isDraggingImg) isDraggingImg = false;
+  if (isSelecting) isSelecting = false;
   if (evt.button == 0 && isDreaggingResize != null) {
     isDreaggingResize = null;
     isResizing = true;
