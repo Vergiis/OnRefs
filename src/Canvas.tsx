@@ -374,6 +374,7 @@ function zoom(clicks: number) {
   redraw();
   SaveToLocal();
   if (isDreaggingResize) drawResizeFrame(selectedShapeIndex);
+  if (selectedShapes.length > 0) drawSelectFrame(0, 0, 0, 0);
 }
 
 //Add image to draw list
@@ -611,8 +612,25 @@ function handleMouseDown(evt: any) {
       resizeStartX = pt.x;
       resizeStartY = pt.y;
       isDreaggingResize = resizePos;
-    } else {
+    } else if (selectedShapes.length > 0) {
+      isSelecting = false;
       let inShape = false;
+      for (let i = shapes.length - 1; i >= 0; i--) {
+        if (
+          selectedShapes.includes(i) &&
+          isMouseInShape(pt.x, pt.y, shapes[i])
+        ) {
+          inShape = true;
+          isDraggingImg = true;
+          break;
+        }
+      }
+      if (!inShape) {
+        selectedShapes = [];
+        redraw();
+      }
+    }
+    if (selectedShapes.length <= 0 && !isResizing && resizePos == null) {
       isSelecting = true;
       selectStartX = pt.x;
       selectStartY = pt.y;
@@ -635,13 +653,8 @@ function handleMouseDown(evt: any) {
           );
           isDraggingImg = true;
           isSelecting = false;
-          inShape = true;
           break;
         }
-      }
-      if (!inShape && selectedShapes.length > 0) {
-        selectedShapes = [];
-        isSelecting = false;
       }
     }
   }
@@ -659,28 +672,36 @@ function handleMouseMove(evt: any) {
     redraw();
   }
   if (isDraggingImg) {
-    let toMove=[];
+    let toMove = [];
 
-    if(selectedShapes.length>0) selectedShapes.forEach((val)=>toMove.push(val))
+    if (selectedShapes.length > 0)
+      selectedShapes.forEach((val) => toMove.push(val));
     else toMove.push(selectedShapeIndex);
 
     let pt = ctx.transformedPoint(lastX, lastY);
 
-
-    toMove.forEach((s)=>{
-
-    })
-    
+    toMove.forEach((s) => {
+      let dx = pt.x - imgStartX;
+      let dy = pt.y - imgStartY;
+      let selectedShape = shapes[s];
+      selectedShape.x += dx;
+      selectedShape.y += dy;
+    });
 
     redraw();
-    ctx.strokeStyle = frameColor;
-    ctx.lineWidth = frameLineWidth;
-    ctx.strokeRect(
-      shapes[selectedShapeIndex].x,
-      shapes[selectedShapeIndex].y,
-      shapes[selectedShapeIndex].width,
-      shapes[selectedShapeIndex].height
-    );
+
+    if (selectedShapes.length > 0) drawSelectFrame(0, 0, 0, 0);
+    else {
+      ctx.strokeStyle = frameColor;
+      ctx.lineWidth = frameLineWidth;
+      ctx.strokeRect(
+        shapes[selectedShapeIndex].x,
+        shapes[selectedShapeIndex].y,
+        shapes[selectedShapeIndex].width,
+        shapes[selectedShapeIndex].height
+      );
+    }
+
     imgStartX = pt.x;
     imgStartY = pt.y;
   }
@@ -781,7 +802,7 @@ function handleMouseUp(evt: any) {
     isDreaggingResize = null;
     isResizing = true;
   } else redraw();
-  if (isSelecting) {
+  if (selectedShapes.length > 0 || isSelecting) {
     isSelecting = false;
     drawSelectFrame(0, 0, 0, 0);
   }
