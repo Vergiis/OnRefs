@@ -670,6 +670,7 @@ function handleMouseMove(evt: any) {
     let pt = ctx.transformedPoint(lastX, lastY);
     ctx.translate(pt.x - dragStart.x, pt.y - dragStart.y);
     redraw();
+    if (selectedShapes.length > 0) drawSelectFrame(0, 0, 0, 0);
   }
   if (isDraggingImg) {
     let toMove = [];
