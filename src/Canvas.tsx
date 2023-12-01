@@ -473,8 +473,8 @@ function loadCanvas(cookies: string) {
 
 function recalculateFrameSize() {
   let fs = ctx.transformedPoint(canvas.width, canvas.height);
-  frameLineWidth = (fs.x + fs.y) * 0.005;
-  frameArcRadius = frameLineWidth * 1.5;
+  frameLineWidth = (fs.x + fs.y) * 0.001;
+  frameArcRadius = frameLineWidth * 2;
 }
 
 function drawResizeFrame(shapeIndex: number) {
@@ -538,6 +538,13 @@ function drawSelectFrame(x: number, y: number, width: number, height: number) {
   ctx.strokeStyle = frameColor;
   ctx.lineWidth = frameLineWidth;
   ctx.strokeRect(x, y, width, height);
+
+  ctx.globalAlpha = 0.5;
+  ctx.fillStyle = frameColor;
+  selectedShapes.forEach((s) => {
+    ctx.fillRect(shapes[s].x, shapes[s].y, shapes[s].width, shapes[s].height);
+  });
+  ctx.globalAlpha = 1;
 }
 
 //Drop images
@@ -592,6 +599,9 @@ function handleMouseDown(evt: any) {
     lastY = evt.offsetY || evt.pageY - canvas.offsetTop;
     dragStart = ctx.transformedPoint(lastX, lastY);
     dragged = false;
+  } else if (evt.button == 2) {
+    isSelecting = false;
+    selectedShapes = [];
   } else if (evt.button == 0) {
     let pt = ctx.transformedPoint(lastX, lastY);
     imgStartX = pt.x;
@@ -602,6 +612,7 @@ function handleMouseDown(evt: any) {
       resizeStartY = pt.y;
       isDreaggingResize = resizePos;
     } else {
+      let inShape = false;
       isSelecting = true;
       selectStartX = pt.x;
       selectStartY = pt.y;
@@ -624,9 +635,13 @@ function handleMouseDown(evt: any) {
           );
           isDraggingImg = true;
           isSelecting = false;
-          selectedShapes.push(selectedShapeIndex);
+          inShape = true;
           break;
         }
+      }
+      if (!inShape && selectedShapes.length > 0) {
+        selectedShapes = [];
+        isSelecting = false;
       }
     }
   }
@@ -644,13 +659,19 @@ function handleMouseMove(evt: any) {
     redraw();
   }
   if (isDraggingImg) {
+    let toMove=[];
+
+    if(selectedShapes.length>0) selectedShapes.forEach((val)=>toMove.push(val))
+    else toMove.push(selectedShapeIndex);
+
     let pt = ctx.transformedPoint(lastX, lastY);
 
-    let dx = pt.x - imgStartX;
-    let dy = pt.y - imgStartY;
-    let selectedShape = shapes[selectedShapeIndex];
-    selectedShape.x += dx;
-    selectedShape.y += dy;
+
+    toMove.forEach((s)=>{
+
+    })
+    
+
     redraw();
     ctx.strokeStyle = frameColor;
     ctx.lineWidth = frameLineWidth;
@@ -745,11 +766,10 @@ function handleMouseMove(evt: any) {
 
     redraw();
 
+    selectedShapes = getShapesInRange(selectStartX, selectStartY, dx, dy);
+
     recalculateFrameSize();
     drawSelectFrame(selectStartX, selectStartY, dx, dy);
-
-    selectedShapes = getShapesInRange(selectStartX, selectStartY, dx, dy);
-    console.log(selectedShapes);
   }
 }
 
@@ -757,11 +777,14 @@ function handleMouseUp(evt: any) {
   dragStart = null;
   if (!dragged) zoom(evt.shiftKey ? -1 : 1);
   if (isDraggingImg) isDraggingImg = false;
-  if (isSelecting) isSelecting = false;
   if (evt.button == 0 && isDreaggingResize != null) {
     isDreaggingResize = null;
     isResizing = true;
   } else redraw();
+  if (isSelecting) {
+    isSelecting = false;
+    drawSelectFrame(0, 0, 0, 0);
+  }
   SaveToLocal();
 }
 
