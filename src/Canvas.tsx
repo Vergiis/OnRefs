@@ -815,7 +815,12 @@ function handleScroll(evt: any) {
   if (delta) zoom(delta);
 }
 
-function handleContextMenu(evt: any, showDropdown: any, showTextDropdown: any) {
+function handleContextMenu(
+  evt: any,
+  showDropdown: any,
+  showTextDropdown: any,
+  showSelectDropdown: any
+) {
   evt.preventDefault();
 
   let pt = ctx.transformedPoint(lastX, lastY);
@@ -828,7 +833,8 @@ function handleContextMenu(evt: any, showDropdown: any, showTextDropdown: any) {
         top: top - 5,
         left: left - 5,
       });
-      if (shapes[selectedShapeIndex].type == 'Text') showTextDropdown();
+      if (selectedShapes.length > 0) showSelectDropdown();
+      else if (shapes[selectedShapeIndex].type == 'Text') showTextDropdown();
       else showDropdown();
     }
   }
@@ -847,7 +853,9 @@ function deleteImage() {
   let content = JSON.parse(data);
 
   shapes = content.shapes;
-  shapes.splice(selectedShapeIndex, 1);
+
+  if (selectedShapes.length > 0) {
+  } else shapes.splice(selectedShapeIndex, 1);
 
   SaveToLocal();
   loadCanvas(content.canvasID);
@@ -977,6 +985,7 @@ const Canvas = (
   {
     showDropdown,
     showTextDropdown,
+    showSelectDropdown,
     hideDropdown,
     contextDelete,
     endContextDelete,
@@ -1112,6 +1121,8 @@ const Canvas = (
 
         redraw();
 
+        if (selectedShapes.length >= 0) drawSelectFrame(0, 0, 0, 0);
+
         sessionStorage.setItem(
           'ShapesTMP',
           JSON.stringify({
@@ -1169,7 +1180,12 @@ const Canvas = (
       onMouseUp={handleMouseUp}
       onWheel={handleScroll}
       onContextMenu={(e: any) => {
-        handleContextMenu(e, showDropdown, showTextDropdown);
+        handleContextMenu(
+          e,
+          showDropdown,
+          showTextDropdown,
+          showSelectDropdown
+        );
       }}
       ref={canvasRef}
       width={window.innerWidth}

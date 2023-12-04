@@ -9,6 +9,7 @@ export function ContextMenu({
   contextResize,
   contextCopyURL,
   contextEditText,
+  showSelectDropdown,
 }: any) {
   return (
     <Dropdown
@@ -19,7 +20,7 @@ export function ContextMenu({
       onMouseLeave={hideDropdown}
     >
       <Dropdown.Menu>
-        {!showTextDropdown ? (
+        {!showTextDropdown && !showSelectDropdown ? (
           <Dropdown.Item
             id="context-copy"
             className="dropdown-item context-item"
@@ -30,7 +31,7 @@ export function ContextMenu({
         ) : (
           <></>
         )}
-        {!showTextDropdown ? (
+        {!showTextDropdown && !showSelectDropdown ? (
           <Dropdown.Item
             id="context-resize"
             className="dropdown-item context-item"

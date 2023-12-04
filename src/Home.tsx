@@ -16,6 +16,7 @@ export function Home() {
   };
 
   const [textContextShow, setTextContextShow] = useState(false);
+  const [selectContextShow, setSelectContextShow] = useState(false);
   const [contextShow, setContextShow] = useState(false);
   const showContext = () => {
     setContextShow(true);
@@ -24,9 +25,14 @@ export function Home() {
     setContextShow(true);
     setTextContextShow(true);
   };
+  const showSelectContext = () => {
+    setContextShow(true);
+    setSelectContextShow(true);
+  };
   const hideContext = () => {
     setContextShow(false);
     setTextContextShow(false);
+    setSelectContextShow(false);
   };
 
   const [contextDelete, setContextDelete] = useState(false);
@@ -128,6 +134,7 @@ export function Home() {
         <Canvas
           showDropdown={showContext}
           showTextDropdown={showTextContext}
+          showSelectDropdown={showSelectContext}
           hideDropdown={hideContext}
           contextDelete={contextDelete}
           endContextDelete={endContextDelete}
@@ -151,6 +158,7 @@ export function Home() {
           show={contextShow}
           showDropdown={showContext}
           showTextDropdown={textContextShow}
+          showSelectDropdown={selectContextShow}
           hideDropdown={hideContext}
           contextDelete={contextDeleteClick}
           contextResize={contextResizeClick}
