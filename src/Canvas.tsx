@@ -601,8 +601,8 @@ function handleMouseDown(evt: any) {
     dragStart = ctx.transformedPoint(lastX, lastY);
     dragged = false;
   } else if (evt.button == 2) {
-    isSelecting = false;
-    selectedShapes = [];
+    //isSelecting = false;
+    // selectedShapes = [];
   } else if (evt.button == 0) {
     let pt = ctx.transformedPoint(lastX, lastY);
     imgStartX = pt.x;
@@ -630,7 +630,7 @@ function handleMouseDown(evt: any) {
         redraw();
       }
     }
-    if (selectedShapes.length <= 0 && !isResizing && resizePos == null) {
+    if (selectedShapes.length <= 0 && resizePos == null) {
       isSelecting = true;
       selectStartX = pt.x;
       selectStartY = pt.y;
