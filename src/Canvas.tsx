@@ -855,6 +855,14 @@ function deleteImage() {
   shapes = content.shapes;
 
   if (selectedShapes.length > 0) {
+    selectedShapes.sort((a, b) => {
+      if (a >= b) return a;
+      else return b;
+    });
+
+    for (let i = selectedShapes.length - 1; i >= 0; i--) {
+      shapes.splice(selectedShapes[i], 1);
+    }
   } else shapes.splice(selectedShapeIndex, 1);
 
   SaveToLocal();
