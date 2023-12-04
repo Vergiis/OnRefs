@@ -933,15 +933,18 @@ function modalAddText(input: any) {
 function openEditCanvasText() {
   let textData = shapes[selectedShapeIndex].text;
   selectedTextID = textData.id;
-  selectedTextIndex = selectedShapeIndex;
   $('#addTextValue').val(textData.value);
   $('#addTextSize').val(textData.size);
   $('#addTextColor').val(textData.color);
   $('#fontInput').val(textData.font);
+
+  selectedTextIndex = selectedShapeIndex;
 }
 
 function editCanvasText(input: any) {
   let pos = -1;
+
+  if ($('#addTextValue').val() != input.value) return;
 
   if (shapes[selectedTextIndex] != null)
     if (shapes[selectedTextIndex].id == selectedTextID) pos = selectedTextIndex;
@@ -1021,15 +1024,29 @@ const Canvas = (
       } else if (modalAddTextStatus.action == 'Add' && selectedTextIndex >= 0) {
         selectedTextIndex = -1;
         selectedTextID = -1;
-        handleTextAddShow();
         modalAddTextEnd();
 
+        $('#textAddToggle')
+          .animate(
+            {
+              width: 'toggle',
+            },
+            200
+          )
+          .css('display', 'grid');
         setTimeout(() => {
           $('#addTextValue').val('');
           $('#addTextSize').val('');
           $('#addTextColor').val('#000000');
           $('#fontInput').val('Arial');
-          handleTextAddShow();
+          $('#textAddToggle')
+            .animate(
+              {
+                width: 'toggle',
+              },
+              200
+            )
+            .css('display', 'grid');
         }, 200);
       }
     }
