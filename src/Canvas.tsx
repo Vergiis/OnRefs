@@ -1030,7 +1030,7 @@ const Canvas = (
           $('#addTextColor').val('#000000');
           $('#fontInput').val('Arial');
           handleTextAddShow();
-        }, 100);
+        }, 200);
       }
     }
   }, [modalAddTextClick]);

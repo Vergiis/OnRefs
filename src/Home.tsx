@@ -99,27 +99,17 @@ export function Home() {
   const [isArrowIcon, setIsArrowIcon] = useState(false);
 
   const handleTextAddShow = () => {
-    if (!textAddShow) {
-      setTextAddShow(true);
-      $('#textAddToggle')
-        .animate(
-          {
-            width: 'toggle',
-          },
-          200
-        )
-        .css('display', 'grid');
-      setIsArrowIcon(!isArrowIcon);
-    } else {
-      $('#textAddToggle').animate(
+    $('#textAddToggle')
+      .animate(
         {
           width: 'toggle',
         },
         200
-      );
-      setIsArrowIcon(!isArrowIcon);
-      setTextAddShow(false);
-    }
+      )
+      .css('display', 'grid');
+
+    setIsArrowIcon(!isArrowIcon);
+    setTextAddShow(!textAddShow);
   };
 
   return (
