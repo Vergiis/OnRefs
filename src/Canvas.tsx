@@ -826,6 +826,17 @@ function handleContextMenu(
   let pt = ctx.transformedPoint(lastX, lastY);
   for (let i = shapes.length - 1; i >= 0; i--) {
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
+      let inSelect = false;
+
+      for (let s = 0; s < selectedShapes.length - 1; s++) {
+        if (selectedShapes[s] == i) {
+          inSelect = true;
+          break;
+        }
+      }
+
+      if (!inSelect) selectedShapes = [];
+
       selectedShapeIndex = i;
       let top = evt.pageY;
       let left = evt.pageX;
@@ -836,6 +847,8 @@ function handleContextMenu(
       if (selectedShapes.length > 0) showSelectDropdown();
       else if (shapes[selectedShapeIndex].type == 'Text') showTextDropdown();
       else showDropdown();
+
+      break;
     }
   }
   sessionStorage.setItem(
