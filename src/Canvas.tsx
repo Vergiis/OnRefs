@@ -158,6 +158,8 @@ function redraw() {
       ctx.textAlign = 'left';
       ctx.textBaseline = 'top';
       ctx.fillText(shapes[i].text.value, shapes[i].x, shapes[i].y);
+    } else if (shapes[i].type == 'Gif') {
+      console.log(shapes[i].gif);
     }
   }
 }
@@ -447,6 +449,19 @@ function loadCanvas(cookies: string) {
           );
         };
       } else if (el.type == 'Text') {
+        AddToCanvas(
+          el.x,
+          el.y,
+          el.width,
+          el.height,
+          null,
+          el.url,
+          i,
+          el.type,
+          el.text,
+          el.gif
+        );
+      } else if (el.type == 'Gif') {
         AddToCanvas(
           el.x,
           el.y,
@@ -1042,7 +1057,8 @@ function editCanvasText(input: any) {
   }
 }
 
-function decodeGif(gifURL: string) {
+function decodeGif(gifURdL: string) {
+  let gifURL = 'https://i.gifer.com/embedded/download/SQie.gif';
   let oReq = new XMLHttpRequest();
   oReq.open('GET', gifURL, true);
   oReq.responseType = 'arraybuffer';
@@ -1055,9 +1071,10 @@ function decodeGif(gifURL: string) {
       //let d = ctx.createImageData(frames[0].dims.width, frames[0].dims.height);
       //d.data.set(frames[0].patch);
       //ctx.putImageData(d, 0, 0);
+      console.log(frames);
     }
   };
-  oReq.send(null);
+  console.log(frames);
   return frames;
 }
 
