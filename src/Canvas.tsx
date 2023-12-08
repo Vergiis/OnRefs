@@ -388,7 +388,8 @@ function AddToCanvas(
   url: string,
   i: number,
   type: string,
-  text: any
+  text: any,
+  gif: any
 ) {
   shapes.push({
     x: x,
@@ -400,6 +401,7 @@ function AddToCanvas(
     position: i,
     type: type,
     text: text,
+    gif: gif,
   });
   selectedShapes = [];
   selectedShapeIndex = -1;
@@ -440,7 +442,8 @@ function loadCanvas(cookies: string) {
             el.url,
             i,
             el.type,
-            el.text
+            el.text,
+            el.gif
           );
         };
       } else if (el.type == 'Text') {
@@ -453,7 +456,8 @@ function loadCanvas(cookies: string) {
           el.url,
           i,
           el.type,
-          el.text
+          el.text,
+          el.gif
         );
       }
     }
@@ -553,14 +557,33 @@ function drawSelectFrame(x: number, y: number, width: number, height: number) {
 
 //Drop images
 function LoadDrop(url: string, x: number, y: number) {
-  var img = new Image();
-  img.src = url;
-  img.onload = function () {
-    let position = 0;
-    if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
-    AddToCanvas(x, y, img.width, img.height, img, url, position, 'Image', null);
-    SaveToLocal();
-  };
+  if (url.endsWith('.gif')) {
+    let data = decodeGif(url);
+    if (data != null) {
+      AddToCanvas(x, y, 0, 0, null, url, 0, 'Gif', null, data);
+      SaveToLocal();
+    }
+  } else {
+    var img = new Image();
+    img.src = url;
+    img.onload = function () {
+      let position = 0;
+      if (shapes.length > 0) position = shapes[shapes.length - 1].position + 1;
+      AddToCanvas(
+        x,
+        y,
+        img.width,
+        img.height,
+        img,
+        url,
+        position,
+        'Image',
+        null,
+        null
+      );
+      SaveToLocal();
+    };
+  }
 }
 
 function checkURL(imageUrl: any) {
@@ -958,7 +981,18 @@ function modalAddText(input: any) {
 
   input.id = uuidv4();
 
-  AddToCanvas(pt.x - w, pt.y - h, w, h, null, '', position, 'Text', input);
+  AddToCanvas(
+    pt.x - w,
+    pt.y - h,
+    w,
+    h,
+    null,
+    '',
+    position,
+    'Text',
+    input,
+    null
+  );
 
   selectedTextIndex = shapes.length;
   selectedTextID = input.id;
@@ -1021,7 +1055,6 @@ function decodeGif(gifURL: string) {
       //let d = ctx.createImageData(frames[0].dims.width, frames[0].dims.height);
       //d.data.set(frames[0].patch);
       //ctx.putImageData(d, 0, 0);
-      console.log(frames);
     }
   };
   oReq.send(null);
