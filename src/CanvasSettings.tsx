@@ -1,25 +1,19 @@
 import { Form } from 'react-bootstrap';
-import { MdAddCircle, MdOutlineTextFields } from 'react-icons/md';
+import { MdAddCircle } from 'react-icons/md';
+import { FaGear } from 'react-icons/fa6';
 
 export function CanvasSettings() {
   return (
     <Form className="canvasSettings">
-      <Form.Group className="addOptionWindow" id="canvasSettingsToggle">
-        <Form.Control
-          type="text"
-          placeholder="Text"
-          className="addTextInput"
-          id="addTextValue"
-        />
-
+      <Form.Group>
+        <Form.Label id="canvasSettingsButton">
+          <FaGear />
+        </Form.Label>
+      </Form.Group>
+      <Form.Group className="canvasSettingsWindow" id="canvasSettingsToggle">
         <Form.Group className="addTextInput" id="addTextButtonsGroup">
           <MdAddCircle className="addTextIcon" />
         </Form.Group>
-      </Form.Group>
-      <Form.Group>
-        <Form.Label id="addTextButton">
-          <MdOutlineTextFields />
-        </Form.Label>
       </Form.Group>
     </Form>
   );
