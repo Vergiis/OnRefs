@@ -38,7 +38,7 @@ let resizeStartX: number;
 let resizeStartY: number;
 let frameArcRadius = 50;
 let frameLineWidth = 10;
-const frameColor = '#F00';
+let frameColor = '#F00';
 
 function trackTransforms() {
   let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1100,9 +1100,13 @@ const Canvas = (
     modalAddTextEnd,
     handleTextAddShow,
     textAddShowStatus,
+    canvasSettings,
   }: any,
   props: any
 ) => {
+  useEffect(() => {
+    frameColor = canvasSettings.sColor;
+  }, [canvasSettings]);
   useEffect(() => {
     if (!textAddShowStatus) {
       setTimeout(() => {

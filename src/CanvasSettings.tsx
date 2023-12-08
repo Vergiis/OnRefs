@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { FaGear } from 'react-icons/fa6';
 
-export function CanvasSettings({ selectionColor }: any) {
+export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
   const colorRef: any = useRef(null);
 
   const [cookies, setCookie] = useCookies(['canvasSettings']);
@@ -12,12 +12,11 @@ export function CanvasSettings({ selectionColor }: any) {
       cookies.canvasSettings == null ||
       cookies.canvasSettings == 'undefined'
     ) {
-      setCookie('canvasSettings', { sColor: '#FF0000', sType: 'Normal' });
+      setCookie('canvasSettings', canvasSettings);
       colorRef.current.value = '#FF0000';
-      selectionColor('#FF0000');
     } else {
       colorRef.current.value = cookies.canvasSettings.sColor;
-      selectionColor(cookies.canvasSettings.sColor);
+      setCanvasSettings(cookies.canvasSettings);
     }
   }, []);
 
@@ -26,7 +25,7 @@ export function CanvasSettings({ selectionColor }: any) {
       sColor: colorRef.current.value,
       sType: cookies.canvasSettings.sType,
     });
-    selectionColor(colorRef.current.value);
+    setCanvasSettings(cookies.canvasSettings);
   };
 
   return (

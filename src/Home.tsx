@@ -119,6 +119,11 @@ export function Home() {
     setTextAddShow(!textAddShow);
   };
 
+  const [canvasSettings, setCanvasSettings] = useState({
+    sColor: '#FF0000',
+    sType: 'Normal',
+  });
+
   return (
     <>
       <CookiesProvider>
@@ -130,7 +135,10 @@ export function Home() {
             handleTextAddShow={handleTextAddShow}
             isArrowIcon={isArrowIcon}
           />
-          <CanvasSettings />
+          <CanvasSettings
+            canvasSettings={canvasSettings}
+            setCanvasSettings={setCanvasSettings}
+          />
           <PageNotifications />
         </Container>
         <Canvas
@@ -155,6 +163,7 @@ export function Home() {
           modalAddTextEnd={modalAddTextEnd}
           handleTextAddShow={handleTextAddShow}
           textAddShowStatus={textAddShow}
+          canvasSettings={canvasSettings}
         />
         <ContextMenu
           show={contextShow}
