@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { PageNotifications } from './PageNotifications';
 import { TextAdd } from './TextAdd';
 import $ from 'jquery';
+import { CanvasSettings } from './CanvasSettings';
 
 export function Home() {
   const [seed, setSeed] = useState(1);
@@ -129,6 +130,7 @@ export function Home() {
             handleTextAddShow={handleTextAddShow}
             isArrowIcon={isArrowIcon}
           />
+          <CanvasSettings />
           <PageNotifications />
         </Container>
         <Canvas
