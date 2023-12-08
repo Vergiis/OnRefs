@@ -1,5 +1,4 @@
 import { Form } from 'react-bootstrap';
-import { MdAddCircle } from 'react-icons/md';
 import { FaGear } from 'react-icons/fa6';
 
 export function CanvasSettings() {
@@ -10,11 +9,10 @@ export function CanvasSettings() {
           <FaGear />
         </Form.Label>
       </Form.Group>
-      <Form.Group className="canvasSettingsWindow" id="canvasSettingsToggle">
-        <Form.Group className="addTextInput" id="addTextButtonsGroup">
-          <MdAddCircle className="addTextIcon" />
-        </Form.Group>
-      </Form.Group>
+      <Form.Group
+        className="canvasSettingsWindow"
+        id="canvasSettingsToggle"
+      ></Form.Group>
     </Form>
   );
 }
