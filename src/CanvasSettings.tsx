@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
 import { FaGear } from 'react-icons/fa6';
 
@@ -28,6 +28,11 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
     setCanvasSettings(cookies.canvasSettings);
   };
 
+  let tooltip = (
+    <Tooltip id="tooltip">
+      <strong>Holy guacamole!</strong> Check this info.
+    </Tooltip>
+  );
   return (
     <Form className="canvasSettings">
       <Form.Group>
@@ -45,6 +50,16 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
             onChange={colorChange}
           />
         </Form.Group>
+        <OverlayTrigger placement="left" overlay={tooltip}>
+          <Form.Select
+            aria-label="Font"
+            className="addTextInput text-truncate"
+            id="fontInput"
+          >
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+          </Form.Select>
+        </OverlayTrigger>
       </Form.Group>
     </Form>
   );
