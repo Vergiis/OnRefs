@@ -1057,8 +1057,7 @@ function editCanvasText(input: any) {
   }
 }
 
-function decodeGif(gifURdL: string) {
-  let gifURL = 'https://i.gifer.com/embedded/download/SQie.gif';
+function decodeGif(gifURL: string) {
   let oReq = new XMLHttpRequest();
   oReq.open('GET', gifURL, true);
   oReq.responseType = 'arraybuffer';
@@ -1261,26 +1260,6 @@ const Canvas = (
     );
     resetNavBar();
     redraw();
-
-    let gifURL =
-      'https://i.pinimg.com/originals/31/97/ac/3197acb03b6ca06714c31166bc43b68a.gif';
-    let oReq = new XMLHttpRequest();
-    oReq.open('GET', gifURL, true);
-    oReq.responseType = 'arraybuffer';
-    let frames = null;
-    oReq.onload = () => {
-      let arrayBuffer = oReq.response;
-      if (arrayBuffer) {
-        var gif = parseGIF(arrayBuffer);
-        frames = decompressFrames(gif, true);
-        //let d = ctx.createImageData(frames[0].dims.width, frames[0].dims.height);
-        //d.data.set(frames[0].patch);
-        //ctx.putImageData(d, 0, 0);
-        console.log(frames);
-      }
-    };
-    console.log(frames);
-    oReq.send(null);
   }, []);
 
   return (
