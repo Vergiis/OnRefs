@@ -1008,6 +1008,26 @@ function editCanvasText(input: any) {
   }
 }
 
+function decodeGif(gifURL: string) {
+  let oReq = new XMLHttpRequest();
+  oReq.open('GET', gifURL, true);
+  oReq.responseType = 'arraybuffer';
+  let frames = null;
+  oReq.onload = () => {
+    let arrayBuffer = oReq.response;
+    if (arrayBuffer) {
+      var gif = parseGIF(arrayBuffer);
+      frames = decompressFrames(gif, true);
+      //let d = ctx.createImageData(frames[0].dims.width, frames[0].dims.height);
+      //d.data.set(frames[0].patch);
+      //ctx.putImageData(d, 0, 0);
+      console.log(frames);
+    }
+  };
+  oReq.send(null);
+  return frames;
+}
+
 const Canvas = (
   {
     showDropdown,
@@ -1160,29 +1180,6 @@ const Canvas = (
         );
       }
     }
-
-    let gifURL =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/SmallFullColourGIF.gif/200px-SmallFullColourGIF.gif';
-    var oReq = new XMLHttpRequest();
-    oReq.open('GET', gifURL, true);
-    oReq.responseType = 'arraybuffer';
-
-    oReq.onload = () => {
-      var arrayBuffer = oReq.response;
-      if (arrayBuffer) {
-        var gif = parseGIF(arrayBuffer);
-        var frames = decompressFrames(gif, true);
-        let d = ctx.createImageData(
-          frames[0].dims.width,
-          frames[0].dims.height
-        );
-        d.data.set(frames[0].patch);
-        ctx.putImageData(d, 0, 0);
-        console.log(frames);
-      }
-    };
-
-    oReq.send(null);
   }, [showDropdown]);
 
   const [cookies, setCookie] = useCookies(['canvasID']);
