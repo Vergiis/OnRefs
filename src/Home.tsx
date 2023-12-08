@@ -120,7 +120,7 @@ export function Home() {
   };
 
   const [canvasSettings, setCanvasSettings] = useState({
-    sColor: '#FF0000',
+    sColor: '#00ffe1',
     sType: 'Normal',
   });
 

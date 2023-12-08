@@ -13,7 +13,7 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
       cookies.canvasSettings == 'undefined'
     ) {
       setCookie('canvasSettings', canvasSettings);
-      colorRef.current.value = '#FF0000';
+      colorRef.current.value = canvasSettings.sColor;
     } else {
       colorRef.current.value = cookies.canvasSettings.sColor;
       setCanvasSettings(cookies.canvasSettings);
