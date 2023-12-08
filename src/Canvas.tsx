@@ -400,6 +400,8 @@ function AddToCanvas(
     type: type,
     text: text,
   });
+  selectedShapes = [];
+  selectedShapeIndex = -1;
   redraw();
 }
 
@@ -828,7 +830,7 @@ function handleContextMenu(
     if (isMouseInShape(pt.x, pt.y, shapes[i])) {
       let inSelect = false;
 
-      for (let s = 0; s < selectedShapes.length - 1; s++) {
+      for (let s = 0; s < selectedShapes.length; s++) {
         if (selectedShapes[s] == i) {
           inSelect = true;
           break;
@@ -876,6 +878,9 @@ function deleteImage() {
     for (let i = selectedShapes.length - 1; i >= 0; i--) {
       shapes.splice(selectedShapes[i], 1);
     }
+
+    selectedShapes = [];
+    selectedShapeIndex = -1;
   } else shapes.splice(selectedShapeIndex, 1);
 
   SaveToLocal();
