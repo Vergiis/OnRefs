@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useCookies } from 'react-cookie';
 import $ from 'jquery';
+import { parseGIF, decompressFrames } from 'gifuct-js';
+
 let canvas: any;
 let ctx: any;
 
@@ -1189,6 +1191,23 @@ const Canvas = (
     );
     resetNavBar();
     redraw();
+
+    let gifURL =
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/SmallFullColourGIF.gif/200px-SmallFullColourGIF.gif';
+    var oReq = new XMLHttpRequest();
+    oReq.open('GET', gifURL, true);
+    oReq.responseType = 'arraybuffer';
+
+    oReq.onload = function () {
+      var arrayBuffer = oReq.response; // Note: not oReq.responseText
+      if (arrayBuffer) {
+        var gif = parseGIF(arrayBuffer);
+        var frames = decompressFrames(gif, true);
+        console.log(frames);
+      }
+    };
+
+    oReq.send(null);
   }, []);
 
   return (
