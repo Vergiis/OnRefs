@@ -41,7 +41,7 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
         </Form.Label>
       </Form.Group>
       <Form.Group className="canvasSettingsWindow" id="canvasSettingsToggle">
-        <Form.Group className="addTextInput" id="addTextColorGroup">
+        <Form.Group className="addTextInput" id="canvasSettingsColorGroup">
           <Form.Label>Selection Color :</Form.Label>
           <Form.Control
             type="color"
@@ -50,11 +50,14 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
             onChange={colorChange}
           />
         </Form.Group>
+        <Form.Label className="canvasSettingsLabels">
+          Selection Mode:
+        </Form.Label>
         <OverlayTrigger placement="left" overlay={tooltip}>
           <Form.Select
             aria-label="Font"
             className="addTextInput text-truncate"
-            id="fontInput"
+            id="selectionTypeInput"
           >
             <option value="Arial">Arial</option>
             <option value="Verdana">Verdana</option>

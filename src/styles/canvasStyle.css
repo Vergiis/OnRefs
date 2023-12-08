@@ -200,3 +200,30 @@
   background-color: #212529;
   border-radius: 10% 0% 0% 10%;
 }
+#canvasSettingsColorGroup {
+  display: flex;
+  position: relative;
+  background-color: transparent;
+  color: whitesmoke;
+  padding: 0.3em;
+  white-space: nowrap;
+}
+.canvasSettingsLabels {
+  display: flex;
+  position: relative;
+  background-color: transparent;
+  color: whitesmoke;
+  padding: 0.3em;
+  white-space: nowrap;
+  float: left;
+  height: 1.8em;
+  width: 80%;
+  margin-left: 9%;
+  margin-top: 6.5%;
+  font-weight: bold;
+}
+#selectionTypeInput {
+  padding: 0;
+  padding-left: 0.8em;
+  margin-top: 0;
+}
