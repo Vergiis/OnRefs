@@ -51,16 +51,16 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
           />
         </Form.Group>
         <Form.Label className="canvasSettingsLabels">
-          Selection Mode:
+          Image Order Mode:
         </Form.Label>
-        <OverlayTrigger placement="left" overlay={tooltip}>
+        <OverlayTrigger placement="top" overlay={tooltip}>
           <Form.Select
             aria-label="Font"
             className="addTextInput text-truncate"
             id="selectionTypeInput"
           >
-            <option value="Arial">Arial</option>
-            <option value="Verdana">Verdana</option>
+            <option value="Arial">Always On Top</option>
+            <option value="Verdana">Context Menu</option>
           </Form.Select>
         </OverlayTrigger>
       </Form.Group>
