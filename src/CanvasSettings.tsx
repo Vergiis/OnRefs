@@ -34,11 +34,7 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
       <strong>Always on top while moving</strong>
     </Tooltip>
   );
-  const tooltipContext = (
-    <Tooltip id="tooltip">
-      <strong>Change order from context menu</strong>
-    </Tooltip>
-  );
+
 
   return (
     <Form className="canvasSettings">
