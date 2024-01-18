@@ -39,6 +39,7 @@ let resizeStartY: number;
 let frameArcRadius = 50;
 let frameLineWidth = 10;
 let frameColor = '#00ffe1';
+let imageOrder = 'Top';
 
 function trackTransforms() {
   let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -1106,7 +1107,9 @@ const Canvas = (
 ) => {
   useEffect(() => {
     frameColor = canvasSettings.sColor;
+    imageOrder = canvasSettings.sType;
   }, [canvasSettings]);
+
   useEffect(() => {
     if (!textAddShowStatus) {
       setTimeout(() => {
