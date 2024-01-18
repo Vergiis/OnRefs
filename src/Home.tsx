@@ -121,7 +121,7 @@ export function Home() {
 
   const [canvasSettings, setCanvasSettings] = useState({
     sColor: '#00ffe1',
-    sType: 'Normal',
+    sType: 'Top',
   });
 
   return (

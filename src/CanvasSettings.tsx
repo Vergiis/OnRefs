@@ -5,6 +5,7 @@ import { FaGear } from 'react-icons/fa6';
 
 export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
   const colorRef: any = useRef(null);
+  const typeRef: any = useRef(null);
 
   const [cookies, setCookie] = useCookies(['canvasSettings']);
   useEffect(() => {
@@ -28,11 +29,17 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
     setCanvasSettings(cookies.canvasSettings);
   };
 
-  let tooltip = (
+  const tooltipTop = (
     <Tooltip id="tooltip">
-      <strong>Holy guacamole!</strong> Check this info.
+      <strong>Always on top while moving</strong>
     </Tooltip>
   );
+  const tooltipContext = (
+    <Tooltip id="tooltip">
+      <strong>Change order from context menu</strong>
+    </Tooltip>
+  );
+
   return (
     <Form className="canvasSettings">
       <Form.Group>
@@ -53,14 +60,15 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
         <Form.Label className="canvasSettingsLabels">
           Image Order Mode:
         </Form.Label>
-        <OverlayTrigger placement="top" overlay={tooltip}>
+        <OverlayTrigger placement="top" overlay={tooltipTop}>
           <Form.Select
-            aria-label="Font"
+            aria-label="Image Order"
             className="addTextInput text-truncate"
             id="selectionTypeInput"
+            ref={typeRef}
           >
-            <option value="Arial">Always On Top</option>
-            <option value="Verdana">Context Menu</option>
+            <option value="Top">Always On Top</option>
+            <option value="Context">Context Menu</option>
           </Form.Select>
         </OverlayTrigger>
       </Form.Group>
