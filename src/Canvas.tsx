@@ -679,11 +679,15 @@ function handleMouseDown(evt: any) {
       for (let i = shapes.length - 1; i >= 0; i--) {
         if (isMouseInShape(pt.x, pt.y, shapes[i])) {
           recalculateFrameSize();
-          let tmp = shapes[i];
-          tmp.position = shapes[shapes.length - 1].position + 1;
-          shapes.splice(i, 1);
-          shapes.push(tmp);
-          selectedShapeIndex = shapes.length - 1;
+          //Move on top
+          if(imageOrder=="Top"){
+            let tmp = shapes[i];
+            tmp.position = shapes[shapes.length - 1].position + 1;
+            shapes.splice(i, 1);
+            shapes.push(tmp);
+            selectedShapeIndex = shapes.length - 1;
+          }
+          //Draw Frame
           redraw();
           ctx.strokeStyle = frameColor;
           ctx.lineWidth = frameLineWidth;
