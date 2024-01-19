@@ -46,6 +46,7 @@ export function DeleteCanvasModal({ show, handleClose }: any) {
         </Button>
         <Button
           className="modalButtons"
+          id="closeCanvasButton"
           variant="primary"
           onClick={handleClose}
         >

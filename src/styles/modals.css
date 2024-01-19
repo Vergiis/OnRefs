@@ -86,6 +86,10 @@
 .deleteCanvasModalText {
   font-size: 2em;
 }
+#closeCanvasButton:active{
+  background-color: #00a4a4;
+  border:1px solid #00a4a4;
+}
 @media (max-width: 990px) {
   #canvasPlusButton {
     display: none;
