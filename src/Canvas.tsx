@@ -960,30 +960,42 @@ function copyImageURL() {
 }
 
 function moveImage(mode:string){
+  
   switch(mode){
     case "Top":
       let tmp = shapes[selectedShapeIndex];
       tmp.position = shapes[shapes.length - 1].position + 1;
       shapes.splice(selectedShapeIndex, 1);
       shapes.push(tmp);
-      selectedShapeIndex = shapes.length - 1;
       SaveToLocal()
       redraw()
       break
     case "Up":
       if(selectedShapeIndex<shapes.length-1){
-        let tmp=shapes[selectedShapeIndex];
-        shapes.splice(selectedShapeIndex,1,selectedShapeIndex+1)
-        shapes.splice(selectedShapeIndex+1,1,tmp)
+        shapes[selectedShapeIndex].position=selectedShapeIndex+1
+        shapes[selectedShapeIndex+1].position=selectedShapeIndex
+        shapes[selectedShapeIndex] = shapes.splice(selectedShapeIndex+1, 1, shapes[selectedShapeIndex])[0];
         SaveToLocal()
         redraw()
-        console.log(tmp)
       }
       
       break
     case "Down":
+      if(selectedShapeIndex>0){
+        shapes[selectedShapeIndex].position=selectedShapeIndex-1
+        shapes[selectedShapeIndex-1].position=selectedShapeIndex
+        shapes[selectedShapeIndex] = shapes.splice(selectedShapeIndex-1, 1, shapes[selectedShapeIndex])[0];
+        SaveToLocal()
+        redraw()
+      }
       break
     case "Bottom":
+      let tmpB = shapes[selectedShapeIndex];
+      tmpB.position = 0;
+      shapes.splice(selectedShapeIndex, 1);
+      shapes.unshift(tmpB);
+      SaveToLocal()
+      redraw()
       break
     default:
       break
