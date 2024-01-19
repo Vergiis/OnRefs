@@ -967,12 +967,19 @@ function moveImage(mode:string){
       shapes.splice(selectedShapeIndex, 1);
       shapes.push(tmp);
       selectedShapeIndex = shapes.length - 1;
+      SaveToLocal()
       redraw()
       break
     case "Up":
-      if(selectedShapeIndex<shapes.length){
-        
+      if(selectedShapeIndex<shapes.length-1){
+        let tmp=shapes[selectedShapeIndex];
+        shapes.splice(selectedShapeIndex,1,selectedShapeIndex+1)
+        shapes.splice(selectedShapeIndex+1,1,tmp)
+        SaveToLocal()
+        redraw()
+        console.log(tmp)
       }
+      
       break
     case "Down":
       break
