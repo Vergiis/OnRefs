@@ -20,7 +20,40 @@ export function ContextMenu({
       onMouseLeave={hideDropdown}
     >
       <Dropdown.Menu>
-        {!showTextDropdown && !showSelectDropdown ? (
+        {/*Move*/}
+        {!showSelectDropdown && <>
+        <Dropdown.Item
+          id="context-moveTop"
+          className="dropdown-item context-item"
+          onClick={contextDelete}
+        >
+          Move To Top
+        </Dropdown.Item>
+        <Dropdown.Item
+          id="context-moveUp"
+          className="dropdown-item context-item"
+          onClick={contextDelete}
+        >
+          Move Up
+        </Dropdown.Item>
+        <Dropdown.Item
+          id="context-moveDown"
+          className="dropdown-item context-item"
+          onClick={contextDelete}
+        >
+          Move Down
+        </Dropdown.Item>
+        <Dropdown.Item
+          id="context-moveBotton"
+          className="dropdown-item context-item"
+          onClick={contextDelete}
+        >
+          Move To Bottom
+        </Dropdown.Item>
+        <Dropdown.Divider />
+        <Dropdown.Divider />
+        </>}
+        {!showTextDropdown && !showSelectDropdown && (
           <Dropdown.Item
             id="context-copy"
             className="dropdown-item context-item"
@@ -28,10 +61,8 @@ export function ContextMenu({
           >
             Copy Image URL
           </Dropdown.Item>
-        ) : (
-          <></>
         )}
-        {!showTextDropdown && !showSelectDropdown ? (
+        {!showTextDropdown && !showSelectDropdown && (
           <Dropdown.Item
             id="context-resize"
             className="dropdown-item context-item"
@@ -39,10 +70,8 @@ export function ContextMenu({
           >
             Resize
           </Dropdown.Item>
-        ) : (
-          <></>
         )}
-        {showTextDropdown ? (
+        {showTextDropdown && (
           <Dropdown.Item
             id="context-edit"
             className="dropdown-item context-item"
@@ -50,8 +79,6 @@ export function ContextMenu({
           >
             Edit
           </Dropdown.Item>
-        ) : (
-          <></>
         )}
         <Dropdown.Item
           id="context-delete"
