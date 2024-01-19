@@ -56,7 +56,7 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
         {
           width: 'toggle',
         },
-        200
+        150
       );
       setIsArrowIcon(!isArrowIcon)
   };
