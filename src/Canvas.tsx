@@ -960,7 +960,18 @@ function copyImageURL() {
 }
 
 function moveImage(mode:string){
-  console.log(mode)
+  switch(mode){
+    case "Top":
+      break
+    case "Up":
+      break
+    case "Down":
+      break
+    case "Bottom":
+      break
+    default:
+      break
+  }
 }
 
 function modalAddImage(input: string) {
