@@ -680,7 +680,6 @@ function handleMouseDown(evt: any) {
         if (isMouseInShape(pt.x, pt.y, shapes[i])) {
           recalculateFrameSize();
           //Move on top
-          console.log(imageOrder)
           if(imageOrder=="Top"){
             let tmp = shapes[i];
             tmp.position = shapes[shapes.length - 1].position + 1;
@@ -1115,7 +1114,6 @@ const Canvas = (
   useEffect(() => {
     frameColor = canvasSettings.sColor;
     imageOrder = canvasSettings.sType;
-    console.log(canvasSettings.sType)
   }, [canvasSettings]);
 
   useEffect(() => {
