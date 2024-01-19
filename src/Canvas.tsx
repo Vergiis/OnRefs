@@ -962,8 +962,17 @@ function copyImageURL() {
 function moveImage(mode:string){
   switch(mode){
     case "Top":
+      let tmp = shapes[selectedShapeIndex];
+      tmp.position = shapes[shapes.length - 1].position + 1;
+      shapes.splice(selectedShapeIndex, 1);
+      shapes.push(tmp);
+      selectedShapeIndex = shapes.length - 1;
+      redraw()
       break
     case "Up":
+      if(selectedShapeIndex<shapes.length){
+        
+      }
       break
     case "Down":
       break
