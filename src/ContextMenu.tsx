@@ -9,6 +9,7 @@ export function ContextMenu({
   contextResize,
   contextCopyURL,
   contextEditText,
+  contextMove,
   showSelectDropdown,
 }: any) {
   return (
@@ -25,28 +26,28 @@ export function ContextMenu({
         <Dropdown.Item
           id="context-moveTop"
           className="dropdown-item context-item"
-          onClick={contextDelete}
+          onClick={()=>{contextMove("Top")}}
         >
           Move To Top
         </Dropdown.Item>
         <Dropdown.Item
           id="context-moveUp"
           className="dropdown-item context-item"
-          onClick={contextDelete}
+          onClick={()=>{contextMove("Up")}}
         >
           Move Up
         </Dropdown.Item>
         <Dropdown.Item
           id="context-moveDown"
           className="dropdown-item context-item"
-          onClick={contextDelete}
+          onClick={()=>{contextMove("Down")}}
         >
           Move Down
         </Dropdown.Item>
         <Dropdown.Item
           id="context-moveBotton"
           className="dropdown-item context-item"
-          onClick={contextDelete}
+          onClick={()=>{contextMove("Bottom")}}
         >
           Move To Bottom
         </Dropdown.Item>

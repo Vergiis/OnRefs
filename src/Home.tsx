@@ -185,6 +185,7 @@ export function Home() {
           contextResize={contextResizeClick}
           contextCopyURL={contextCopyURLClick}
           contextEditText={contextEditTextClick}
+          contextMove={contextMoveClick}
         />
       </CookiesProvider>
     </>
