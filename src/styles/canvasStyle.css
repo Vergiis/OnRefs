@@ -185,6 +185,9 @@
   height: 0em;
   margin-bottom: 0.3em;
 }
+#canvasSettingsToggle{
+  display: none;
+}
 #canvasSettingsButton {
   padding: 0;
   font-size: 1.9em;

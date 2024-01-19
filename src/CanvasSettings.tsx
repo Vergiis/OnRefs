@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { useCookies } from 'react-cookie';
+import { FaArrowCircleRight } from 'react-icons/fa';
 import { FaGear } from 'react-icons/fa6';
+import $ from 'jquery';
 
 export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
   const colorRef: any = useRef(null);
@@ -48,12 +50,22 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
     </Tooltip>
   ):<></>;
 
+  const [isArrowIcon, setIsArrowIcon] = useState(true);
+  const handleSettingsShow = () => {
+      $('#canvasSettingsToggle').animate(
+        {
+          width: 'toggle',
+        },
+        200
+      );
+      setIsArrowIcon(!isArrowIcon)
+  };
 
   return (
     <Form className="canvasSettings">
-      <Form.Group>
+      <Form.Group onClick={handleSettingsShow}>
         <Form.Label id="canvasSettingsButton">
-          <FaGear />
+          {isArrowIcon?<FaGear />:<FaArrowCircleRight className="arrowButton" />}
         </Form.Label>
       </Form.Group>
       <Form.Group className="canvasSettingsWindow" id="canvasSettingsToggle">
