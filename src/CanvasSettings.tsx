@@ -32,7 +32,10 @@ export function CanvasSettings({ canvasSettings, setCanvasSettings }: any) {
       sType: typeRef.current.value,
     });
     setType(typeRef.current.value)
-    setCanvasSettings(cookies.canvasSettings);
+    setCanvasSettings({
+      sColor:colorRef.current.value,
+      sType: typeRef.current.value,
+    });
   };
 
   const tooltip = type=="Top"?(
