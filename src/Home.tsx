@@ -68,6 +68,14 @@ export function Home() {
     setContextEditText(false);
   };
 
+  const [contextMove, setContextMove] = useState<null|string>(null);
+  const contextMoveClick = (mode:string) => {
+    setContextMove(mode);
+  };
+  const endContextMove = () => {
+    setContextMove(null);
+  };
+
   const [modalAddImage, SetModalAddImage] = useState('');
   const modalAddImageClick = (val: any) => {
     SetModalAddImage(val);
@@ -154,6 +162,8 @@ export function Home() {
           endContextCopyURL={endContextCopyURL}
           contextEditText={contextEditText}
           endContextEditText={endContextEditText}
+          contextMove={contextMove}
+          endContextMove={endContextMove}
           resetNavBar={reset}
           modalAddImageClick={modalAddImageClick}
           modalAddImageStatus={modalAddImage}

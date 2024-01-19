@@ -959,6 +959,10 @@ function copyImageURL() {
   $('#pageNotifications').slideToggle('fast').delay(800).slideToggle('fast');
 }
 
+function moveImage(mode:string){
+  console.log(mode)
+}
+
 function modalAddImage(input: string) {
   let url = checkURL(input);
 
@@ -1098,6 +1102,8 @@ const Canvas = (
     endContextCopyURL,
     contextEditText,
     endContextEditText,
+    contextMove,
+    endContextMove,
     resetNavBar,
     modalAddImageClick,
     modalAddImageStatus,
@@ -1189,9 +1195,12 @@ const Canvas = (
       if (!textAddShowStatus) handleTextAddShow();
       openEditCanvasText();
       endContextEditText();
+    }else if (contextMove) {
+      moveImage(contextMove);
+      endContextMove();
     }
     hideDropdown();
-  }, [contextDelete, contextResize, contextCopyURL, contextEditText]);
+  }, [contextDelete, contextResize, contextCopyURL, contextEditText, contextMove]);
 
   const canvasRef = useRef<any>();
 
